@@ -157,7 +157,7 @@ def get_week_settings():
         return s_date_display, e_date_display, d_list
     
     try:
-        settings_res = requests.get(f"{SCRIPT_URL}?sheet=Settings", timeout=30)
+        settings_res = requests.get(f"{SCRIPT_URL}?sheet=Settings", timeout=60)
         if settings_res.status_code == 200:
             raw_json = settings_res.json()
             if isinstance(raw_json, list) and len(raw_json) >= 3:

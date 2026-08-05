@@ -161,6 +161,7 @@ def get_week_settings():
         if settings_res.status_code == 200:
             st.write("בדיקת raw_json:", raw_json)
             raw_json = settings_res.json()
+            st.write("תוכן הגדרות שבוע:", raw_json)
             # שליפה נכונה מתוך רשימת הדיקטים שמגיעה מגוגל לפי אינדקס השורה (0=יום, 1=חודש, 2=שנה)
             if isinstance(raw_json, list) and len(raw_json) >= 3:
                 day_val = str(raw_json[0].get("Active_Week", "")).strip()

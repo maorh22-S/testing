@@ -118,7 +118,6 @@ def get_allowed_users():
         res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=30)
         if res.status_code == 200:
             raw_data = res.json()
-            # ... המשך הקוד הרגיל
             if isinstance(raw_data, list) and len(raw_data) > 0:
                 users_dict = {}
                 for row in raw_data:
@@ -129,9 +128,9 @@ def get_allowed_users():
                         if u: 
                             users_dict[u] = {"password": p, "role": r}
                 return users_dict
-    except Exception:
-        pass
-    return {}
+    except Exception as e:
+        st.error(f"שגיאה מפורטת בשליפת משתמשים: {e}")
+        return {}
 
 #---------------------------------------
 USER_CREDENTIALS = get_allowed_users()

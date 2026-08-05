@@ -154,23 +154,16 @@ def get_week_settings():
     e_date_display = ""
     d_list = []
     if not SCRIPT_URL:
-        st.error("SCRIPT_URL חסר!")
         return s_date_display, e_date_display, d_list
     
     try:
         settings_res = requests.get(f"{SCRIPT_URL}?sheet=Settings", timeout=30)
-        st.write("סטטוס תגובה ל-Settings:", settings_res.status_code)
-        
         if settings_res.status_code == 200:
             raw_json = settings_res.json()
-            st.write("תוכן גולמי (raw_json):", raw_json)
-            
             if isinstance(raw_json, list) and len(raw_json) >= 3:
                 day_val = str(raw_json[0].get("Active_Week", "")).strip()
                 month_val = str(raw_json[1].get("Active_Week", "")).strip()
                 year_val = str(raw_json[2].get("Active_Week", "")).strip()
-                
-                st.write(f"ערכים שחולצו - יום: {day_val}, חודש: {month_val}, שנה: {year_val}")
                 
                 if day_val and month_val and year_val:
                     if len(day_val) == 1: day_val = "0" + day_val
@@ -181,10 +174,8 @@ def get_week_settings():
                     
                     s_date_display = base_date.strftime("%d/%m/%Y")
                     e_date_display = (base_date + timedelta(days=6)).strftime("%d/%m/%Y")
-            else:
-                st.warning(f"הרשימה קצרה מדי או אינה רשימה. אורך: {len(raw_json) if isinstance(raw_json, list) else 'לא רשימה'}")
     except Exception as e:
-        st.error(f"-שגיאה בשליפת הגדרות שבוע: {e}")
+        st.error(f"שגיאה בשליפת הגדרות שבוע: {e}")
         
     return s_date_display, e_date_display, d_list
 

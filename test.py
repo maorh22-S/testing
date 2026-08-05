@@ -115,11 +115,7 @@ def get_allowed_users():
     if not SCRIPT_URL:
         return {}
     try:
-        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=10)
-        # נציג את הטקסט שהתקבל כדי לראות מה השרת עונה באמת
-        st.write("סטטוס תגובה:", res.status_code)
-        st.write("תוכן גולמי:", res.text)
-        
+        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=30)
         if res.status_code == 200:
             raw_data = res.json()
             # ... המשך הקוד הרגיל

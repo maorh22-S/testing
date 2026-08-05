@@ -154,36 +154,38 @@ def get_week_settings():
     e_date_display = ""
     d_list = []
     if not SCRIPT_URL:
+        st.error("SCRIPT_URL חסר!")
         return s_date_display, e_date_display, d_list
-        
+    
     try:
         settings_res = requests.get(f"{SCRIPT_URL}?sheet=Settings", timeout=30)
+        st.write("סטטוס תגובה ל-Settings:", settings_res.status_code)
+        
         if settings_res.status_code == 200:
-            st.write("בדיקת raw_json:", raw_json)
             raw_json = settings_res.json()
-            st.write("תוכן הגדרות שבוע:", raw_json)
-            # שליפה נכונה מתוך רשימת הדיקטים שמגיעה מגוגל לפי אינדקס השורה (0=יום, 1=חודש, 2=שנה)
+            st.write("תוכן גולמי (raw_json):", raw_json)
+            
             if isinstance(raw_json, list) and len(raw_json) >= 3:
                 day_val = str(raw_json[0].get("Active_Week", "")).strip()
                 month_val = str(raw_json[1].get("Active_Week", "")).strip()
                 year_val = str(raw_json[2].get("Active_Week", "")).strip()
                 
+                st.write(f"ערכים שחולצו - יום: {day_val}, חודש: {month_val}, שנה: {year_val}")
+                
                 if day_val and month_val and year_val:
                     if len(day_val) == 1: day_val = "0" + day_val
                     if len(month_val) == 1: month_val = "0" + month_val
                     
-                    # חיבור ישיר של התאריך בדיוק לפי הפורמט בגיליון
                     start_date_str = f"{day_val}/{month_val}/{year_val}"
                     base_date = datetime.strptime(start_date_str, "%d/%m/%Y")
-
-                        
+                    
                     s_date_display = base_date.strftime("%d/%m/%Y")
                     e_date_display = (base_date + timedelta(days=6)).strftime("%d/%m/%Y")
-                    
-                    for i in range(7):
-                        d_list.append((base_date + timedelta(days=i)).strftime("%d/%m/%Y"))
-    except Exception:
-        pass
+            else:
+                st.warning(f"הרשימה קצרה מדי או אינה רשימה. אורך: {len(raw_json) if isinstance(raw_json, list) else 'לא רשימה'}")
+    except Exception as e:
+        st.error(f-שגיאה בשליפת הגדרות שבוע: {e})
+        
     return s_date_display, e_date_display, d_list
 
 # טעינת הנתונים מהפונקציה המתוקנת

@@ -934,7 +934,7 @@ try:
                 
                 # --- מצב א': תצוגה רחבה (מחשב) - שימוש ב-st.columns רשמי מימין לשמאל ---
                 if is_wide_view_summary:
-                    summary_cols = st.columns(len(dates_list))
+                    summary_cols = st.columns(7)
                     
                     # התיקון: הסרנו את reversed כדי שהתאריכים יתחילו מ-02/08 בימין ויתקדמו ימינה בצורה טבעית
                     for col_idx, (day_idx, d_info) in enumerate(list(enumerate(dates_list))):

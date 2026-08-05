@@ -115,7 +115,7 @@ def get_allowed_users():
     if not SCRIPT_URL:
         return {}
     try:
-        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=30)
+        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=60)
         if res.status_code == 200:
             raw_data = res.json()
             if isinstance(raw_data, list) and len(raw_data) > 0:

@@ -184,7 +184,7 @@ def get_week_settings():
             else:
                 st.warning(f"הרשימה קצרה מדי או אינה רשימה. אורך: {len(raw_json) if isinstance(raw_json, list) else 'לא רשימה'}")
     except Exception as e:
-        st.error(f-שגיאה בשליפת הגדרות שבוע: {e})
+        st.error(f"-שגיאה בשליפת הגדרות שבוע: {e}")
         
     return s_date_display, e_date_display, d_list
 

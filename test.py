@@ -926,20 +926,20 @@ try:
             
             if filtered_user_rows:
                 user_row = filtered_user_rows[-1]
-                st.success("נמצאו בקשות תואמות לשבוע הבא!")
+                st.success("Found matching requests for next week!")
             else:
                 if 'current_user' in locals():
                     user_all_rows = [r for r in raw_rows if str(r.get("Employee Name", "")).strip().lower() == current_user.lower()]
                     if user_all_rows:
                         user_row = user_all_rows[-1]
-                        st.info("מציג את הבקשה האחרונה הקיימת במערכת עבור השבוע")
+                        st.info("Showing the latest existing request in the system")
             
-            # 4. רינדור כרטיסיות המשמרות (מתבצע רק אם המשתנה user_row הוגדר ומצא התאמה)
+            # 4. רינדור כרטיסיות המשמרות (מתבצע רק אם נמצא user_row)
             if user_row:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))
                 is_mobile_device = st.session_state.get("is_mobile", False)
-                
+            
                 is_wide_view_summary = ("טבלה" in str(current_view) and not is_mobile_device)
                 days_order_en = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
                 days_order_he = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]

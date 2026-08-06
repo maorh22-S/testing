@@ -926,21 +926,18 @@ try:
             
             if filtered_user_rows:
                 user_row = filtered_user_rows[-1]
-                st.success(" נמצאו בקשות תואמות!")
+                st.success("נמצאו בקשות תואמות לשבוע הבא!")
             else:
-                st.info("אין בקשות לשבוע הבא לפי התנאים הקיימים")
+                st.info("אין בקשות לשבוע הבא לפי התנאים")
                 
-                # בדיקת עזר: נדפיס את כל התאריכים שהיו בגיליון עבור המשתמש הזה כדי שנראה מה ההבדל
+                # בדיקת עזר כדי לראות מה השורות הקיימות של המשתמש בגיליון
                 if 'current_user' in locals():
                     user_all_rows = [r for r in raw_rows if str(r.get("Employee Name", "")).strip().lower() == current_user.lower()]
-                    st.write(f"כל השורות של המשתמש בגיליון (סך הכל {len(user_all_rows)}):")
-                    for r in user_all_rows:
-                        st.json(r)
-                st.success("✅ מציג: בקשות לשבוע הבא !")
-            else:
-                st.info("אין בקשות לשבוע הבא: נא להגיש")
-                if user_rows:
-                    st.info(f"📂 הבקשות האחרונות הקיימות במערכת הן עבור השבוע של: **{clean_date_after_4_hours}**")
+                    st.write(f"סך הכל שורות של המשתמש בגיליון: {len(user_all_rows)}")
+                    if user_all_rows:
+                        # אם נמצאו שורות למשתמש אך התאריך לא התאים, ניקח את השורה האחרונה שלו כגיבוי כדי שהמערכת לא תישאר ריקה
+                        user_row = user_all_rows[-1]
+                        st.info(f"מציג את הבקשה האחרונה הקיימת במערכת עבור השבוע")
             
             # 4. רינדור כרטיסיות המשמרות (מתבצע רק אם המשתנה user_row הוגדר ומצא התאמה)
             if user_row:

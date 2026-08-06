@@ -928,7 +928,6 @@ try:
                 user_row = filtered_user_rows[-1]
                 st.success("נמצאו בקשות תואמות לשבוע הבא!")
             else:
-                # בדיקת עזר: אם אין התאמה מדויקת לתאריך, נציג את השורה האחרונה של המשתמש כגיבוי
                 if 'current_user' in locals():
                     user_all_rows = [r for r in raw_rows if str(r.get("Employee Name", "")).strip().lower() == current_user.lower()]
                     if user_all_rows:

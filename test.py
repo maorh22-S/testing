@@ -115,7 +115,7 @@ def get_allowed_users():
     if not SCRIPT_URL:
         return {}
     try:
-        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=60)
+        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=15)
         if res.status_code == 200:
             raw_data = res.json()
             if isinstance(raw_data, list) and len(raw_data) > 0:
@@ -125,13 +125,20 @@ def get_allowed_users():
                         u = str(row["username"]).strip()
                         p = str(row.get("password", "")).strip()
                         r = str(row.get("role", "כללי")).strip()
-                        if u: 
+                        if u:
                             users_dict[u] = {"password": p, "role": r}
                 return users_dict
+        
+        # אם הסטטוס אינו תקין, נציג אזהרה ורענן את הדף אוטומטית אחרי כמה שניות
+        st.warning("החיבור לגוגל התעכב, מבצע ניסיון חוזר...")
+        st.rerun()
+        
     except Exception as e:
-        st.error(f"שגיאה מפורטת בשליפת משתמשים: {e}")
-        return {}
-
+        st.error(f"שגיאת תקשורת מול גוגל: {e}. מרענן את העמוד...")
+        st.rerun()
+        
+    return {}
+    
 #---------------------------------------
 USER_CREDENTIALS = get_allowed_users()
 

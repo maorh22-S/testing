@@ -928,13 +928,9 @@ try:
                 user_row = filtered_user_rows[-1]
                 st.success("Found matching requests for next week!")
             else:
-                if 'current_user' in locals():
-                    user_all_rows = [r for r in raw_rows if str(r.get("Employee Name", "")).strip().lower() == current_user.lower()]
-                    if user_all_rows:
-                        user_row = user_all_rows[-1]
-                        st.info("Showing the latest existing request in the system")
+                user_row = None
             
-            # 4. רינדור כרטיסיות המשמרות (מתבצע רק אם נמצא user_row)
+            # 4. רינדור כרטיסיות המשמרות
             if user_row:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))

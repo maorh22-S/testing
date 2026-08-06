@@ -920,9 +920,9 @@ try:
             # 3. בדיקת התאמה והצגת הודעות מצב
             user_row = None
             # בדיקת ביניים: האם בכלל יש נתונים גולמיים מגיעים מהשרת?
-            st.write(f"סך הכל שורות שירדו מ-Sheet1: {len(raw_rows) if 'raw_rows' in locals() else 'לא הוגדר'}")
-            st.write(f"התאריך המחופש (target_date_clean): [{target_date_clean if 'target_date_clean' in locals() else 'אין'}]")
-            st.write(f"סך הכל שורות שעברו את הסינון (filtered_user_rows): {len(filtered_user_rows)}")
+            #st.write(f"סך הכל שורות שירדו מ-Sheet1: {len(raw_rows) if 'raw_rows' in locals() else 'לא הוגדר'}")
+           # st.write(f"התאריך המחופש (target_date_clean): [{target_date_clean if 'target_date_clean' in locals() else 'אין'}]")
+           # st.write(f"סך הכל שורות שעברו את הסינון (filtered_user_rows): {len(filtered_user_rows)}")
             
             if filtered_user_rows:
                 user_row = filtered_user_rows[-1]

@@ -942,7 +942,6 @@ try:
             # 4. רינדור כרטיסיות המשמרות (מתבצע רק אם המשתנה user_row הוגדר ומצא התאמה)
             if user_row:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
-                
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))
                 is_mobile_device = st.session_state.get("is_mobile", False)
                 

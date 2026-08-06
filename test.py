@@ -919,9 +919,23 @@ try:
             
             # 3. בדיקת התאמה והצגת הודעות מצב
             user_row = None
+            # בדיקת ביניים: האם בכלל יש נתונים גולמיים מגיעים מהשרת?
+            st.write(f"סך הכל שורות שירדו מ-Sheet1: {len(raw_rows) if 'raw_rows' in locals() else 'לא הוגדר'}")
+            st.write(f"התאריך המחופש (target_date_clean): [{target_date_clean if 'target_date_clean' in locals() else 'אין'}]")
+            st.write(f"סך הכל שורות שעברו את הסינון (filtered_user_rows): {len(filtered_user_rows)}")
+            
             if filtered_user_rows:
-                filtered_user_rows.sort(key=lambda x: str(x.get("Timestamp", "")))
                 user_row = filtered_user_rows[-1]
+                st.success(" נמצאו בקשות תואמות!")
+            else:
+                st.info("אין בקשות לשבוע הבא לפי התנאים הקיימים")
+                
+                # בדיקת עזר: נדפיס את כל התאריכים שהיו בגיליון עבור המשתמש הזה כדי שנראה מה ההבדל
+                if 'current_user' in locals():
+                    user_all_rows = [r for r in raw_rows if str(r.get("Employee Name", "")).strip().lower() == current_user.lower()]
+                    st.write(f"כל השורות של המשתמש בגיליון (סך הכל {len(user_all_rows)}):")
+                    for r in user_all_rows:
+                        st.json(r)
                 st.success("✅ מציג: בקשות לשבוע הבא !")
             else:
                 st.info("אין בקשות לשבוע הבא: נא להגיש")

@@ -181,7 +181,7 @@ def get_week_settings():
                     
                     s_date_display = base_date.strftime("%d/%m/%Y")
                     # יצירת רשימה של 7 התאריכים לשבוע הבא
-                    d_list = [(base_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(7)]
+                    d_list = [(base_date + timedelta(days=i)).strftime('%d/%m/%Y') for i in range(7)]
                     e_date_display = (base_date + timedelta(days=6)).strftime("%d/%m/%Y")
     except Exception as e:
         st.error(f"שגיאה בשליפת הגדרות שבוע: {e}")
@@ -971,12 +971,12 @@ try:
                         lines_html = "".join([f"<div style='font-size: 13px; margin-bottom: 3px; color: #1e293b; text-align: right;'>• {line}</div>" for line in day_lines])
                         
                         summary_html = f"""
-                        <div dir='rtl' style='text-align: right; direction: rtl; border: 1px solid #edf2f7; padding: 10px; border-radius: 8px; background-color: #f8fafc; margin-bottom: 10px;'>
-                            <div class='summary-day-title' style='color: #1e293b; font-weight: bold; font-size: 14px;'>📅 {main_title}</div>
-                            <div class='summary-day-date' style='font-size: 11px; color: #64748b;'>יום {he_day_name}</div>
-                            <hr style='margin: 5px 0; border-top: 1px solid #edf2f7;'>
-                            {lines_html}
-                        </div>
+                            <div dir='rtl' style='text-align: right; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);'>
+                                <div style='font-size: 16px; font-weight: bold; color: #1e293b; text-align: center;'>{date_str} 📅</div>
+                                <div style='font-size: 13px; color: #64748b; text-align: center; margin-bottom: 8px;'>{he_day_name}</div>
+                                <hr style='margin: 5px 0 10px 0; border: none; border-top: 1px solid #edf2f7;'>
+                                {''.join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])}
+                            </div>
                         """
                         with summary_cols[col_idx]:
                             st.markdown(summary_html, unsafe_allow_html=True)
@@ -1007,12 +1007,12 @@ try:
                         lines_html = "".join([f"<div style='font-size: 13px; margin-bottom: 3px; color: #1e293b; text-align: right;'>• {line}</div>" for line in day_lines])
                         
                         summary_html = f"""
-                        <div dir='rtl' style='text-align: right; direction: rtl; border: 1px solid #edf2f7; padding: 10px; border-radius: 8px; background-color: #f8fafc; margin-bottom: 10px;'>
-                            <div class='summary-day-title' style='color: #1e293b; font-weight: bold; font-size: 14px;'>📅 {main_title}</div>
-                            <div class='summary-day-date' style='font-size: 11px; color: #64748b;'>יום {he_day_name}</div>
-                            <hr style='margin: 5px 0; border-top: 1px solid #edf2f7;'>
-                            {lines_html}
-                        </div>
+                            <div dir='rtl' style='text-align: right; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);'>
+                                <div style='font-size: 16px; font-weight: bold; color: #1e293b; text-align: center;'>{date_str} 📅</div>
+                                <div style='font-size: 13px; color: #64748b; text-align: center; margin-bottom: 8px;'>{he_day_name}</div>
+                                <hr style='margin: 5px 0 10px 0; border: none; border-top: 1px solid #edf2f7;'>
+                                {''.join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])}
+                            </div>
                         """
                         st.markdown(summary_html, unsafe_allow_html=True)
         #----                

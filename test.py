@@ -524,6 +524,7 @@ else:
                     mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
 
                     # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
+                    is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
                     if is_bodekt_saturday:
                         default_index = 2
                         st.session_state[mobile_radio_key] = "🔴 לא יכול היום"

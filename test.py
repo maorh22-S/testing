@@ -180,6 +180,8 @@ def get_week_settings():
                     base_date = datetime.strptime(start_date_str, "%d/%m/%Y")
                     
                     s_date_display = base_date.strftime("%d/%m/%Y")
+                    # יצירת רשימה של 7 התאריכים לשבוע הבא
+                    d_list = [(base_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(7)]
                     e_date_display = (base_date + timedelta(days=6)).strftime("%d/%m/%Y")
     except Exception as e:
         st.error(f"שגיאה בשליפת הגדרות שבוע: {e}")

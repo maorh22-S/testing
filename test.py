@@ -919,18 +919,17 @@ try:
             
             # 3. בדיקת התאמה והצגת הודעות מצב
             user_row = None
-            # בדיקת ביניים: האם בכלל יש נתונים גולמיים מגיעים מהשרת?
-            #st.write(f"סך הכל שורות שירדו מ-Sheet1: {len(raw_rows) if 'raw_rows' in locals() else 'לא הוגדר'}")
-           # st.write(f"התאריך המחופש (target_date_clean): [{target_date_clean if 'target_date_clean' in locals() else 'אין'}]")
-           # st.write(f"סך הכל שורות שעברו את הסינון (filtered_user_rows): {len(filtered_user_rows)}")
             
             if filtered_user_rows:
+                # נמצאה בקשה מדויקת לתאריך המבוקש - ניקח את המעודכנת ביותר מביניהן
                 user_row = filtered_user_rows[-1]
-                st.success("Found matching requests for next week!")
+                st.success("נמצאו בקשות תואמות לשבוע הבא!")
             else:
+                # אין בקשה לתאריך המוגדר
+                st.warning("אין בקשות לשבוע הבא - נא להגיש")
                 user_row = None
             
-            # 4. רינדור כרטיסיות המשמרות
+            # 4. רינדור כרטיסיות המשמרות (יוצג רק אם נמצאה שורה תואמת)
             if user_row:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))
@@ -939,6 +938,7 @@ try:
                 is_wide_view_summary = ("טבלה" in str(current_view) and not is_mobile_device)
                 days_order_en = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
                 days_order_he = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
+        
                 
                 # --- מצב א': תצוגה רחבה (מחשב) - שימוש ב-st.columns רשמי מימין לשמאל ---
                 if is_wide_view_summary:

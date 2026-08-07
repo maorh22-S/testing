@@ -939,8 +939,7 @@ try:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))
                 is_mobile_device = st.session_state.get("is_mobile", False)
-                is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
-                is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
+                
             
                 is_wide_view_summary = ("טבלה" in str(current_view) and not is_mobile_device)
                 days_order_en = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -948,6 +947,8 @@ try:
         
                 
                 # --- מצב א': תצוגה רחבה (מחשב) - שימוש ב-st.columns רשמי מימין לשמאל ---
+                is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
+                is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
                 if is_wide_view_summary:
                     summary_cols = st.columns(7)
                     

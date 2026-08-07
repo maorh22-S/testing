@@ -925,7 +925,8 @@ try:
             if filtered_user_rows:
                 # נמצאה בקשה מדויקת לתאריך המבוקש - ניקח את המעודכנת ביותר מביניהן
                 user_row = filtered_user_rows[-1]
-               # st.success("נמצאו בקשות תואמות לשבוע הבא!")
+                submission_time = user_row.get("Timestamp", "")
+                st.success(f" הבקשות הוגשו ב-    ! (  : {submission_time})")
             else:
                 # אין בקשה לתאריך המוגדר
                 st.warning("אין בקשות לשבוע הבא - נא להגיש")

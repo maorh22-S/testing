@@ -743,7 +743,7 @@ else:
                     
                     # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית
                     # אם הפיילוט פעיל ובסופ"ש - זה אוטומטית נחשב "לא יכול" אך מוחרג מהמונה השבועי [index]
-                    if DISABLE_pilot and (is_weekend or shift_en in ['open_T', 'Night']):
+                    if DISABLE_pilot and (is_weekend or s_info.get('en') in ['open_T', 'Night']):
                         is_shift_cannot = True
                     elif shift_data.get("cannot") or "🔴" in day_status or "לא יכול" in day_status:
                         is_shift_cannot = True

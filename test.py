@@ -454,7 +454,7 @@ else:
                     elif is_pilot_weekend:
                         default_index = 3
                         st.session_state[radio_key] = "🌴 חופשה מאושרת" # כופה על הזיכרון
-                        st.caption("🔒 חסום (סוף שבוע פיילוט)")
+                        st.caption("🔒 חסום ")
                     else:
                         default_index = 0
             

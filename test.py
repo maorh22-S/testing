@@ -622,7 +622,8 @@ else:
                 # ימי חול רגילים שיש בהם חופשה או יכול הכל - המונים יעלו כרגיל
                 count_morning += 1
                 count_afternoon += 1
-                count_night += 1
+                if not DISABLE_pilot:
+                    count_night += 1
                 continue
 
         

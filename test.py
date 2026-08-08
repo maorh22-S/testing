@@ -931,8 +931,16 @@ try:
             if filtered_user_rows:
                 # נמצאה בקשה מדויקת לתאריך המבוקש - ניקח את המעודכנת ביותר מביניהן
                 user_row = filtered_user_rows[-1]
-                submission_time = user_row.get("Timestamp", "")
-                st.success(f" הבקשות הוגשו ב-    (   {submission_time})")
+                raw_ts = user_row.get("Timestamp", "")
+                try:
+                    w_str = raw_ts.replace('Z', '+00:00')
+                    dt = datetime.fromisoformat(w_str)
+                    dt_adjusted = dt + timedelta(hours=3) # או מספר השעות שתרצה להוסיף
+                    formatted_time = dt_adjusted.strftime('%d/%m/%Y %H:%M')
+                except Exception:
+                    formatted_time = raw_ts
+                
+                st.success(f"הבקשות הוגשו ב- {formatted_time}")
             else:
                 # אין בקשה לתאריך המוגדר
                 st.warning("אין בקשות לשבוע הבא - נא להגיש")

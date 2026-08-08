@@ -731,8 +731,11 @@ else:
                 for s_info in משמרות:
                     # חסימת פיילוט: אם הדגל פעיל, מדלגים לחלוטין על בדיקת משמרות אלו [index]
                     # זה גורם להן לא להיחשב ב-day_has_can או day_has_cannot, מה שמחריג אותן אוטומטית גם מחסימת חופשה!
-                    if DISABLE_pilot and s_info.get('en', '') in ['open_T', 'Night']:
-                        continue
+                    is_weekend = day_key in ['Friday', 'Saturday']
+
+                    if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
+                        is_shift_cannot = True
+                        # ולכן המערכת מסמנת אותן כחסומות אבל ממשיכה כרגיל בלי להעלות את המכסה!
                         
                     col_name = f"{day_key}_{s_info['en']}"
                     shift_data = user_choices.get(col_name, {})

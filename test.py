@@ -539,7 +539,8 @@ else:
                         st.caption("🔒 חסום (סוף שבוע פיילוט)")
                     else:
                         default_index = 0
-
+                        
+                    should_disable_day = False
                     day_choice = st.radio(
                         f"בחר סטטוס ליום {d_info['he']}",
                         ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],

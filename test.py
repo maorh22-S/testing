@@ -756,9 +756,14 @@ else:
                     errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת משמרת כ-'יכול'")
             
                 # --- חסימה 3: בחירת חופשה אך יש סימונים ידניים במשמרות ---
-                if ("🌴" in day_status or "חופשה" in day_status) and (day_has_can or day_has_cannot):
-                    has_error = True
-                    errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
+               # בדיקת סתירות: רק אם נבחרה חופשה ויש סימונים ידניים (יכול, לא יכול, מ.ש) ולא בגלל חסימת פיילוט אוטומטית
+                if ("🌴" in day_status or "חופשה מאושרת" in day_status):
+                    # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
+                    has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
+                    
+                    if has_real_manual_marks:
+                        has_error = True
+                        errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
             
             # --- חסימה שבועית דינמית: חריגת מקסימום משמרות "לא יכול" לפי הגדרות תפקיד [index]
             if cannot_count > max_cannot_allowed:

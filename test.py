@@ -29,7 +29,7 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
     # 2️⃣ שלב ב': חסימות הפיילוט (רצות רק על משמרות שלא נחסמו קודם, וכשהדגל חיובי)
     if disable_pilot_flag and not is_blocked:
         if shift_en == "Night": 
-            is_blocked = True; block_reason = "חסום (לילה)"
+            is_blocked = True; block_reason = " (לילה)"
         elif shift_en in ["open_T"]: 
             is_blocked = True; block_reason = "חסום (פתיחת בוקר)"
         elif day_en in ["Friday", "Saturday"]: 
@@ -39,7 +39,7 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# הגדרת הודעות טקסט בעברית (נשמר בקו העיצובי של גרסה א')
+# הגדרת הודעות טקסט בעברית 
 MSG_TITLE = "📋 מערכת סידור משמרות שבועי"
 MSG_SUBHEADER = "🔒 התחברות למערכת"
 MSG_SELECT_NAME = "בחר את שמך:"
@@ -449,7 +449,7 @@ else:
                     # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
                     if is_bodekt_saturday:
                         default_index = 2
-                        st.session_state[radio_key] = "🔴 לא יכול היום" # כופה על הזיכרון
+                        st.session_state[radio_key] =  "🌴 חופשה מאושרת" # כופה על הזיכרון
                         st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
                     elif is_pilot_weekend:
                         default_index = 3
@@ -517,12 +517,6 @@ else:
                 is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
                 
                 with st.expander(f"יום {d_info['he']}{tarih}", expanded=False):
-                    if current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday":
-                        st.caption("חסום")
-                        for s_info in משמרות:
-                            column_name = f"{d_info['en']}_{s_info['en']}"
-                            user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": False, "all_not_selected": True, "all_vacation_selected": False}
-                        continue
                     # הגדרת המפתח של הרכיב מראש למובייל
                     mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
 

@@ -934,7 +934,15 @@ try:
                 except Exception:
                     formatted_time = raw_ts
                 
-                st.success(f"הבקשות הוגשו ב- {formatted_time}")
+                #st.success(f"הבקשות הוגשו ב- {formatted_time}")
+                st.markdown(
+                            f"""
+                            <div dir='rtl' style='padding: 15px; border-radius: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 10px;'>
+                                ✅ הבקשות הוגשו ב- {formatted_time}
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
             else:
                 # אין בקשה לתאריך המוגדר
                 st.warning("אין בקשות לשבוע הבא - נא להגיש")

@@ -782,6 +782,7 @@ else:
             # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---
             else:
                 with st.spinner(MSG_SPINNER_SAVE):
+                    save_success = False  # מששתנה דגל שבודק אם השמירה הצליחה באמת
                     # שימוש ב-zoneinfo המובנה של פייתון ללא צורך ב-pytz
                     from zoneinfo import ZoneInfo
                     local_tz = ZoneInfo('Asia/Jerusalem')
@@ -830,6 +831,7 @@ else:
                     try:
                         res_submit = requests.post(SCRIPT_URL, json=payload, timeout=20)
                         if res_submit.status_code == 200:
+                            save_success = True
                             # יצירת הודעה בולטת במרכז המסך
                             with st.container():
                                 st.markdown("""
@@ -850,6 +852,8 @@ else:
                             if st.button("🔄 נסה לשלוח שוב", key="retry_submit_failed_btn"):
                                 st.rerun()
                     except Exception:
+                        # אם תפסה שגיאה, נבדוק האם בפועל השמירה נכשלה לגמרי
+                        if not save_success:
                         st.error("⚠️ שגיאת קטיעת זמן בשמירה מול גוגל, אך ייתכן שהנתונים נקלטו. נא לבדוק בגיליון הסיכום.")
 
 

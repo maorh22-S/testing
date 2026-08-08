@@ -717,7 +717,8 @@ else:
                 day_has_cannot = False
                 
                 for s_info in משמרות:
-                        
+                    if is_vacation:
+                        continue
                     col_name = f"{day_key}_{s_info['en']}"
                     shift_data = user_choices.get(col_name, {})
                     

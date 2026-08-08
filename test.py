@@ -614,19 +614,7 @@ else:
             # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
             is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
     
-            if is_all_can or is_vacation:
-                # 🛠️ החרגת פיילוט: אם זו חופשה כפויה של סופ"ש פיילוט, מדלגים על היום מייד בלי להעלות מונים
-                if is_pilot_weekend:
-                    continue
-                    
-                # ימי חול רגילים שיש בהם חופשה או יכול הכל - המונים יעלו כרגיל
-                count_morning += 1
-                count_afternoon += 1
-                if not DISABLE_pilot:
-                    count_night += 1
-                continue
 
-        
             # לולאה רגילה לספירת משמרות בודדות [index]
             for s_info in משמרות:
                 if DISABLE_pilot:

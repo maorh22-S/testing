@@ -836,21 +836,21 @@ else:
                     try:
                         res_submit = requests.post(SCRIPT_URL, json=payload, timeout=20)
                         if res_submit.status_code == 200:
-                        # יצירת הודעה בולטת במרכז המסך
-                        with st.container():
-                            st.markdown("""
-                                <div style="background-color: #d4edda; padding: 20px; border-radius: 10px; border: 2px solid #28a745; text-align: center;">
-                                    <h2 style="color: #155724; margin: 0;">✅ הבקשות נשלחו בהצלחה!</h2>
-                                    <p style="color: #155724; font-size: 18px;">הסידור המעודכן נקלט במערכת.</p>
-                                </div>
-                            """, unsafe_allow_html=True)
-                            
-                            # כפתור אישור שמופיע רק אחרי השליחה
-                            if st.button("אישור ", key="confirm_submission_done"):
-                                st.rerun()
-                            
-                            # עצירה כדי שהמשתמש לא ימשיך לעבוד על המסך מאחורה
-                            st.stop()
+                            # יצירת הודעה בולטת במרכז המסך
+                            with st.container():
+                                st.markdown("""
+                                    <div style="background-color: #d4edda; padding: 20px; border-radius: 10px; border: 2px solid #28a745; text-align: center;">
+                                        <h2 style="color: #155724; margin: 0;">✅ הבקשות נשלחו בהצלחה!</h2>
+                                        <p style="color: #155724; font-size: 18px;">הסידור המעודכן נקלט במערכת.</p>
+                                    </div>
+                                """, unsafe_allow_html=True)
+                                
+                                # כפתור אישור שמופיע רק אחרי השליחה
+                                if st.button("אישור ", key="confirm_submission_done"):
+                                    st.rerun()
+                                
+                                # עצירה כדי שהמשתמש לא ימשיך לעבוד על המסך מאחורה
+                                st.stop()
                         else:
                             st.error(MSG_SAVE_ERR)
                             if st.button("🔄 נסה לשלוח שוב", key="retry_submit_failed_btn"):

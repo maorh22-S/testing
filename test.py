@@ -31,9 +31,9 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
         if shift_en == "Night": 
             is_blocked = True; block_reason = " (לילה)"
         elif shift_en in ["open_T"]: 
-            is_blocked = True; block_reason = "חסום (פתיחת בוקר)"
+            is_blocked = True; block_reason = " (פתיחת בוקר)"
         elif day_en in ["Friday", "Saturday"]: 
-            is_blocked = True; block_reason = "חסום (סוף שבוע)"
+            is_blocked = True; block_reason = " (סוף שבוע)"
 
     return is_blocked, block_reason
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -743,7 +743,7 @@ else:
                     
                     # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית
                     # אם הפיילוט פעיל ובסופ"ש - זה אוטומטית נחשב "לא יכול" אך מוחרג מהמונה השבועי [index]
-                    if DISABLE_pilot and is_weekend:
+                    if DISABLE_pilot and (is_weekend or shift_en not in ['open_T', 'Night']):
                         is_shift_cannot = True
                     elif shift_data.get("cannot") or "🔴" in day_status or "לא יכול" in day_status:
                         is_shift_cannot = True

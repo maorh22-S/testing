@@ -395,7 +395,7 @@ else:
             for key in list(st.session_state.keys()):
                 if any(prefix in key for prefix in ["can_check_", "not_check_", "pref_check_", "day_mode_", "mobile_day_mode_"]):
                     if DISABLE_pilot and ("Friday" in key or "Saturday" in key) and ("Night" in key or "open_T" in key):
-                continue
+                        continue
                     st.session_state[key] = False
             st.toast("✅ כל תיבות הבחירה בטופס אופסו בהצלחה!")
             st.rerun()

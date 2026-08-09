@@ -388,7 +388,7 @@ else:
     st.write("---")
     nav_cols = st.columns([3, 1])  # יחס מורחב לטובת כפתור הבחירה
     with nav_cols[0]:
-        view_option = st.radio("בחר סגנון תצוגה לעריכה:", ["טבלה מלאה", "רשימה ממוקדת יום"], horizontal=True, key="view_style_opt")
+        view_option = st.radio("בחר סגנון תצוגה לעריכה:", ["טבלה", "רשימה נפתחת"], horizontal=True, key="view_style_opt")
     with nav_cols[1]:
         reset_all = st.button("🗑️ נקה הכל", use_container_width=True, help="מנקה ומאפס את כל סימוני המשמרות בטופס")
         if reset_all:
@@ -427,7 +427,7 @@ else:
         current_role = str(st.session_state.get("user_role", "")).strip()
         
         # סנכרון משתנה התצוגה מול הבחירה שלך בחלק 5 (view_style_opt)
-        is_wide_view = (st.session_state.get("view_style_opt", "טבלה מלאה") == "טבלה מלאה")
+        is_wide_view = (st.session_state.get("view_style_opt", "טבלה") == "טבלה")
 
         # .1 מסלול מחשב (טבלה רחבה)
         if is_wide_view:

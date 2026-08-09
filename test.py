@@ -617,10 +617,8 @@ else:
 
             # לולאה רגילה לספירת משמרות בודדות [index]
             for s_info in משמרות:
-                if DISABLE_pilot:
-                    shift_en = s_info.get('en', '')
-                    if shift_en in ['open_T', 'Night']:
-                        continue
+               if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or shift_en in ['open_T', 'Night']):
+                    continue
         
                 col_name = f"{day_key}_{s_info['en']}"
                 shift_data2 = user_choices.get(col_name, {})

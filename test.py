@@ -793,6 +793,7 @@ else:
                         "Timestamp": timestamp,
                         "Employee Name": st.session_state.user_name,
                         "Week Date": start_date_display,
+                        "role": current_role,
                         "Comments": user_comments
                     }
 

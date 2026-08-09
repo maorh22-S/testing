@@ -839,7 +839,7 @@ else:
                                 st.markdown("""
                                     <div style="background-color: #d4edda; padding: 20px; border-radius: 10px; border: 2px solid #28a745; text-align: center;">
                                         <h2 style="color: #155724; margin: 0;">✅ הבקשות נשלחו בהצלחה!</h2>
-                                        <p style="color: #155724; font-size: 18px;">הסידור המעודכן נקלט במערכת.</p>
+                                        <p style="color: #155724; font-size: 18px;">הסידור נקלט במערכת.</p>
                                     </div>
                                 """, unsafe_allow_html=True)
                                 

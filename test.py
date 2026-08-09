@@ -617,7 +617,7 @@ else:
 
             # לולאה רגילה לספירת משמרות בודדות [index]
             for s_info in משמרות:
-              if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
+                if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
                     continue
         
                 col_name = f"{day_key}_{s_info['en']}"

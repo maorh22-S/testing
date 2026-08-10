@@ -350,12 +350,15 @@ else:
                 row-gap: 0px !important; 
                 align-items: flex-start !important; 
                 -webkit-overflow-scrolling: touch !important;
+                } /* סוגר את stHorizontalBlock */
+
+                /* מגדיר רוחב קבוע לכל עמודה בנפרד */
                 div[data-testid="stHorizontalBlock"] > div {
-                width: 135px !important;
-                min-width: 135px !important;
-                flex-shrink: 0 !important;
-            }
-            }
+                    width: 135px !important;
+                    min-width: 135px !important;
+                    flex-shrink: 0 !important;
+                }
+            } /* סוגר את @media */
         
             .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
             div[data-testid="stCheckbox"] { margin-top: 0px !important; margin-bottom: -12px !important; padding: 0px !important; height: 24px !important; }

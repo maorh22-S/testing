@@ -333,56 +333,7 @@ else:
         .shift-block-title { font-weight: bold; font-size: 14px; margin-top: 12px; margin-bottom: 2px; color: #2c3e50; text-align: right; }
         .hours-badge-pc { font-size: 11px; color: #64748b; font-weight: normal; margin-top: -3px; display: block; }
         
-        /* 💻 חוקי עיצוב בלעדיים למחשב  */
-        @media (min-width: 768px) {
-            div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
-            div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
-            
-            /* הוספת גלילה אופקית למחשב */
-           div[data-testid="stHorizontalBlock"] { 
-                display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important; /* מונע מהעמודות לרדת שורה אחת מתחת לשניה */
-                overflow-x: auto !important;
-                width: 100% !important;
-                min-width: max-content !important; 
-                gap: 8px !important; 
-                row-gap: 0px !important; 
-                align-items: flex-start !important; 
-                -webkit-overflow-scrolling: touch !important;
-                } /* סוגר את stHorizontalBlock */
-
-                /* מגדיר רוחב קבוע לכל עמודה בנפרד */
-                div[data-testid="stHorizontalBlock"] > div {
-                    width: 135px !important;
-                    min-width: 135px !important;
-                    flex-shrink: 0 !important;
-                }
-            } /* סוגר את @media */
         
-            .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
-            div[data-testid="stCheckbox"] { margin-top: 0px !important; margin-bottom: -12px !important; padding: 0px !important; height: 24px !important; }
-            div[data-testid="stCheckbox"] label { padding-top: 0px !important; padding-bottom: 0px !important; min-height: 20px !important; }
-        }
-        
-          /* 📱 חוקי עיצוב בלעדיים לנייד */ 
-        @media (max-width: 767) { 
-        div[data-testid="stHorizontalBlock"] { 
-            display: flex !important; 
-            flex-direction: row !important; 
-            flex-wrap: wrap !important; 
-            overflow-x: hidden !important; 
-            align-items: flex-start !important; 
-            -webkit-overflow-scrolling: touch !important; 
-        }
-        
-      
-        
-        .pc-row-container { height: auto !important; display: block !important; padding: 0px !important; }
-        div[data-testid="stCheckbox"] { height: auto !important; margin-bottom: 2px !important; }
-        div[data-testid="stCheckbox"] label p { font-size: 11px !important; }
-        div[data-testid="stRadio"] label p { font-size: 13px !important; }
-        }
     </style>
     """, unsafe_allow_html=True)
       
@@ -436,7 +387,27 @@ else:
 
         # .1 מסלול מחשב (טבלה רחבה)
         if is_wide_view:
-            days_cols = st.columns(len(ימים))
+            # 💻 הזרקת עיצוב לטבלה רחבה (גלילה אופקית)
+            st.markdown("""
+                <style>
+                div[data-testid="stHorizontalBlock"] { 
+                    display: flex !important;
+                    flex-direction: row !important;
+                    flex-wrap: nowrap !important;
+                    overflow-x: auto !important;
+                    width: 100% !important;
+                    min-width: max-content !important;
+                    gap: 8px !important; 
+                }
+                div[data-testid="column"] {
+                    width: 135px !important;
+                    min-width: 135px !important;
+                    flex-shrink: 0 !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+                   
+            days_cols = st.columns(7)
             for day_idx, d_info in enumerate(ימים):
                 tarih = f" ({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
                 
@@ -517,6 +488,18 @@ else:
 #================ חלק 6.2 מוגמר ומיועל =======================
         # .2 מסלול נייד 
         else:
+            # 📱 הזרקת עיצוב לרשימה (אנכית ללא גלילה אופקית)
+            st.markdown("""
+                <style>
+                div[data-testid="stHorizontalBlock"] { 
+                    display: flex !important;
+                    flex-direction: row !important;
+                    flex-wrap: wrap !important;
+                    overflow-x: hidden !important;
+                    width: 100% !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
             for day_idx, d_info in enumerate(ימים):
                 tarih = f" ({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
 

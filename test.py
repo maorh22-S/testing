@@ -350,6 +350,11 @@ else:
                 row-gap: 0px !important; 
                 align-items: flex-start !important; 
                 -webkit-overflow-scrolling: touch !important;
+                div[data-testid="stHorizontalBlock"] > div {
+                width: 135px !important;
+                min-width: 135px !important;
+                flex-shrink: 0 !important;
+            }
             }
         
             .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }

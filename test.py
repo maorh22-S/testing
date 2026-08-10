@@ -339,13 +339,13 @@ else:
             div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
             
             /* הוספת גלילה אופקית למחשב */
-            div[data-testid="stHorizontalBlock"] { 
+           div[data-testid="stHorizontalBlock"] { 
                 display: flex !important;
                 flex-direction: row !important;
-                flex-wrap: nowrap !important;
+                flex-wrap: nowrap !important; /* מונע מהעמודות לרדת שורה אחת מתחת לשניה */
                 overflow-x: auto !important;
                 width: 100% !important;
-                min-width: max-content !important;
+                min-width: max-content !important; 
                 gap: 8px !important; 
                 row-gap: 0px !important; 
                 align-items: flex-start !important; 

@@ -411,8 +411,8 @@ else:
                 </style>
             """, unsafe_allow_html=True)
         
-            days_cols = st.columns(len(ימים))
-            for day_idx, d_info in enumerate(ימים):
+        days_cols = st.columns(len(ימים))
+        for day_idx, d_info in enumerate(ימים):
                 tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
         
                 with days_cols[day_idx].container(border=True):

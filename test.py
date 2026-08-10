@@ -410,13 +410,13 @@ else:
                 }
                 </style>
             """, unsafe_allow_html=True)
-                   
-        days_cols = st.columns(len(ימים))
-        for day_idx, d_info in enumerate(ימים):
-                tarih = f" ({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
-                
+        
+            days_cols = st.columns(len(ימים))
+            for day_idx, d_info in enumerate(ימים):
+                tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
+        
                 with days_cols[day_idx].container(border=True):
-                    st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>🗓️ יום {d_info['he']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
                     st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
 
                     
@@ -495,20 +495,17 @@ else:
             # 📱 הזרקת עיצוב לרשימה (אנכית ללא גלילה אופקית)
             st.markdown("""
                 <style>
-                /* מונע גלילה צדדית ומצמיד את הרשימה לרוחב המסך */
                 div[data-testid="stVerticalBlock"], div.element-container {
                     max-width: 100% !important;
                     overflow-x: hidden !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
+        
             for day_idx, d_info in enumerate(ימים):
-                tarih = f" ({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
-
-                is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
-                is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
+                tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
                 
-                with st.expander(f"יום {d_info['he']}{tarih}", expanded=False):
+                with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
                     # הגדרת המפתח של הרכיב מראש למובייל
                     mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
 

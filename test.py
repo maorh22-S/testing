@@ -388,20 +388,25 @@ else:
         # .1 מסלול מחשב (טבלה רחבה)
         if is_wide_view:
             # 💻 הזרקת עיצוב לטבלה רחבה (גלילה אופקית)
-            st.markdown("""
+           st.markdown("""
                 <style>
+                /* מונע מבלוק העמודות להימתח ומאפשר גלילה אמיתית */
                 div[data-testid="stHorizontalBlock"] { 
                     display: flex !important;
                     flex-direction: row !important;
                     flex-wrap: nowrap !important;
                     overflow-x: auto !important;
                     width: 100% !important;
+                    max-width: 100% !important;
                     min-width: max-content !important;
                     gap: 8px !important; 
                 }
+                /* נועל כל עמודה בדיוק על 135 פיקסל בלי לאפשר לה להימתח או להתכווץ */
                 div[data-testid="column"] {
                     width: 135px !important;
                     min-width: 135px !important;
+                    max-width: 135px !important;
+                    flex-grow: 0 !important;
                     flex-shrink: 0 !important;
                 }
                 </style>

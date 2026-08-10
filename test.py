@@ -345,6 +345,7 @@ else:
                 flex-wrap: nowrap !important;
                 overflow-x: auto !important;
                 width: 100% !important;
+                min-width: max-content !important;
                 gap: 8px !important; 
                 row-gap: 0px !important; 
                 align-items: flex-start !important; 

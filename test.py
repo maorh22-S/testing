@@ -396,12 +396,12 @@ else:
                     flex-wrap: nowrap !important;
                     overflow-x: auto !important;
                     width: 100% !important;
-                    min-width: 200% !important;
+                    min-width: max-content !important;
                     align-items: flex-start !important;
                     -webkit-overflow-scrolling: touch !important;
                 }
                 div[data-testid="stHorizontalBlock"] > div {
-                    min-width: calc(200% / 8) !important;
+                    min-width: 140px !important;
                     flex-shrink: 0 !important;
                 }
                 </style>

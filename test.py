@@ -390,7 +390,6 @@ else:
             # 💻 הזרקת עיצוב לטבלה רחבה (גלילה אופקית)
            st.markdown("""
                 <style>
-                /* המכל החיצוני העוטף את כל הטבלה */
                 div[data-testid="stHorizontalBlock"] { 
                     display: flex !important;
                     flex-direction: row !important;
@@ -400,16 +399,11 @@ else:
                     min-width: max-content !important;
                     align-items: flex-start !important;
                     -webkit-overflow-scrolling: touch !important;
-                    
-                    /* עיצוב המסגרת החיצונית הגדולה */
-                    background-color: #ffffff !important;
-                    border: 1px solid rgba(49, 51, 63, 0.2) !important;
-                    border-radius: 0.5rem !important;
-                    padding: 16px !important;
-                    gap: 12px !important;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+                    background: transparent !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    padding: 0px !important;
                 }
-                /* רוחב אחיד לעמודות בתוך המסגרת */
                 div[data-testid="stHorizontalBlock"] > div {
                     min-width: 150px !important;
                     flex-shrink: 0 !important;
@@ -501,12 +495,10 @@ else:
             # 📱 הזרקת עיצוב לרשימה (אנכית ללא גלילה אופקית)
             st.markdown("""
                 <style>
-                div[data-testid="stHorizontalBlock"] { 
-                    display: flex !important;
-                    flex-direction: row !important;
-                    flex-wrap: wrap !important;
+                /* מונע גלילה צדדית ומצמיד את הרשימה לרוחב המסך */
+                div[data-testid="stVerticalBlock"], div.element-container {
+                    max-width: 100% !important;
                     overflow-x: hidden !important;
-                    width: 100% !important;
                 }
                 </style>
             """, unsafe_allow_html=True)

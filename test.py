@@ -347,7 +347,7 @@ else:
         
         div[data-testid="stHorizontalBlock"] > div {
             flex: 1 !important;
-            min-width: 0 !important;
+            min-width: 110px !important;
         }
         
           /* 📱 חוקי עיצוב בלעדיים לנייד */ 

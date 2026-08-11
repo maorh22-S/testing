@@ -407,7 +407,7 @@ else:
                     st.session_state[key] = False
             st.toast("✅ כל תיבות הבחירה בטופס אופסו בהצלחה!")
             st.rerun()
-    st.markdown("""
+        st.markdown("""
         <style>
         div[data-testid="stForm"] * { color: #1e293b !important; }
         div[data-testid="stExpander"] details summary span { color: #1e293b !important; font-weight: bold; }

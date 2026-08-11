@@ -326,7 +326,7 @@ else:
 #================ חלק 4 =======================
 
     #================ חלק 4 מוגמר ומיועל =======================
-    st.markdown("""
+        st.markdown("""
         <style>
         div[data-testid="stForm"] * { color: #1e293b !important; }
         div[data-testid="stExpander"] details summary span { color: #1e293b !important; font-weight: bold; }

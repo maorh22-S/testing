@@ -335,16 +335,22 @@ else:
         
         /* 💻 חוקי עיצוב בלעדיים למחשב  */
         @media (min-width: 768px) {
-        div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
-        div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
-        
-        div[data-testid="stHorizontalBlock"] { 
-            display: flex !important; 
-            flex-direction: row !important; 
-            flex-wrap: nowrap !important; 
-            gap: 8px !important; 
-            row-gap: 0px !important; 
-            align-items: start !important; 
+            div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
+            div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
+            
+            div[data-testid="stHorizontalBlock"] { 
+                display: flex !important; 
+                flex-direction: row !important; 
+                flex-wrap: nowrap !important; 
+                gap: 8px !important; 
+                row-gap: 0px !important; 
+                align-items: start !important; 
+            }
+            
+            div[data-testid="stHorizontalBlock"] > div {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
         }
         
         .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }

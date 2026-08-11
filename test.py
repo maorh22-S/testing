@@ -63,7 +63,6 @@ st.set_page_config(layout="wide", menu_items=None)
 
 # 📱 עיצובי CSS רספונסיביים משודרגים למירכוז ויישור כותרות ורכיבי בחירה
 st.markdown("""
-st.markdown("""
 <style>
 .stApp { direction: rtl; } /* כל הדף מימין לשמאל */
 h1, h2, h3, .stMarkdown, [data-testid="stHeading"] { text-align: center !important; justify-content: center !important; display: flex; width: 100%; }

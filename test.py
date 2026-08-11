@@ -72,7 +72,7 @@ div[data-testid="stRadio"] { direction: rtl !important; text-align: right !impor
 div[data-testid="stRadio"] > label { text-align: right !important; justify-content: flex-start !important; width: 100% !important; }
 div[data-testid="stRadio"] [data-testid="stWidgetLabel"] { text-align: right !important; width: 100% !important; display: block !important; }
 
-div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.05); border-radius: 10px; background-color: #ffffff; }
+div[data-testid="stForm"] { max-width: 80% !important; width: 80% !important; margin: 0 auto; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.05); border-radius: 10px; background-color: #ffffff; }
 
 /* סידור תיבות הסימון בצורה קריאה וישרה לצד הכיתוב */ 
 div[data-testid="stCheckbox"] label { display: flex; align-items: center; justify-content: flex-start; gap: 10px; direction: rtl; text-align: right; }

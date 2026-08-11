@@ -335,7 +335,6 @@ else:
         
         /* 💻 חוקי עיצוב בלעדיים למחשב  */
         @media (min-width: 768px) {
-       @media (min-width: 768px) {
         div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
         div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
         
@@ -374,22 +373,7 @@ else:
         
         
         
-        /* 👈  כיווץ רוחב הלוח בנייד ל-800 פיקסלים כדי שהתיבות לא ייפרסו בענק */
-        div[data-testid="stHorizontalBlock"] { 
-            display: flex !important; 
-            flex-direction: row !important; 
-            flex-wrap: nowrap !important; 
-            overflow-x: auto !important; 
-            min-width: 800px !important; 
-            align-items: flex-start !important; 
-            -webkit-overflow-scrolling: touch !important; 
-        }
-        
-        /* 👈 רוחב הטורים:  למראה קומפקטי ונקי */
-        div[data-testid="stHorizontalBlock"] > div { 
-            min-width: 100px !important; 
-            flex-shrink: 0 !important; 
-        }
+       
         
         .pc-row-container { height: auto !important; display: block !important; padding: 0px !important; }
         div[data-testid="stCheckbox"] { height: auto !important; margin-bottom: 2px !important; }

@@ -325,7 +325,7 @@ else:
 #*************************************************************************************************************************
 #================ חלק 4 =======================
 
-    #================ חלק 4 מוגמר ומיועל =======================
+        #================ חלק 4 מוגמר ומיועל =======================
         st.markdown("""
         <style>
         div[data-testid="stForm"] * { color: #1e293b !important; }
@@ -334,20 +334,14 @@ else:
         .hours-badge-pc { font-size: 11px; color: #64748b; font-weight: normal; margin-top: -3px; display: block; }
         
         /* 💻 חוקי עיצוב בלעדיים למחשב  */
-        div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }        
-        div[data-testid="stHorizontalBlock"] { 
-            display: flex !important; 
-            flex-direction: row !important; 
-            flex-wrap: nowrap !important; 
-            gap: 8px !important; 
-            row-gap: 0px !important; 
-            align-items: start !important; 
-            width: 100% !important;
-        }
+        @media (min-width: 768px) {
+        div[data-testid="stForm"] { max-width: 80% !important; width: 80% !important; margin: 0 auto !important; padding: 1.5rem !important; }
+        div[data-testid="stAppViewBlockContainer"] { max-width: 85% !important; }
         
-        div[data-testid="stHorizontalBlock"] > div {
-            flex: 1 !important;
-            min-width: 110px !important;
+        div[data-testid="stHorizontalBlock"] { gap: 8px !important; row-gap: 0px !important; align-items: start !important; }
+        .pc-row-container { height: 95px !important; display: flex; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
+        div[data-testid="stCheckbox"] { margin-top: 0px !important; margin-bottom: -12px !important; padding: 0px !important; height: 24px !important; }
+        div[data-testid="stCheckbox"] label { padding-top: 0px !important; padding-bottom: 0px !important; min-height: 20px !important; }
         }
         
           /* 📱 חוקי עיצוב בלעדיים לנייד */ 
@@ -362,11 +356,11 @@ else:
             -webkit-overflow-scrolling: touch !important; 
         }
         
-       # /* 👈 כיווץ ואיזון הטורים הבודדים כדי שיתפרסו בצורה שווה  */
-       # div[data-testid="stHorizontalBlock"] > div { 
-        #    min-width: calc(200% / 8) !important; /* 🔥 מחלק את ה-200% באופן שווה בין 8 הטורים  (טור שעות + 7 ימים) */
-       #     flex-shrink: 0 !important; 
-        #}
+        /* 👈 כיווץ ואיזון הטורים הבודדים כדי שיתפרסו בצורה שווה  */
+        div[data-testid="stHorizontalBlock"] > div { 
+            min-width: calc(200% / 8) !important; /* 🔥 מחלק את ה-200% באופן שווה בין 8 הטורים  (טור שעות + 7 ימים) */
+            flex-shrink: 0 !important; 
+        }
         
         
         
@@ -394,7 +388,6 @@ else:
         }
     </style>
     """, unsafe_allow_html=True)
-    
 #**************************************************************************************************************************
             
         #================ חלק 5 מוגמר ומיועל =======================

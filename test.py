@@ -335,14 +335,24 @@ else:
         
         /* 💻 חוקי עיצוב בלעדיים למחשב  */
         @media (min-width: 768px) {
-        div[data-testid="stForm"] { max-width: 80% !important; width: 80% !important; margin: 0 auto !important; padding: 1.5rem !important; }
-        div[data-testid="stAppViewBlockContainer"] { max-width: 85% !important; }
-        div[data-testid="stHorizontalBlock"] { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; gap: 8px !important; row-gap: 0px !important; align-items: start !important; }
-        div[data-testid="stHorizontalBlock"] { gap: 8px !important; row-gap: 0px !important; align-items: start !important; }
-        .pc-row-container { height: 95px !important; display: flex; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
+       @media (min-width: 768px) {
+        div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
+        div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
+        
+        div[data-testid="stHorizontalBlock"] { 
+            display: flex !important; 
+            flex-direction: row !important; 
+            flex-wrap: nowrap !important; 
+            gap: 8px !important; 
+            row-gap: 0px !important; 
+            align-items: start !important; 
+        }
+        
+        .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
         div[data-testid="stCheckbox"] { margin-top: 0px !important; margin-bottom: -12px !important; padding: 0px !important; height: 24px !important; }
         div[data-testid="stCheckbox"] label { padding-top: 0px !important; padding-bottom: 0px !important; min-height: 20px !important; }
         }
+        
         
           /* 📱 חוקי עיצוב בלעדיים לנייד */ 
         @media (max-width: 767) { 

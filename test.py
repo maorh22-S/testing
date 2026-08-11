@@ -492,6 +492,9 @@ else:
             
             # סנכרון משתנה התצוגה מול הבחירה שלך בחלק 5 (view_style_opt)
             is_wide_view = (st.session_state.get("view_style_opt", "טבלה") == "טבלה")
+            is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
+            is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
+            should_disable_day = is_pilot_weekend or is_bodekt_saturday
     
             # .1 מסלול מחשב (טבלה רחבה)
             if is_wide_view:
@@ -506,9 +509,7 @@ else:
     
                     
                     # 1. הגדרת מצבי החסימה של סוף השבוע
-                    is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
-                    is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
-                    should_disable_day = is_pilot_weekend or is_bodekt_saturday
+                    
             
                     # הגדרת המפתח של הרכיב מראש
                     radio_key = f"day_mode_{d_info['en']}"

@@ -488,13 +488,13 @@ else:
         # .1 מסלול מחשב (טבלה רחבה)
         if is_wide_view:
            
-        days_cols = st.columns(len(ימים))
-        for day_idx, d_info in enumerate(ימים):
-                tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
-        
-                with days_cols[day_idx].container(border=True):
-                    st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
+            days_cols = st.columns(len(ימים))
+            for day_idx, d_info in enumerate(ימים):
+                    tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
+            
+                    with days_cols[day_idx].container(border=True):
+                        st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
 
                     
                     # 1. הגדרת מצבי החסימה של סוף השבוע

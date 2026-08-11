@@ -63,6 +63,7 @@ st.set_page_config(layout="wide", menu_items=None)
 
 # 📱 עיצובי CSS רספונסיביים משודרגים למירכוז ויישור כותרות ורכיבי בחירה
 st.markdown("""
+st.markdown("""
 <style>
 .stApp { direction: rtl; } /* כל הדף מימין לשמאל */
 h1, h2, h3, .stMarkdown, [data-testid="stHeading"] { text-align: center !important; justify-content: center !important; display: flex; width: 100%; }
@@ -72,7 +73,7 @@ div[data-testid="stRadio"] { direction: rtl !important; text-align: right !impor
 div[data-testid="stRadio"] > label { text-align: right !important; justify-content: flex-start !important; width: 100% !important; }
 div[data-testid="stRadio"] [data-testid="stWidgetLabel"] { text-align: right !important; width: 100% !important; display: block !important; }
 
-div[data-testid="stForm"] { max-width: 80% !important; width: 80% !important; margin: 0 auto; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.05); border-radius: 10px; background-color: #ffffff; }
+div[data-testid="stForm"] { max-width: 800px; margin: 0 auto; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.05); border-radius: 10px; background-color: #ffffff; }
 
 /* סידור תיבות הסימון בצורה קריאה וישרה לצד הכיתוב */ 
 div[data-testid="stCheckbox"] label { display: flex; align-items: center; justify-content: flex-start; gap: 10px; direction: rtl; text-align: right; }
@@ -335,29 +336,14 @@ else:
         
         /* 💻 חוקי עיצוב בלעדיים למחשב  */
         @media (min-width: 768px) {
-            div[data-testid="stForm"] { max-width: 95% !important; width: 95% !important; margin: 0 auto !important; padding: 1.5rem !important; }
-            div[data-testid="stAppViewBlockContainer"] { max-width: 95% !important; }
-            
-            div[data-testid="stHorizontalBlock"] { 
-                display: flex !important; 
-                flex-direction: row !important; 
-                flex-wrap: nowrap !important; 
-                gap: 8px !important; 
-                row-gap: 0px !important; 
-                align-items: start !important; 
-            }
-            
-            div[data-testid="stHorizontalBlock"] > div {
-                flex: 1 !important;
-                min-width: 0 !important;
-            }
-        }
+        div[data-testid="stForm"] { max-width: 80% !important; width: 80% !important; margin: 0 auto !important; padding: 1.5rem !important; }
+        div[data-testid="stAppViewBlockContainer"] { max-width: 85% !important; }
         
-        .pc-row-container { height: 95px !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
+        div[data-testid="stHorizontalBlock"] { gap: 8px !important; row-gap: 0px !important; align-items: start !important; }
+        .pc-row-container { height: 95px !important; display: flex; flex-direction: column; justify-content: flex-start !important; margin-bottom: 0px !important; padding: 0px !important; }
         div[data-testid="stCheckbox"] { margin-top: 0px !important; margin-bottom: -12px !important; padding: 0px !important; height: 24px !important; }
         div[data-testid="stCheckbox"] label { padding-top: 0px !important; padding-bottom: 0px !important; min-height: 20px !important; }
         }
-        
         
           /* 📱 חוקי עיצוב בלעדיים לנייד */ 
         @media (max-width: 767) { 
@@ -379,7 +365,22 @@ else:
         
         
         
-       
+        /* 👈  כיווץ רוחב הלוח בנייד ל-800 פיקסלים כדי שהתיבות לא ייפרסו בענק */
+        div[data-testid="stHorizontalBlock"] { 
+            display: flex !important; 
+            flex-direction: row !important; 
+            flex-wrap: nowrap !important; 
+            overflow-x: auto !important; 
+            min-width: 800px !important; 
+            align-items: flex-start !important; 
+            -webkit-overflow-scrolling: touch !important; 
+        }
+        
+        /* 👈 רוחב הטורים:  למראה קומפקטי ונקי */
+        div[data-testid="stHorizontalBlock"] > div { 
+            min-width: 100px !important; 
+            flex-shrink: 0 !important; 
+        }
         
         .pc-row-container { height: auto !important; display: block !important; padding: 0px !important; }
         div[data-testid="stCheckbox"] { height: auto !important; margin-bottom: 2px !important; }
@@ -388,7 +389,6 @@ else:
         }
     </style>
     """, unsafe_allow_html=True)
-            
     
 #**************************************************************************************************************************
             

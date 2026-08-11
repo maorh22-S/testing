@@ -569,77 +569,77 @@ else:
     
 
 #================ חלק 6.2 מוגמר ומיועל =======================
-        # .2 מסלול נייד 
-        else:
-            for day_idx, d_info in enumerate(ימים):
-                tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
-                
-                with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
-                    # הגדרת המפתח של הרכיב מראש למובייל
-                    mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
-
-                    # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
-                    is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
-                    if is_bodekt_saturday:
-                        default_index = 2
-                        st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
-                        st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                        is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
-                    elif is_pilot_weekend:
-                        default_index = 3
-                        st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"
-                        st.caption("🔒 חסום (סוף שבוע פיילוט)")
-                    else:
-                        default_index = 0
-                        
-                    should_disable_day = False
-                    day_choice = st.radio(
-                        f"בחר סטטוס ליום {d_info['he']}",
-                        ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
-                        key=mobile_radio_key,
-                        index=default_index,
-                        horizontal=False,
-                        label_visibility="collapsed",
-                        disabled=should_disable_day
-                    )
-
-
+            # .2 מסלול נייד 
+            else:
+                for day_idx, d_info in enumerate(ימים):
+                    tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
                     
-                    all_can = (day_choice == "🟢 יכול הכל היום")
-                    all_not = (day_choice == "🔴 לא יכול היום")
-                    all_vacation = (day_choice == "🌴 חופשה מאושרת")  
-                    
-                    st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
-                    
-                    for s_info in משמרות:
-                        column_name = f"{d_info['en']}_{s_info['en']}"
-                        hours_txt = שעות_משמרת.get(s_info['en'], "")
-                        hours_display = f" ({hours_txt})" if hours_txt else ""
-                       
-                        
-                        #  קריאה לפונקציה המאוחדת במקום כל הבלוק של החסימות הישנות שנמחקו
-                        is_blocked, block_reason = check_shift_blocking(
-                            d_info['en'], s_info['en'], current_role, DISABLE_pilot
-                        )
-
-                        # הצגת כותרת המשמרת (שורה 557 המקורית שלך)
-                        st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
-                        
-                        default_can = False if is_blocked else all_can
-                        default_not = True if is_blocked else (all_not or all_vacation)
-                        
-                        if is_blocked or all_vacation:
-                            final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
-                            # 🛠️ וידוא שימוש במפתח ייחודי m_ לחסימות מובייל
-                            st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=True, disabled=True)
-                            user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                    with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
+                        # הגדרת המפתח של הרכיב מראש למובייל
+                        mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
+    
+                        # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
+                        is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
+                        if is_bodekt_saturday:
+                            default_index = 2
+                            st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
+                            st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
+                            is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
+                        elif is_pilot_weekend:
+                            default_index = 3
+                            st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"
+                            st.caption("🔒 חסום (סוף שבוע פיילוט)")
                         else:
-                            # 🛠️ וידוא שימוש במפתח ייחודי m_ לתיבות הסימון הפתוחות במובייל למניעת Duplicate Key
-                            can_work = st.checkbox("יכול 👍", key=f"m_can_check_{column_name}", value=default_can)
-                            cannot_work = st.checkbox("לא יכול ❌", key=f"m_not_check_{column_name}", value=default_not)
-                            prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"m_pref_check_{column_name}", value=False)
-                            user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
-
+                            default_index = 0
+                            
+                        should_disable_day = False
+                        day_choice = st.radio(
+                            f"בחר סטטוס ליום {d_info['he']}",
+                            ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
+                            key=mobile_radio_key,
+                            index=default_index,
+                            horizontal=False,
+                            label_visibility="collapsed",
+                            disabled=should_disable_day
+                        )
+    
+    
+                        
+                        all_can = (day_choice == "🟢 יכול הכל היום")
+                        all_not = (day_choice == "🔴 לא יכול היום")
+                        all_vacation = (day_choice == "🌴 חופשה מאושרת")  
+                        
+                        st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
+                        
+                        for s_info in משמרות:
+                            column_name = f"{d_info['en']}_{s_info['en']}"
+                            hours_txt = שעות_משמרת.get(s_info['en'], "")
+                            hours_display = f" ({hours_txt})" if hours_txt else ""
+                           
+                            
+                            #  קריאה לפונקציה המאוחדת במקום כל הבלוק של החסימות הישנות שנמחקו
+                            is_blocked, block_reason = check_shift_blocking(
+                                d_info['en'], s_info['en'], current_role, DISABLE_pilot
+                            )
+    
+                            # הצגת כותרת המשמרת (שורה 557 המקורית שלך)
+                            st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
+                            
+                            default_can = False if is_blocked else all_can
+                            default_not = True if is_blocked else (all_not or all_vacation)
+                            
+                            if is_blocked or all_vacation:
+                                final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
+                                # 🛠️ וידוא שימוש במפתח ייחודי m_ לחסימות מובייל
+                                st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=True, disabled=True)
+                                user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                            else:
+                                # 🛠️ וידוא שימוש במפתח ייחודי m_ לתיבות הסימון הפתוחות במובייל למניעת Duplicate Key
+                                can_work = st.checkbox("יכול 👍", key=f"m_can_check_{column_name}", value=default_can)
+                                cannot_work = st.checkbox("לא יכול ❌", key=f"m_not_check_{column_name}", value=default_not)
+                                prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"m_pref_check_{column_name}", value=False)
+                                user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
+    
 
 
 #***********************************************************************************************************************

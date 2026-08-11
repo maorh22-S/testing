@@ -362,11 +362,11 @@ else:
             -webkit-overflow-scrolling: touch !important; 
         }
         
-        /* 👈 כיווץ ואיזון הטורים הבודדים כדי שיתפרסו בצורה שווה  */
-        div[data-testid="stHorizontalBlock"] > div { 
-            min-width: calc(200% / 8) !important; /* 🔥 מחלק את ה-200% באופן שווה בין 8 הטורים  (טור שעות + 7 ימים) */
-            flex-shrink: 0 !important; 
-        }
+       # /* 👈 כיווץ ואיזון הטורים הבודדים כדי שיתפרסו בצורה שווה  */
+       # div[data-testid="stHorizontalBlock"] > div { 
+        #    min-width: calc(200% / 8) !important; /* 🔥 מחלק את ה-200% באופן שווה בין 8 הטורים  (טור שעות + 7 ימים) */
+       #     flex-shrink: 0 !important; 
+        #}
         
         
         

@@ -479,94 +479,94 @@ else:
 #================ חלק 6  =======================
 
 #================ חלק 6.1 מוגמר ומיועל =======================
-    # פתיחת ה-form החוקי, ההרמטי והמלא שעוצר את ריענוני התיבות
-    with st.form(key="shifts_form"):
-        user_choices = {}
-        current_role = str(st.session_state.get("user_role", "")).strip()
-        
-        # סנכרון משתנה התצוגה מול הבחירה שלך בחלק 5 (view_style_opt)
-        is_wide_view = (st.session_state.get("view_style_opt", "טבלה") == "טבלה")
-
-        # .1 מסלול מחשב (טבלה רחבה)
-        if is_wide_view:
-           
-            days_cols = st.columns(len(ימים))
-            for day_idx, d_info in enumerate(ימים):
-                tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
+        # פתיחת ה-form החוקי, ההרמטי והמלא שעוצר את ריענוני התיבות
+        with st.form(key="shifts_form"):
+            user_choices = {}
+            current_role = str(st.session_state.get("user_role", "")).strip()
             
-                with days_cols[day_idx].container(border=True):
-                    st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
-
+            # סנכרון משתנה התצוגה מול הבחירה שלך בחלק 5 (view_style_opt)
+            is_wide_view = (st.session_state.get("view_style_opt", "טבלה") == "טבלה")
+    
+            # .1 מסלול מחשב (טבלה רחבה)
+            if is_wide_view:
+               
+                days_cols = st.columns(len(ימים))
+                for day_idx, d_info in enumerate(ימים):
+                    tarih = f"({dates_list[day_idx][:5]})" if day_idx < len(dates_list) else ""
                 
-                # 1. הגדרת מצבי החסימה של סוף השבוע
-                is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
-                is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
-                should_disable_day = is_pilot_weekend or is_bodekt_saturday
-        
-                # הגדרת המפתח של הרכיב מראש
-                radio_key = f"day_mode_{d_info['en']}"
-        
-                # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
-                if is_bodekt_saturday:
-                    default_index = 3
-                    st.session_state[radio_key] =  "🌴 חופשה מאושרת" # כופה על הזיכרון
-                    st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                elif is_pilot_weekend:
-                    default_index = 3
-                    st.session_state[radio_key] = "🌴 חופשה מאושרת" # כופה על הזיכרון
-                    st.caption("🔒 חסום ")
-                else:
-                    default_index = 0
-        
-                # 3. יצירת רכיב הרדיו במחשב
-                day_choice = st.radio(
-                    f"בחר סטטוס ליום {d_info['he']}:",
-                    ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
-                    key=radio_key,
-                    index=default_index,
-                    horizontal=False,
-                    label_visibility="collapsed",
-                    disabled=should_disable_day
-                )
-
-
-
-
-                
-                all_can = (day_choice == "🟢 יכול הכל היום")
-                all_not = (day_choice == "🔴 לא יכול היום")
-                all_vacation = (day_choice == "🌴 חופשה מאושרת")  
-
-                st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
-                
-                for s_info in משמרות:
-                    column_name = f"{d_info['en']}_{s_info['en']}"
-                    hours_txt = שעות_משמרת.get(s_info['en'], "")
-                    hours_display = f" ({hours_txt})" if hours_txt else ""
-
-                    #  קריאה לפונקציה החסימות 
-                    is_blocked, block_reason = check_shift_blocking(
-                        d_info['en'], s_info['en'], current_role, DISABLE_pilot
-                    )
-
+                    with days_cols[day_idx].container(border=True):
+                        st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
+    
                     
-
-                    st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
-                    
-                    default_can = False if is_blocked else all_can
-                    default_not = True if is_blocked else (all_not or all_vacation)
-                    
-                    if is_blocked or all_vacation:
-                        final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
-                        st.checkbox(final_reason, key=f"not_check_{column_name}", value=True, disabled=True)
-                        user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                    # 1. הגדרת מצבי החסימה של סוף השבוע
+                    is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
+                    is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
+                    should_disable_day = is_pilot_weekend or is_bodekt_saturday
+            
+                    # הגדרת המפתח של הרכיב מראש
+                    radio_key = f"day_mode_{d_info['en']}"
+            
+                    # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
+                    if is_bodekt_saturday:
+                        default_index = 3
+                        st.session_state[radio_key] =  "🌴 חופשה מאושרת" # כופה על הזיכרון
+                        st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
+                    elif is_pilot_weekend:
+                        default_index = 3
+                        st.session_state[radio_key] = "🌴 חופשה מאושרת" # כופה על הזיכרון
+                        st.caption("🔒 חסום ")
                     else:
-                        can_work = st.checkbox("יכול 👍", key=f"can_check_{column_name}", value=default_can)
-                        cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=default_not)
-                        prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"pref_check_{column_name}", value=False)
-                        user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
-
+                        default_index = 0
+            
+                    # 3. יצירת רכיב הרדיו במחשב
+                    day_choice = st.radio(
+                        f"בחר סטטוס ליום {d_info['he']}:",
+                        ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
+                        key=radio_key,
+                        index=default_index,
+                        horizontal=False,
+                        label_visibility="collapsed",
+                        disabled=should_disable_day
+                    )
+    
+    
+    
+    
+                    
+                    all_can = (day_choice == "🟢 יכול הכל היום")
+                    all_not = (day_choice == "🔴 לא יכול היום")
+                    all_vacation = (day_choice == "🌴 חופשה מאושרת")  
+    
+                    st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
+                    
+                    for s_info in משמרות:
+                        column_name = f"{d_info['en']}_{s_info['en']}"
+                        hours_txt = שעות_משמרת.get(s_info['en'], "")
+                        hours_display = f" ({hours_txt})" if hours_txt else ""
+    
+                        #  קריאה לפונקציה החסימות 
+                        is_blocked, block_reason = check_shift_blocking(
+                            d_info['en'], s_info['en'], current_role, DISABLE_pilot
+                        )
+    
+                        
+    
+                        st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
+                        
+                        default_can = False if is_blocked else all_can
+                        default_not = True if is_blocked else (all_not or all_vacation)
+                        
+                        if is_blocked or all_vacation:
+                            final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
+                            st.checkbox(final_reason, key=f"not_check_{column_name}", value=True, disabled=True)
+                            user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                        else:
+                            can_work = st.checkbox("יכול 👍", key=f"can_check_{column_name}", value=default_can)
+                            cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=default_not)
+                            prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"pref_check_{column_name}", value=False)
+                            user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
+    
 
 #================ חלק 6.2 מוגמר ומיועל =======================
         # .2 מסלול נייד 

@@ -648,74 +648,74 @@ else:
         # ===============================================================
         # .3 מחשבון מכסות וספירות משמרות שבועיות (לוגיקה מדויקת מגרסה א') [index]
         # ===============================================================
-        count_morning = 0
-        count_afternoon = 0
-        count_night = 0
-        cannot_count = 0
-        count_support= 0
-        
-        for d_info in ימים:
-            day_key = d_info['en']
+            count_morning = 0
+            count_afternoon = 0
+            count_night = 0
+            cannot_count = 0
+            count_support= 0
             
-            # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
-            if is_wide_view:
-                day_status = st.session_state.get(f"day_mode_{day_key}", "בחר במשמרות")
-            else:
-                day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
+            for d_info in ימים:
+                day_key = d_info['en']
+                
+                # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
+                if is_wide_view:
+                    day_status = st.session_state.get(f"day_mode_{day_key}", "בחר במשמרות")
+                else:
+                    day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
+        
+                is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
+                is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
+                is_all_not = "🔴 לא יכול היום" in day_status or "לא יכול היום" in day_status
+            
+                # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
+                is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
+        
     
-            is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
-            is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
-            is_all_not = "🔴 לא יכול היום" in day_status or "לא יכול היום" in day_status
-        
-            # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
-            is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
+                # לולאה רגילה לספירת משמרות בודדות [index]
+                for s_info in משמרות:
+                    if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
+                        continue
+            
+                    col_name = f"{day_key}_{s_info['en']}"
+                    shift_data2 = user_choices.get(col_name, {})
+                    shift_key = s_info['en']
+            
+                    # בדיקה האם המשמרת נבחרה כיכולה (פרטנית או גלובלית) [index]
+                    is_can_selected = shift_data2.get("can") or shift_data2.get("pref") or is_all_can or is_vacation
+                    is_cannot_selected = shift_data2.get("cannot") or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
+            
+                    if is_can_selected:
+                        if shift_key in ["open_T", "Morning"]:
+                            count_morning += 1
+                        elif shift_key == "Afternoon":
+                            count_afternoon += 1
+                        elif shift_key == "Night":
+                            count_night += 1
+                        elif shift_key == "Support":
+                            count_support += 1
+                    elif is_cannot_selected:
+                        cannot_count += 1
+            #                
+            role_requirements = {
+            "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
+            "בודקת ביטחונית": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
+            "בודק ביטחוני": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
+            "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "total": 3, "max_cannot": 5},
+            "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "total": 3, "max_cannot": 5},
+            "כללי": {"morning": 0, "afternoon": 0, "night": 0, "total": 0, "max_cannot": 5}
+            }
     
-
-            # לולאה רגילה לספירת משמרות בודדות [index]
-            for s_info in משמרות:
-                if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
-                    continue
-        
-                col_name = f"{day_key}_{s_info['en']}"
-                shift_data2 = user_choices.get(col_name, {})
-                shift_key = s_info['en']
-        
-                # בדיקה האם המשמרת נבחרה כיכולה (פרטנית או גלובלית) [index]
-                is_can_selected = shift_data2.get("can") or shift_data2.get("pref") or is_all_can or is_vacation
-                is_cannot_selected = shift_data2.get("cannot") or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
-        
-                if is_can_selected:
-                    if shift_key in ["open_T", "Morning"]:
-                        count_morning += 1
-                    elif shift_key == "Afternoon":
-                        count_afternoon += 1
-                    elif shift_key == "Night":
-                        count_night += 1
-                    elif shift_key == "Support":
-                        count_support += 1
-                elif is_cannot_selected:
-                    cannot_count += 1
-        #                
-        role_requirements = {
-        "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-        "בודקת ביטחונית": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-        "בודק ביטחוני": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-        "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "total": 3, "max_cannot": 5},
-        "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "total": 3, "max_cannot": 5},
-        "כללי": {"morning": 0, "afternoon": 0, "night": 0, "total": 0, "max_cannot": 5}
-        }
-
+                
+            # שליפת הדרישות וטיפול מונע קריסות (הגנה מפני תפקיד חסר) [index]
+            user_role_clean = current_role.strip()
+            if user_role_clean == "בודק ביטחונית":
+                user_role_clean = "בודקת ביטחונית"
+                
+            current_reqs = role_requirements.get(user_role_clean, role_requirements["כללי"])
+            total_submitted = count_morning + count_afternoon + count_night + count_support
             
-        # שליפת הדרישות וטיפול מונע קריסות (הגנה מפני תפקיד חסר) [index]
-        user_role_clean = current_role.strip()
-        if user_role_clean == "בודק ביטחונית":
-            user_role_clean = "בודקת ביטחונית"
-            
-        current_reqs = role_requirements.get(user_role_clean, role_requirements["כללי"])
-        total_submitted = count_morning + count_afternoon + count_night + count_support
-        
-        # הצגת שורת הסיכום בצורה מובנית, מהירה וברורה [index]
-        st.info(f"📊 **מדד מכסת הגשות שבועית לתפקידך:** בוקר: {count_morning}/{current_reqs['morning']} | צהריים: {count_afternoon}/{current_reqs['afternoon']} | לילה: {count_night}/{current_reqs['night']} | **סך הכל סומן:** {total_submitted}/{current_reqs['total']}")
+            # הצגת שורת הסיכום בצורה מובנית, מהירה וברורה [index]
+            st.info(f"📊 **מדד מכסת הגשות שבועית לתפקידך:** בוקר: {count_morning}/{current_reqs['morning']} | צהריים: {count_afternoon}/{current_reqs['afternoon']} | לילה: {count_night}/{current_reqs['night']} | **סך הכל סומן:** {total_submitted}/{current_reqs['total']}")
 
 #=======================================================================
 # חלק 7: מנגנון בדיקת סתירות ושליחת הנתונים לגיליון (Timeout=20) [index]

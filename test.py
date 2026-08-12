@@ -580,11 +580,11 @@ else:
     
                         # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
                         is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
+                        is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
                         if is_bodekt_saturday:
                             default_index = 2
                             st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
                             st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                            is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
                         elif is_pilot_weekend:
                             default_index = 3
                             st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"

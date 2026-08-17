@@ -665,7 +665,7 @@ else:
         
                 is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
                 is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
-                is_all_not = "🔴 לא יכול היום" in day_status or "לא יכול היום" in day_status
+                is_all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
                 # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
                 is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
@@ -681,7 +681,7 @@ else:
                     shift_key = s_info['en']
             
                     # בדיקה האם המשמרת נבחרה כיכולה (פרטנית או גלובלית) [index]
-                    is_can_selected = shift_data2.get("can") or shift_data2.get("pref") or is_all_can or is_vacation
+                    is_can_selected = (shift_data2.get("can") or shift_data2.get("pref") or is_all_can or is_vacation) and not is_all_not
                     is_cannot_selected = shift_data2.get("cannot") or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
             
                     if is_can_selected:

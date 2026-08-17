@@ -794,7 +794,7 @@ else:
                             day_has_cannot = True
                             cannot_count += 1
                                 
-                        # ב. בדיקת סטטוס "יכול" או "העדפה" במשמרת הנוכחית
+                        # ב. בדיקת סטטוס "יכול" או "מ.ש" במשמרת הנוכחית
                         if shift_data.get("can") or shift_data.get("pref"):
                             is_shift_can = True
                             day_has_can = True
@@ -810,7 +810,7 @@ else:
                         errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת משמרת כ-'לא יכול'")
                 
                     # --- חסימה 2: בחר "לא יכול היום" אך יש סימון "יכול" במשמרות ---
-                    if ("🔴" in day_status or "לא יכול" in day_status) and day_has_can:
+                    if ("🔴" in day_status or "לא יכול היום" in day_status) and day_has_can:
                         has_error = True
                         errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת משמרת כ-'יכול'")
                 

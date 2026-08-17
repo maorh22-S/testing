@@ -805,20 +805,20 @@ else:
                             errors_list.append(f"משמרת כפולה ביום {day_he} במשמרת {s_info.get('he', '')}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד!")
         
                     # --- חסימה 1: בחר "יכול הכל היום" אך יש סימון "לא יכול" במשמרות ---
-                if ("🟢" in day_status or "יכול הכל" in day_status) and day_has_cannot:
-                    has_error = True
-                    errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת משמרת כ-'לא יכול'")
+                    if ("🟢" in day_status or "יכול הכל" in day_status) and day_has_cannot:
+                        has_error = True
+                        errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת משמרת כ-'לא יכול'")
             
                     # --- חסימה 2: בחר "לא יכול היום" אך יש סימון "יכול" במשמרות ---
-                if ("🔴" in day_status or "לא יכול היום" in day_status) and day_has_can:
-                    has_error = True
-                    errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת משמרת כ-'יכול'")
-                
+                    if ("🔴" in day_status or "לא יכול היום" in day_status) and day_has_can:
+                        has_error = True
+                        errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת משמרת כ-'יכול'")
+                    
                     # --- חסימה 3: בחירת חופשה אך יש סימונים ידניים במשמרות ---
                    # בדיקת סתירות: רק אם נבחרה חופשה ויש סימונים ידניים (יכול, לא יכול, מ.ש) ולא בגלל חסימת פיילוט אוטומטית
-                if ("🌴" in day_status or "חופשה מאושרת" in day_status):
-                    # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
-                    has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
+                    if ("🌴" in day_status or "חופשה מאושרת" in day_status):
+                        # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
+                        has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
                         
                 if has_real_manual_marks:
                     has_error = True

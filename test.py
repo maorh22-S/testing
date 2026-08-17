@@ -820,9 +820,9 @@ else:
                     # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
                     has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
                         
-                        if has_real_manual_marks:
-                            has_error = True
-                            errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
+                if has_real_manual_marks:
+                    has_error = True
+                    errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
                 
                 # --- חסימה שבועית דינמית: חריגת מקסימום משמרות "לא יכול" לפי הגדרות תפקיד [index]
                 if cannot_count > max_cannot_allowed:

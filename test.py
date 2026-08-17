@@ -734,8 +734,6 @@ else:
             # --- תחילת לוגיקת העיבוד לאחר לחיצה ---
             if submit_button and not is_submission_blocked:
                 errors = []
-        
-                
                 # בדיקת עמידה במכסות המינימום הארגוניות
                 if count_morning < current_reqs.get("morning", 0):
                     errors.append(f"בוקר סומנו {count_morning}/{current_reqs.get('morning', 0)}")
@@ -775,7 +773,10 @@ else:
                             continue
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
-                            
+                         # --- בדיקת דיבוג זמנית ---
+                        if day_has_can or day_has_cannot or "🟢" in day_status or "🔴" in day_status:
+                            st.info(f"דיבוג ליום {day_he}: סטטוס יומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                        # -------------------------   
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
                         
@@ -792,6 +793,10 @@ else:
                         elif shift_data.get("cannot") or "🔴" in day_status or "לא יכול" in day_status:
                             is_shift_cannot = True
                             day_has_cannot = True
+                            is_night = s_info.get('en') == 'Night'
+                            is_support = s_info.get('en') == 'Support'
+                            
+                            if not ((is_night and DISABLE_pilot) or is_support):
                             cannot_count += 1
                                 
                         # ב. בדיקת סטטוס "יכול" או "מ.ש" במשמרת הנוכחית

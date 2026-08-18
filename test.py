@@ -787,7 +787,7 @@ else:
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
                          # --- בדיקת דיבוג זמנית ---
-                        if day_has_can or day_has_cannot or "🟢" in day_status or "🔴" in day_status:
+                         day_has_can or day_has_cannot or "🟢" in day_status or "🔴" in day_status:
                             st.info(f"דיבוג ליום {day_he}: סטטוס יומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
                         # -------------------------   
                         col_name = f"{day_key}_{s_info['en']}"

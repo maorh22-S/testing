@@ -797,7 +797,7 @@ else:
                             is_support = s_info.get('en') == 'Support'
                             
                             if not ((is_night and DISABLE_pilot) or is_support):
-                            cannot_count += 1
+                                cannot_count += 1
                                 
                         # ב. בדיקת סטטוס "יכול" או "מ.ש" במשמרת הנוכחית
                         if shift_data.get("can") or shift_data.get("pref"):

@@ -803,8 +803,8 @@ else:
                         if shift_data.get("can") or shift_data.get("pref"):
                             is_shift_can = True
                             day_has_can = True
-                # --- שים את זה מתחת לכל לולאת המשמרות (באותה הזחה כמו שורה 771) ---
-                st.info(f"🔍 דיבוג {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                    # --- שים את זה מתחת לכל לולאת המשמרות (באותה הזחה כמו שורה 771) ---
+                    st.info(f"🔍 דיבוג {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
                 
                         # 🔒 [חסימת כפילות] - בדיקה אם סומן גם יכול וגם לא יכול באותה משמרת ספציפית [index]
                         if is_shift_can and is_shift_cannot:

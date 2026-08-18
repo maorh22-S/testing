@@ -763,7 +763,7 @@ else:
                     day_he = d_info['he']
                     
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
-                    day_status = st.session_state.get(status_key, "בחר במשמרות")
+                    day_status = st.session_state.get(status_key, "בחרו במשמרות")
                     
                     day_has_can = False
                     day_has_cannot = False

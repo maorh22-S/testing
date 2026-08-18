@@ -510,11 +510,11 @@ else:
                         # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
                         if is_bodekt_saturday:
                             default_index = 3
-                            st.session_state[radio_key] =  "🌴 חופשה מאושרת" # כופה על הזיכרון
+                            st.session_state[radio_key] = "🌴 חופשה מאושרת" 
                             st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
                         elif is_pilot_weekend:
                             default_index = 3
-                            st.session_state[radio_key] = "🌴 חופשה מאושרת" # כופה על הזיכרון
+                            st.session_state[radio_key] = "🌴 חופשה מאושרת"  
                             st.caption("🔒 חסום ")
                         else:
                             default_index = 0

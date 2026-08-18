@@ -794,8 +794,16 @@ else:
 
                         # שליפה ישירה מותאמת למצב טבלה מול מובייל
                         if is_wide_view:
-                            is_shift_can = st.session_state.get(f"m_can_check_{col_name}", False) or st.session_state.get(f"m_pref_check_{col_name}", False)
-                            is_shift_cannot = st.session_state.get(f"m_not_check_{col_name}", False)
+                            can_val = st.session_state.get(f"can_check_{col_name}", False)
+                            pref_val = st.session_state.get(f"pref_check_{col_name}", False)
+                            not_val = st.session_state.get(f"not_check_{col_name}", False)
+                            
+                            is_shift_can = can_val or pref_val
+                            is_shift_cannot = not_val
+                            
+                            # הדפסה זמנית שתראה לנו בדיוק מה הקוד מוצא בזמן אמת כשלוחצים
+                            if can_val or not_val:
+                                st.write(f"🔍 קורא משמרת {col_name} -> יכול: {can_val}, לא יכול: {not_val}")
                         else:
                             is_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
                             is_shift_cannot = shift_data.get("cannot", False)

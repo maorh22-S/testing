@@ -656,6 +656,8 @@ else:
             
             for d_info in ימים:
                 day_key = d_info['en']
+                day_has_can = False
+                day_has_cannot = False
                 
                 # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
                 if is_wide_view:

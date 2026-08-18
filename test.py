@@ -805,7 +805,7 @@ else:
                                 cannot_count += 1
                                 
                         # ב. בדיקת סטטוס "יכול" או "מ.ש" במשמרת הנוכחית
-                        if shift_data.get("can") or shift_data.get("pref"):
+                        if is_shift_can or is_shift_pref:
                             is_shift_can = True
                             day_has_can = True
                    

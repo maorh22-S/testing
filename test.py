@@ -793,9 +793,9 @@ else:
                         shift_data = user_choices.get(col_name, {})
 
                         # שליפה ישירה מותאמת למצב טבלה מול מובייל
-                        if is_wide_view:
-                            is_shift_can = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"pref_check_{col_name}", False)
-                            is_shift_cannot = st.session_state.get(f"not_check_{col_name}", False)
+                       if is_wide_view:
+                            is_shift_can = st.session_state.get(f"m_can_check_{col_name}", False) or st.session_state.get(f"m_pref_check_{col_name}", False)
+                            is_shift_cannot = st.session_state.get(f"m_not_check_{col_name}", False)
                         else:
                             is_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
                             is_shift_cannot = shift_data.get("cannot", False)

@@ -763,7 +763,7 @@ else:
                     day_he = d_info['he']
                     
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
-                    day_status = st.session_state.get(status_key, "בחרו במשמרות")
+                    day_status = st.session_state.get(status_key, "בחר במשמרות")
                     
                     day_has_can = False
                     day_has_cannot = False
@@ -779,10 +779,15 @@ else:
                         # -------------------------   
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
-                        
-                        is_shift_cannot = False
-                        is_shift_can = False
-                        
+
+                        # שליפה ישירה מותאמת למצב טבלה מול מובייל
+                        if is_wide_view:
+                            is_shift_can = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"pref_check_{col_name}", False)
+                            is_shift_cannot = st.session_state.get(f"not_check_{col_name}", False)
+                        else:
+                            is_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
+                            is_shift_cannot = shift_data.get("cannot", False)
+
                         is_weekend = day_key in ['Friday', 'Saturday']
                         
                         # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית
@@ -790,7 +795,7 @@ else:
                         if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
                             is_shift_cannot = True
                             # חסימת פיילוט אוטומטית - לא מעלה את cannot_count!
-                        elif shift_data.get("cannot") or "🔴" in day_status or "לא יכול" in day_status:
+                        elif is_shift_cannot or "🔴" in day_status or "לא יכול" in day_status:
                             is_shift_cannot = True
                             day_has_cannot = True
                             is_night = s_info.get('en') == 'Night'

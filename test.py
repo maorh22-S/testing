@@ -687,7 +687,11 @@ else:
                     else:
                         current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
                         current_shift_cannot = shift_data2.get("cannot", False)
-                
+                    if current_shift_can:
+                        day_has_can = True
+                    if current_shift_cannot:
+                        day_has_cannot = True
+                    
                     is_can_selected = (current_shift_can or is_all_can or is_vacation) and not is_all_not
                     is_cannot_selected = current_shift_cannot or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
             

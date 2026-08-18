@@ -787,6 +787,7 @@ else:
                         else:
                             is_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
                             is_shift_cannot = shift_data.get("cannot", False)
+                        st.write(f"דיבוג משמרת {col_name}: can={is_shift_can}, cannot={is_shift_cannot}")
 
                         is_weekend = day_key in ['Friday', 'Saturday']
                         

@@ -680,9 +680,16 @@ else:
                     shift_data2 = user_choices.get(col_name, {})
                     shift_key = s_info['en']
             
-                    # בדיקה האם המשמרת נבחרה כיכולה (פרטנית או גלובלית) [index]
-                    is_can_selected = (shift_data2.get("can") or shift_data2.get("pref") or is_all_can or is_vacation) and not is_all_not
-                    is_cannot_selected = shift_data2.get("cannot") or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
+                    # שליפה ישירה מותאמת למצב טבלה מול מובייל
+                    if is_wide_view:
+                        current_shift_can = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"pref_check_{col_name}", False)
+                        current_shift_cannot = st.session_state.get(f"not_check_{col_name}", False)
+                    else:
+                        current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
+                        current_shift_cannot = shift_data2.get("cannot", False)
+                
+                    is_can_selected = (current_shift_can or is_all_can or is_vacation) and not is_all_not
+                    is_cannot_selected = current_shift_cannot or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
             
                     if is_can_selected:
                         if shift_key in ["open_T", "Morning"]:

@@ -821,6 +821,7 @@ else:
                     
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
+                        is_shift_pref = pref_val
                     
                         st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         

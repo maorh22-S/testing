@@ -802,26 +802,26 @@ else:
                         
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         can_val = (
-                            st.session_state.get(f"can_check_{col_name}", False) or 
-                            st.session_state.get(f"m_can_check_{col_name}", False) or 
+                            st.session_state.get(f"can_check_{column_name}", False) or 
+                            st.session_state.get(f"m_can_check_{column_name}", False) or 
                             shift_data.get("can", False) or 
                             shift_data.get("pref", False)
                         )
                     
                         pref_val = (
-                            st.session_state.get(f"pref_check_{col_name}", False) or 
-                            st.session_state.get(f"m_pref_check_{col_name}", False)
+                            st.session_state.get(f"pref_check_{column_name}", False) or 
+                            st.session_state.get(f"m_pref_check_{column_name}", False)
                         )
                     
                         not_val = (
-                            st.session_state.get(f"not_check_{col_name}", False) or 
-                            st.session_state.get(f"m_not_check_{col_name}", False) or 
+                            st.session_state.get(f"not_check_{column_name}", False) or 
+                            st.session_state.get(f"m_not_check_{column_name}", False) or 
                             shift_data.get("cannot", False)
                         )
                     
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
-
+                    
                         st.write(f"🔍 בדיקת משמרת [{col_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         
                         # בדיקת דיבוג נקייה שתדפיס רק אם באמת נמצא סימון

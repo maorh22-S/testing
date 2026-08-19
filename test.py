@@ -801,21 +801,26 @@ else:
 
                         
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
-                        if is_wide_view:
-                            # מצב טבלה: מחפש קודם את המפתח הנקי, ואם משום מה הוגדר עם m_ לוקח גם אותו
-                            can_val = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"m_can_check_{col_name}", False)
-                            pref_val = st.session_state.get(f"pref_check_{col_name}", False) or st.session_state.get(f"m_pref_check_{col_name}", False)
-                            not_val = st.session_state.get(f"not_check_{col_name}", False) or st.session_state.get(f"m_not_check_{col_name}", False)
-                            
-                            is_shift_can = can_val or pref_val
-                            is_shift_cannot = not_val
-                        else:
-                            # מצב נייד/רשימה: מחפש עם הקידומת m_, עם גיבוי למפתח הנקי ול-shift_data
-                            can_val = st.session_state.get(f"m_can_check_{col_name}", False) or st.session_state.get(f"can_check_{col_name}", False) or shift_data.get("can", False) or shift_data.get("pref", False)
-                            not_val = st.session_state.get(f"m_not_check_{col_name}", False) or st.session_state.get(f"not_check_{col_name}", False) or shift_data.get("cannot", False)
-                            
-                            is_shift_can = can_val
-                            is_shift_cannot = not_val
+                        can_val = (
+                            st.session_state.get(f"can_check_{col_name}", False) or 
+                            st.session_state.get(f"m_can_check_{col_name}", False) or 
+                            shift_data.get("can", False) or 
+                            shift_data.get("pref", False)
+                        )
+                    
+                        pref_val = (
+                            st.session_state.get(f"pref_check_{col_name}", False) or 
+                            st.session_state.get(f"m_pref_check_{col_name}", False)
+                        )
+                    
+                        not_val = (
+                            st.session_state.get(f"not_check_{col_name}", False) or 
+                            st.session_state.get(f"m_not_check_{col_name}", False) or 
+                            shift_data.get("cannot", False)
+                        )
+                    
+                        is_shift_can = can_val or pref_val
+                        is_shift_cannot = not_val
 
                         st.write(f"🔍 בדיקת משמרת [{col_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         

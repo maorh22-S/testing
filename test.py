@@ -792,6 +792,8 @@ else:
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
 
+                        st.write(f"🔍 דיבוג מפתחות: col_name={col_name} | not_check_key={st.session_state.get(f'not_check_{col_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{col_name}', 'לא קיים')}")
+                        
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         if is_wide_view:
                             # מצב טבלה: מחפש קודם את המפתח הנקי, ואם משום מה הוגדר עם m_ לוקח גם אותו

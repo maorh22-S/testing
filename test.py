@@ -871,7 +871,6 @@ else:
                     if ("🌴" in day_status or "חופשה מאושרת" in day_status):
                         # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
                         has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
-                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")        
                 if has_real_manual_marks:
                     errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
                 
@@ -886,7 +885,8 @@ else:
                     for err in errors_list:
                         st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
                     st.stop()
-                    
+                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")        
+
                 # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---
                 else:
                     with st.spinner(MSG_SPINNER_SAVE):

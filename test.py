@@ -793,6 +793,7 @@ else:
                         shift_data = user_choices.get(col_name, {})
 
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
+                        # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         if is_wide_view:
                             # מצב טבלה: מחפש קודם את המפתח הנקי, ואם משום מה הוגדר עם m_ לוקח גם אותו
                             can_val = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"m_can_check_{col_name}", False)
@@ -812,7 +813,6 @@ else:
                         # בדיקת דיבוג נקייה שתדפיס רק אם באמת נמצא סימון
                         if is_shift_can or is_shift_cannot:
                             st.write(f"🛡️ בדיקת משמרת [{col_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
-
                         is_weekend = day_key in ['Friday', 'Saturday']
                         
                         # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית

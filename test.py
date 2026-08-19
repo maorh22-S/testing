@@ -666,12 +666,12 @@ else:
                 # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
                 if is_wide_view:
                     day_status = st.session_state.get(f"day_mode_{day_key}", "בחר במשמרות")
+                    st.write(f"🛑 דיבוג מצב רחב ליום {day_key}: day_status = {repr(day_status)}")
                 else:
                     day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
         
                 is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
                 is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
-                st.write(f"סוג: {type(day_status)} | תוכן: {repr(day_status)}")
                 is_all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
                 # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]

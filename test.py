@@ -853,7 +853,6 @@ else:
                         if is_shift_can and is_shift_cannot:
                             errors_list.append(f"משמרת כפולה ביום {day_he} במשמרת {s_info.get('he', '')}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד!")
                      # --- שים את זה מתחת לכל לולאת המשמרות (באותה הזחה כמו שורה 771) ---
-                    st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
         
                     # --- חסימה 1: בחר "יכול הכל היום" אך יש סימון "לא יכול" במשמרות ---
                     if ("🟢" in day_status or "יכול הכל" in day_status) and day_has_cannot:
@@ -875,7 +874,8 @@ else:
                 # --- חסימה שבועית דינמית: חריגת מקסימום משמרות "לא יכול" לפי הגדרות תפקיד [index]
                 if cannot_count > max_cannot_allowed:
                     errors_list.append(f"חריגה בכמות משמרות 'לא יכול': מותר לסמן לכל היותר {max_cannot_allowed} משמרות בשבוע (סומנו {cannot_count}/{max_cannot_allowed})")
-                    
+                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+    
                 # --- הצגת שגיאות סתירה ועצירת ההגשה (שורות 709-713) ---
                 if errors_list:
                     st.error("🛑 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")

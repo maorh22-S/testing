@@ -791,7 +791,7 @@ else:
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
                          # --- בדיקת דיבוג זמנית ---
-                            st.info(f"🔍 דיבוג {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                            st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
                         # -------------------------   
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
@@ -844,7 +844,7 @@ else:
                         if is_shift_can and is_shift_cannot:
                             errors_list.append(f"משמרת כפולה ביום {day_he} במשמרת {s_info.get('he', '')}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד!")
                      # --- שים את זה מתחת לכל לולאת המשמרות (באותה הזחה כמו שורה 771) ---
-                    st.info(f"🔍 דיבוג {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                    st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
         
                     # --- חסימה 1: בחר "יכול הכל היום" אך יש סימון "לא יכול" במשמרות ---
                     if ("🟢" in day_status or "יכול הכל" in day_status) and day_has_cannot:

@@ -816,7 +816,7 @@ else:
                             is_shift_can = can_val
                             is_shift_cannot = not_val
 
-                            st.write(f"🔍 בדיקת משמרת [{col_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
+                        st.write(f"🔍 בדיקת משמרת [{col_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         
                         # בדיקת דיבוג נקייה שתדפיס רק אם באמת נמצא סימון
                         if is_shift_can or is_shift_cannot:

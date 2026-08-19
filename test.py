@@ -101,7 +101,7 @@ def get_allowed_users():
     if not SCRIPT_URL:
         return {}
     try:
-        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=15)
+        res = requests.get(f"{SCRIPT_URL}?sheet=users", timeout=30)
         if res.status_code == 200:
             raw_data = res.json()
             if isinstance(raw_data, list) and len(raw_data) > 0:
@@ -315,6 +315,10 @@ else:
     
     if not start_date_display:
         st.error("⚠️ לא נמצא תאריך שבוע בתוקף !")
+        if st.button("🔄 רענן נתונים"):
+            # כאן מריצים את הפונקציה מחדש (תוודא שאתה שומר את התוצאה למשתנה או ל-session_state הנכון)
+            get_week_settings() 
+            st.rerun()
     else:
         st.title(MSG_TITLE)
         st.write("### ✍️ הגשת אילוצים וזמינות לשבוע הקרוב")

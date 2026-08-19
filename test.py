@@ -792,26 +792,26 @@ else:
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
 
-                        # שליפה ישירה מותאמת למצב טבלה מול מובייל
+                        # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         if is_wide_view:
-                            can_val = st.session_state.get(f"can_check_{col_name}", False)
-                            pref_val = st.session_state.get(f"pref_check_{col_name}", False)
-                            not_val = st.session_state.get(f"not_check_{col_name}", False)
+                            # מצב טבלה: מחפש קודם את המפתח הנקי, ואם משום מה הוגדר עם m_ לוקח גם אותו
+                            can_val = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"m_can_check_{col_name}", False)
+                            pref_val = st.session_state.get(f"pref_check_{col_name}", False) or st.session_state.get(f"m_pref_check_{col_name}", False)
+                            not_val = st.session_state.get(f"not_check_{col_name}", False) or st.session_state.get(f"m_not_check_{col_name}", False)
                             
                             is_shift_can = can_val or pref_val
                             is_shift_cannot = not_val
-                            
-                            # הדפסה זמנית שתראה לנו בדיוק מה הקוד מוצא בזמן אמת כשלוחצים
-                            if can_val or not_val:
-                                st.write(f"🔍 קורא משמרת {col_name} -> יכול: {can_val}, לא יכול: {not_val}")
                         else:
-                            is_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
-                            is_shift_cannot = shift_data.get("cannot", False)
-                        if is_shift_can:
-                            day_has_can = True
-                        if is_shift_cannot:
-                            day_has_cannot = True
-                        st.write(f"דיבוג משמרת {col_name}: can={is_shift_can}, cannot={is_shift_cannot}")
+                            # מצב נייד/רשימה: מחפש עם הקידומת m_, עם גיבוי למפתח הנקי ול-shift_data
+                            can_val = st.session_state.get(f"m_can_check_{col_name}", False) or st.session_state.get(f"can_check_{col_name}", False) or shift_data.get("can", False) or shift_data.get("pref", False)
+                            not_val = st.session_state.get(f"m_not_check_{col_name}", False) or st.session_state.get(f"not_check_{col_name}", False) or shift_data.get("cannot", False)
+                            
+                            is_shift_can = can_val
+                            is_shift_cannot = not_val
+                
+                        # בדיקת דיבוג נקייה שתדפיס רק אם באמת נמצא סימון
+                        if is_shift_can or is_shift_cannot:
+                            st.write(f"🛡️ בדיקת משמרת [{col_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
 
                         is_weekend = day_key in ['Friday', 'Saturday']
                         

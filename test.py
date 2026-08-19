@@ -792,12 +792,13 @@ else:
                         if is_vacation:
                             continue
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
+                            st.write(f"🔍 דיבוג מפתחות: col_name={col_name} | not_check_key={st.session_state.get(f'not_check_{col_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{col_name}', 'לא קיים')}")
+
                             continue
                           
                         col_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(col_name, {})
 
-                        st.write(f"🔍 דיבוג מפתחות: col_name={col_name} | not_check_key={st.session_state.get(f'not_check_{col_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{col_name}', 'לא קיים')}")
                         
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         if is_wide_view:

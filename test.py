@@ -793,7 +793,6 @@ else:
                         shift_data = user_choices.get(col_name, {})
 
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
-                        # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
                         if is_wide_view:
                             # מצב טבלה: מחפש קודם את המפתח הנקי, ואם משום מה הוגדר עם m_ לוקח גם אותו
                             can_val = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"m_can_check_{col_name}", False)
@@ -837,19 +836,16 @@ else:
                 
                         # 🔒 [חסימת כפילות] - בדיקה אם סומן גם יכול וגם לא יכול באותה משמרת ספציפית [index]
                         if is_shift_can and is_shift_cannot:
-                            has_error = True
                             errors_list.append(f"משמרת כפולה ביום {day_he} במשמרת {s_info.get('he', '')}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד!")
                      # --- שים את זה מתחת לכל לולאת המשמרות (באותה הזחה כמו שורה 771) ---
                     st.info(f"🔍 דיבוג {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
         
                     # --- חסימה 1: בחר "יכול הכל היום" אך יש סימון "לא יכול" במשמרות ---
                     if ("🟢" in day_status or "יכול הכל" in day_status) and day_has_cannot:
-                        has_error = True
                         errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת משמרת כ-'לא יכול'")
             
                     # --- חסימה 2: בחר "לא יכול היום" אך יש סימון "יכול" במשמרות ---
                     if ("🔴" in day_status or "לא יכול היום" in day_status) and day_has_can:
-                        has_error = True
                         errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת משמרת כ-'יכול'")
                     
                     # --- חסימה 3: בחירת חופשה אך יש סימונים ידניים במשמרות ---
@@ -859,16 +855,14 @@ else:
                         has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
                         
                 if has_real_manual_marks:
-                    has_error = True
                     errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
                 
                 # --- חסימה שבועית דינמית: חריגת מקסימום משמרות "לא יכול" לפי הגדרות תפקיד [index]
                 if cannot_count > max_cannot_allowed:
-                    has_error = True
                     errors_list.append(f"חריגה בכמות משמרות 'לא יכול': מותר לסמן לכל היותר {max_cannot_allowed} משמרות בשבוע (סומנו {cannot_count}/{max_cannot_allowed})")
                     
                 # --- הצגת שגיאות סתירה ועצירת ההגשה (שורות 709-713) ---
-                if has_error:
+                if errors_list:
                     st.error("🛑 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")
                     for err in errors_list:
                         st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)

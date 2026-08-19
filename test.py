@@ -879,14 +879,14 @@ else:
                 if cannot_count > max_cannot_allowed:
                     errors_list.append(f"חריגה בכמות משמרות 'לא יכול': מותר לסמן לכל היותר {max_cannot_allowed} משמרות בשבוע (סומנו {cannot_count}/{max_cannot_allowed})")
                 
-    
+                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")        
+
                 # --- הצגת שגיאות סתירה ועצירת ההגשה (שורות 709-713) ---
                 if errors_list:
                     st.error("🛑 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")
                     for err in errors_list:
                         st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
                     st.stop()
-                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")        
 
                 # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---
                 else:

@@ -821,6 +821,12 @@ else:
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
+                        
+                        if can_val or pref_val or "יכול הכל" in day_status:
+                            day_has_can = True
+                
+                        if not_val or "לא יכול" in day_status:
+                            day_has_cannot = True
                     
                         st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         

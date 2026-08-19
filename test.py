@@ -671,6 +671,7 @@ else:
         
                 is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
                 is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
+                st.write(f"סוג: {type(day_status)} | תוכן: {repr(day_status)}")
                 is_all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
                 # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]

@@ -316,7 +316,7 @@ else:
     if not start_date_display:
         st.error("⚠️ לא נמצא תאריך שבוע בתוקף !")
         if st.button("🔄 רענן נתונים"):
-            # כאן מריצים את הפונקציה מחדש (תוודא שאתה שומר את התוצאה למשתנה או ל-session_state הנכון)
+            get_week_settings.clear()
             get_week_settings() 
             st.rerun()
     else:

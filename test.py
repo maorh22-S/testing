@@ -790,10 +790,10 @@ else:
                         st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
                         # -------------------------  
                         if is_vacation:
-                            continue
-                        if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             st.write(f"🔍 דיבוג מפתחות: col_name={col_name} | not_check_key={st.session_state.get(f'not_check_{col_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{col_name}', 'לא קיים')}")
 
+                            continue
+                        if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
                           
                         col_name = f"{day_key}_{s_info['en']}"

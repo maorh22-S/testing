@@ -782,8 +782,6 @@ else:
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
                     day_status = st.session_state.get(status_key, "בחר במשמרות")
                     
-                    day_has_can = False
-                    day_has_cannot = False
                     
                     for s_info in משמרות:
                         column_name = f"{day_key}_{s_info['en']}"

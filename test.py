@@ -287,7 +287,7 @@ else:
         {"he": "תמך (12 ש')", "en": "Support"}
     ]
     
-    # אימוץ סידור השעות הכרונולוגי והתקין של גרסה ב'
+    # אימוץ סידור השעות הכרונולוגי והתקין  '
     שעות_משמרת = {
         "open_T": "05:30 - 15:00", 
         "Morning": "06:30 - 15:00",
@@ -296,7 +296,7 @@ else:
         "Support": "07:30 - 19:30"
     }
     
-    # שימוש בחלוקת העמודות הרחבה [2, 1, 1] של גרסה א' לאיזון ויזואלי מושלם
+    # שימוש בחלוקת העמודות הרחבה [2, 1, 1] של  לאיזון ויזואלי מושלם
     top_c1, top_c2, top_c3 = st.columns([2, 1, 1])
     with top_c1:
         st.markdown(f"<div style='text-align: right; font-size: 16px; font-weight: bold; padding-top: 10px;'>👋 שלום, {st.session_state.user_name} ({st.session_state.get('user_role', 'כללי')})</div>", unsafe_allow_html=True)

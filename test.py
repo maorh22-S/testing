@@ -819,6 +819,7 @@ else:
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
+                        st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
                         
                         if can_val or pref_val or "יכול הכל" in day_status:
                             day_has_can = True

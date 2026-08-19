@@ -871,14 +871,14 @@ else:
                     if ("🌴" in day_status or "חופשה מאושרת" in day_status):
                         # בודקים אם יש סימונים אמיתיים שהם לא החסימה האוטומטית של הפיילוט
                         has_real_manual_marks = day_has_can or (day_has_cannot and not DISABLE_pilot)
-                        
+                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")        
                 if has_real_manual_marks:
                     errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום")
                 
                 # --- חסימה שבועית דינמית: חריגת מקסימום משמרות "לא יכול" לפי הגדרות תפקיד [index]
                 if cannot_count > max_cannot_allowed:
                     errors_list.append(f"חריגה בכמות משמרות 'לא יכול': מותר לסמן לכל היותר {max_cannot_allowed} משמרות בשבוע (סומנו {cannot_count}/{max_cannot_allowed})")
-                st.info(f"🔍 דיבוג ב {day_he}: סטטוס יומיומי = [{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                
     
                 # --- הצגת שגיאות סתירה ועצירת ההגשה (שורות 709-713) ---
                 if errors_list:

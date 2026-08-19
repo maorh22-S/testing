@@ -682,14 +682,14 @@ else:
                     if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
                         continue
             
-                    col_name = f"{day_key}_{s_info['en']}"
-                    shift_data2 = user_choices.get(col_name, {})
+                    column_name = f"{day_key}_{s_info['en']}"
+                    shift_data2 = user_choices.get(column_name, {})
                     shift_key = s_info['en']
             
                     # שליפה ישירה מותאמת למצב טבלה מול מובייל
                     if is_wide_view:
-                        current_shift_can = st.session_state.get(f"can_check_{col_name}", False) or st.session_state.get(f"pref_check_{col_name}", False)
-                        current_shift_cannot = st.session_state.get(f"not_check_{col_name}", False)
+                        current_shift_can = st.session_state.get(f"can_check_{column_name}", False) or st.session_state.get(f"pref_check_{column_name}", False)
+                        current_shift_cannot = st.session_state.get(f"not_check_{column_name}", False)
                     else:
                         current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
                         current_shift_cannot = shift_data2.get("cannot", False)
@@ -790,14 +790,14 @@ else:
                         st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
                         # -------------------------  
                         if is_vacation:
-                            st.write(f"🔍 דיבוג מפתחות: col_name={col_name} | not_check_key={st.session_state.get(f'not_check_{col_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{col_name}', 'לא קיים')}")
+                            st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
 
                             continue
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
                           
-                        col_name = f"{day_key}_{s_info['en']}"
-                        shift_data = user_choices.get(col_name, {})
+                        column_name = f"{day_key}_{s_info['en']}"
+                        shift_data = user_choices.get(column_name, {})
 
                         
                         # --- שליפה נקייה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
@@ -822,11 +822,11 @@ else:
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
                     
-                        st.write(f"🔍 בדיקת משמרת [{col_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
+                        st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
                         
                         # בדיקת דיבוג נקייה שתדפיס רק אם באמת נמצא סימון
                         if is_shift_can or is_shift_cannot:
-                            st.write(f"🛡️ בדיקת משמרת [{col_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
+                            st.write(f"🛡️ בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
                         is_weekend = day_key in ['Friday', 'Saturday']
                         
                         # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית
@@ -902,8 +902,8 @@ else:
         
                         
                         # בניית ה-payload עבור התיבות השונות של המשמרות
-                        for col_name, info in user_choices.items():
-                            day_key_part = col_name.split('_')[0]
+                        for column_name, info in user_choices.items():
+                            day_key_part = column_name.split('_')[0]
                             status_key = f"day_mode_{day_key_part}" if is_wide_view else f"mobile_day_mode_{day_key_part}"
                             day_status = st.session_state.get(status_key, "בחר במשמרות")
         
@@ -911,27 +911,27 @@ else:
         
                             # 🛠️ החרגה לפיילוט: אם הדגל פעיל ובסופ"ש - נאלץ אוטומטית "לא יכול" (X) בגיליון [index]
                             if DISABLE_pilot and is_col_weekend:
-                                payload[col_name] = "ח"
+                                payload[column_name] = "ח"
                             elif "🟢" in day_status or "יכול הכל" in day_status: # בדיקה כפולה של טקטס או צבע נקודה  
-                                payload[col_name] = "V"
+                                payload[column_name] = "V"
                             elif "🔴" in day_status or "לא יכול" in day_status:
-                                payload[col_name] = "X"
+                                payload[column_name] = "X"
                             elif "🌴" in day_status or "חופשה" in day_status:
-                                payload[col_name] = "ח"
+                                payload[column_name] = "ח"
                             else:
                                 is_cannot = info.get("cannot") or info.get("all_not_selected")
                                 is_pref = info.get("pref")
                                 is_can = info.get("can")
         
                                 if not (is_cannot or is_pref or is_can):
-                                    payload[col_name] = "V"
+                                    payload[column_name] = "V"
                                 else:
                                     if is_cannot:
-                                        payload[col_name] = "X"
+                                        payload[column_name] = "X"
                                     elif is_pref:
-                                        payload[col_name] = "מ.ש"
+                                        payload[column_name] = "מ.ש"
                                     else:
-                                        payload[col_name] = "V"
+                                        payload[column_name] = "V"
         
                         try:
                             res_submit = requests.post(SCRIPT_URL, json=payload, timeout=20)

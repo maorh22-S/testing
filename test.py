@@ -694,6 +694,8 @@ else:
                     else:
                         current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
                         current_shift_cannot = shift_data2.get("cannot", False)
+
+                    
                     if current_shift_can:
                         day_has_can = True
                     if current_shift_cannot:

@@ -689,8 +689,8 @@ else:
             
                     # שליפה ישירה מותאמת למצב טבלה מול מובייל
                     if is_wide_view:
-                        current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
-                        current_shift_cannot = shift_data2.get("cannot", False)
+                        current_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
+                        current_shift_cannot = shift_data.get("cannot", False)
                     else:
                         current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
                         current_shift_cannot = shift_data2.get("cannot", False)

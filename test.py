@@ -684,7 +684,7 @@ else:
                         continue
             
                     column_name = f"{day_key}_{s_info['en']}"
-                    shift_data2 = user_choices.get(column_name, {})
+                    shift_data = user_choices.get(column_name, {})
                     shift_key = s_info['en']
             
                     # שליפה ישירה מותאמת למצב טבלה מול מובייל
@@ -692,8 +692,8 @@ else:
                         current_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
                         current_shift_cannot = shift_data.get("cannot", False)
                     else:
-                        current_shift_can = shift_data2.get("can", False) or shift_data2.get("pref", False)
-                        current_shift_cannot = shift_data2.get("cannot", False)
+                        current_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
+                        current_shift_cannot = shift_data.get("cannot", False)
 
                     
                     if current_shift_can:

@@ -784,14 +784,15 @@ else:
                     
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
                     day_status = st.session_state.get(status_key, "בחר במשמרות")
-                    
+
+                    # --- בדיקת דיבוג זמנית ---
+                    st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
+                    # -------------------------  
                     
                     for s_info in משמרות:
                         column_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(column_name, {})
-                        # --- בדיקת דיבוג זמנית ---
-                        st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
-                        # -------------------------  
+                        
                         if is_vacation:
                             st.write(f"יום {day_key} | day_status={day_status} | is_vacation={is_vacation}")
                             continue

@@ -525,8 +525,7 @@ else:
                 
                         # 3. יצירת רכיב הרדיו במחשב
                         day_choice = st.radio(
-                            f"בחר סטטוס ליום {d_info['he']}",
-                            ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
+                            f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
                             key=radio_key,
                             index=default_index,
                             horizontal=False,
@@ -595,7 +594,7 @@ else:
                         is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
                         is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
                         if is_bodekt_saturday:
-                            default_index = 2
+                            default_index = 3
                             st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
                             st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
                         elif is_pilot_weekend:
@@ -607,8 +606,7 @@ else:
                             
                         should_disable_day = False
                         day_choice = st.radio(
-                            f"בחר סטטוס ליום {d_info['he']}",
-                            ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
+                            f"בחר סטטוס ליום {d_info['he']}", ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
                             key=mobile_radio_key,
                             index=default_index,
                             horizontal=False,
@@ -679,9 +677,9 @@ else:
                 else:
                     day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
         
-                is_all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
-                is_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
-                is_all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
+                all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
+                all_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
+                all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
                 # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
                 is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
@@ -710,8 +708,8 @@ else:
                     if current_shift_cannot:
                         day_has_cannot = True
                     
-                    is_can_selected = (current_shift_can or is_all_can or is_vacation) and not is_all_not
-                    is_cannot_selected = current_shift_cannot or is_all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
+                    is_can_selected = (current_shift_can or all_can or all_vacation) and not all_not
+                    is_cannot_selected = current_shift_cannot or all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
             
                     if is_can_selected:
                         if shift_key in ["open_T", "Morning"]:
@@ -802,8 +800,8 @@ else:
                         column_name = f"{day_key}_{s_info['en']}"
                         shift_data = user_choices.get(column_name, {})
                         
-                        if is_vacation:
-                            st.write(f"יום {day_key} | day_status={day_status} | is_vacation={is_vacation}")
+                        if all_vacation:
+                            st.write(f"יום {day_key} | day_status={day_status} | all_vacation={all_vacation}")
                             continue
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
 

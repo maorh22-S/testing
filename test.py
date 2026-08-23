@@ -535,8 +535,6 @@ else:
                         )
         
         
-        
-        
                         
                         all_can = (day_choice == "🟢 יכול הכל היום")
                         all_not = (day_choice == "🔴 לא יכול היום")
@@ -560,15 +558,26 @@ else:
                             
                             default_can = False if is_blocked else all_can
                             default_not = True if is_blocked else (all_not or all_vacation)
-                            
+                    
+                            # בדיקה האם יש כבר ערך שמור ב-session_state, אחרת משתמשים בברירת המחדל
+                            current_can_val = st.session_state.get(f"can_check_{column_name}", default_can)
+                            current_not_val = st.session_state.get(f"not_check_{column_name}", default_not)
+                            current_pref_val = st.session_state.get(f"pref_check_{column_name}", False)
+                    
                             if is_blocked or all_vacation:
                                 final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
                                 st.checkbox(final_reason, key=f"not_check_{column_name}", value=True, disabled=True)
-                                user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                                user_choices[column_name] = {
+                                    "can": False,  "cannot": True,"pref": False, "day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation
+                                }
                             else:
-                                can_work = st.checkbox("יכול 👍", key=f"can_check_{column_name}", value=default_can)
-                                cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=default_not)
-                                prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"pref_check_{column_name}", value=False)
+                                can_work = st.checkbox("יכול 🤞", key=f"can_check_{column_name}", value=current_can_val)
+                                cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=current_not_val)
+                                prefer_not = st.checkbox("עדיף 💧", key=f"pref_check_{column_name}", value=current_pref_val)
+                                
+                                user_choices[column_name] = {
+                                    "can": can_work, "cannot": cannot_work, "pref": prefer_not,"day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": all_vacation
+                                }
                                 user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
         
 

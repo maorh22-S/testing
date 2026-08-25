@@ -911,19 +911,27 @@ else:
             
                         # חסימת כפילות במשמרת ספציפית
                         if is_shift_can and is_shift_cannot:
-                            errors_list.append(f"!.לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ביום {day_he} במשמרת {s_info.get('he', '')}")
+                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {s_info.get('he', '')}"
+                            if err_msg not in errors_list:
+                                errors_list.append(err_msg)
             
                     # =====================================================================
                     # בדיקות סתירות ברמת היום (חייבות להיות כאן, בתוך לולאת הימים!)
                     # =====================================================================
                     if all_can and day_has_cannot:
-                        errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת במקביל משמרת כ'לא יכול'")
-            
-                    if all_not and day_has_can:
-                        errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת במקביל משמרת כ'יכול'")
-            
-                    if all_vacation and (day_has_can or day_has_cannot):
-                        errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימני משמרות באותו יום")
+                        err_msg = f"ב{day_he}: בחרת 'יכול הכל היום' אך סימנת במקביל משמרת כ'לא יכול'"
+                        if err_msg not in errors_list:
+                            errors_list.append(err_msg)
+                    
+                    elif all_not and day_has_can:
+                        err_msg = f"ב{day_he}: בחרת 'לא יכול הכל היום' אך סימנת במקביל משמרת כ'יכול'"
+                        if err_msg not in errors_list:
+                            errors_list.append(err_msg)
+                    
+                    elif all_vacation and (day_has_can or day_has_cannot):
+                        err_msg = f"ב{day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום"
+                        if err_msg not in errors_list:
+                            errors_list.append(err_msg)
 
                 if errors_list:
                     st.error("🚫 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")

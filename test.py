@@ -37,6 +37,16 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
 
     return is_blocked, block_reason
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def render_disabled_box(label_text):
+    st.markdown(
+        f"""
+        <div style="display: flex; align-items: center; gap: 8px; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; border: 2px solid #ccc; background-color: #e0e0e0; border-radius: 3px;"></div>
+            <span style="color: #666; font-size: 14px;">{label_text}</span>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # הגדרת הודעות טקסט בעברית 
@@ -565,14 +575,16 @@ else:
                     
                             if is_blocked or all_vacation:
                                 final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
-                                st.checkbox(final_reason, key=f"not_check_{column_name}", value=False, disabled=True)
+                                # קריאה לפונקציה שיצרנו עם הטקסט המתאים
+                                render_disabled_box(final_reason)
+                                # st.checkbox(final_reason, key=f"not_check_{column_name}", value=False, disabled=True)
                                 user_choices[column_name] = {
                                     "can": False,  "cannot": False,"pref": False, "day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation
                                 }
                             else:
                                 can_work = st.checkbox("יכול 🤞", key=f"can_check_{column_name}", value=current_can_val)
                                 cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=current_not_val)
-                                prefer_not = st.checkbox("עדיף 💧", key=f"pref_check_{column_name}", value=current_pref_val)
+                                prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"pref_check_{column_name}", value=current_pref_val)
                                 
                                 user_choices[column_name] = {
                                     "can": can_work, "cannot": cannot_work, "pref": prefer_not,"day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": all_vacation
@@ -637,13 +649,15 @@ else:
                             st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
                             
                             default_can = False if is_blocked else all_can
-                            default_not = True if is_blocked else (all_not or all_vacation)
+                            default_not = False if is_blocked else (all_not or all_vacation)
                             
                             if is_blocked or all_vacation:
                                 final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
+                                # קריאה לפונקציה שיצרנו עם הטקסט המתאים
+                                render_disabled_box(final_reason)
                                 # 🛠️ וידוא שימוש במפתח ייחודי m_ לחסימות מובייל
-                                st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=True, disabled=True)
-                                user_choices[column_name] = {"can": False, "cannot": True, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
+                                st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=False, disabled=True)
+                                user_choices[column_name] = {"can": False, "cannot": False, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
                             else:
                                 # 🛠️ וידוא שימוש במפתח ייחודי m_ לתיבות הסימון הפתוחות במובייל למניעת Duplicate Key
                                 can_work = st.checkbox("יכול 👍", key=f"m_can_check_{column_name}", value=default_can)

@@ -818,7 +818,7 @@ else:
                         shift_data = user_choices.get(column_name, {})
 
                         if all_not:
-                        cannot_count += 1
+                           cannot_count += 1
                         
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
 

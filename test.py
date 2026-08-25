@@ -785,87 +785,84 @@ else:
                     st.stop()
         
                 # --- # 2. מעבר לבדיקת סתירות לוגיות והגבלת משמרות "לא יכול" (שורות 654 ואילך) ---
+                # -------------------------------------------------------------------------
+                # לולאת בדיקת ימים וסתירות (כולל שורות הדיבוג שלך)
+                # -------------------------------------------------------------------------
                 has_error = False
                 errors_list = []
-                cannot_count = 0  # מונה שבועי למשמרות "לא יכול"
-                
-                # שליפת המגבלה המקסימלית של "לא יכול" לפי התפקיד מתוך ה- (ברירת המחדל היא 5) [index]
+                cannot_count = 0
+            
                 max_cannot_allowed = current_reqs.get("max_cannot", 5)
-                
+            
                 for d_info in ימים:
                     day_key = d_info['en']
                     day_he = d_info['he']
                     
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
                     day_status = st.session_state.get(status_key, "בחר במשמרות")
-                    
+            
                     all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
                     all_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
                     all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
-
+                    if all_not:
+                        cannot_count += 1
+            
+                    # איפוס משתני עזר ליום הנוכחי
                     day_has_can = False
                     day_has_cannot = False
-                    
-
-                    # --- בדיקת דיבוג זמנית ---
-                    st.info(f"🔍  דיבוג א {day_he}: סטטוס יומי=[{day_status}] | has_can = {day_has_can} | has_cannot = {day_has_cannot}")
-                    # -------------------------  
-                    
+            
+                    # מעבר על משמרות היום
                     for s_info in משמרות:
                         shift_en = s_info.get('en', '')
-                        column_name = f"{day_key}_{s_info['en']}"
+                        column_name = f"{day_key}_{shift_en}"
                         shift_data = user_choices.get(column_name, {})
-
-                        if all_not:
-                           cannot_count += 1
                         
+                        # שורת הדיבוג שלך למפתחות
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
-
-                            
+            
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
-                
-                        # --- שליפה נקישה ובטוחה עם מנגנון גיבוי כפול למניעת באגי מפתחות ---
+            
                         can_val = (
                             st.session_state.get(f"can_check_{column_name}", False) or
                             st.session_state.get(f"m_can_check_{column_name}", False) or
                             shift_data.get("can", False) or
                             shift_data.get("pref", False)
                         )
-                
+            
                         pref_val = (
                             st.session_state.get(f"pref_check_{column_name}", False) or
                             st.session_state.get(f"m_pref_check_{column_name}", False)
                         )
-                
+            
                         not_val = (
                             st.session_state.get(f"not_check_{column_name}", False) or
                             st.session_state.get(f"m_not_check_{column_name}", False) or
                             shift_data.get("cannot", False)
                         )
-                
+            
                         is_shift_can = can_val or pref_val
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
                         
+                        # שורת הדיבוג שלך למשמרת
                         st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
-                
+            
                         if can_val or pref_val or "🟢 יכול הכל היום" in day_status:
                             day_has_can = True
-                
+            
                         if not_val or "לא יכול" in day_status:
                             day_has_cannot = True
-                
+            
+                        # שורת הדיבוג שלך לבדיקת משמרת
                         st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
-                
-                        # בדיקת דיבוג נקייה שנדפס רק אם באמת נמצא סימון
+            
                         if is_shift_can or is_shift_cannot:
                             st.write(f"💙 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
-                
+            
                         is_weekend = day_key in ['Friday', 'Saturday']
-                
-                        # א. בדיקת סטטוס "לא יכול" במשמרת הנוכחית
+            
                         if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
                             is_shift_cannot = True
                         elif is_shift_cannot or "🔴" in day_status or "לא יכול היום" in day_status:
@@ -873,28 +870,27 @@ else:
                             day_has_cannot = True
                             is_night = s_info.get('en') == 'Night'
                             is_support = s_info.get('en') == 'Support'
-                
+            
                             if not ((is_night and DISABLE_pilot) or is_support):
                                 cannot_count += 1
-                
-                        # ב. בדיקת סטטוס "יכול" או "מ.ש" במשמרת הנוכחית
+            
                         if is_shift_can or is_shift_pref:
                             is_shift_can = True
                             day_has_can = True
-                
-                        # [index] בדיקה אם סומן גם 'יכול' וגם 'לא יכול' באותה משמרת ספציפית - [חסימת כפילות]
+            
+                        # חסימת כפילות במשמרת ספציפית
                         if is_shift_can and is_shift_cannot:
-                            errors_list.append(f"!.לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד במשורת {day_he} במשמרת {s_info.get('he', '')}:")
-                
-                    # =========================================================================
-                    # בדיקות סתירות ברמת היום (מחוץ ללולאת המשמרות, בסוף הריצה על כל יום)
-                    # =========================================================================
+                            errors_list.append(f"!.לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ביום {day_he} במשמרת {s_info.get('he', '')}")
+            
+                    # =====================================================================
+                    # בדיקות סתירות ברמת היום (חייבות להיות כאן, בתוך לולאת הימים!)
+                    # =====================================================================
                     if all_can and day_has_cannot:
                         errors_list.append(f"ביום {day_he}: בחרת 'יכול הכל היום' אך סימנת במקביל משמרת כ'לא יכול'")
-                
+            
                     if all_not and day_has_can:
                         errors_list.append(f"ביום {day_he}: בחרת 'לא יכול היום' אך סימנת במקביל משמרת כ'יכול'")
-                
+            
                     if all_vacation and (day_has_can or day_has_cannot):
                         errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימני משמרות באותו יום")
 

@@ -615,7 +615,7 @@ else:
                                 day_he=d_info['he'], 
                                 shift_he=s_info.get('he', ''), 
                                 errors_list=errors_list
-                            )
+                            ) 
 
 #================ חלק 6.2 מוגמר ומיועל =======================
             # .2 מסלול נייד 

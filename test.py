@@ -556,7 +556,7 @@ else:
                             st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
                             
                             default_can = False if is_blocked else all_can
-                            default_not = True if is_blocked else (all_not or all_vacation)
+                            default_not = False if is_blocked else (all_not or all_vacation)
                     
                             # בדיקה האם יש כבר ערך שמור ב-session_state, אחרת משתמשים בברירת המחדל
                             current_can_val = st.session_state.get(f"can_check_{column_name}", default_can)
@@ -565,9 +565,9 @@ else:
                     
                             if is_blocked or all_vacation:
                                 final_reason = "🌴 חופשה" if all_vacation and not is_blocked else block_reason
-                                st.checkbox(final_reason, key=f"not_check_{column_name}", value=True, disabled=True)
+                                st.checkbox(final_reason, key=f"not_check_{column_name}", value=False, disabled=True)
                                 user_choices[column_name] = {
-                                    "can": False,  "cannot": True,"pref": False, "day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation
+                                    "can": False,  "cannot": False,"pref": False, "day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation
                                 }
                             else:
                                 can_work = st.checkbox("יכול 🤞", key=f"can_check_{column_name}", value=current_can_val)
@@ -888,7 +888,7 @@ else:
                             is_night = s_info.get('en') == 'Night'
                             is_support = s_info.get('en') == 'Support'
             
-                            if not ((is_night and DISABLE_pilot) or is_support):
+                            if not ((is_night and DISABLE_pilot) or is_support): # בזמן פיילוט, אם אדם סימן "לא יכול" במשמרת לילה, או אם זו משמרת תמיכה (Support) — המשמרת הזו לא תיספר במכסת הפסילות - החרגה של משמרות מסוימות ממכסת הפסילות
                                 cannot_count += 1
             
                         if is_shift_can or is_shift_pref:

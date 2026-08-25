@@ -791,6 +791,8 @@ else:
                 for d_info in ימים:
                     day_key = d_info['en']
                     day_he = d_info['he']
+                    day_has_can = False
+                    day_has_cannot = False
                     
                     status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
                     day_status = st.session_state.get(status_key, "בחר במשמרות")
@@ -802,8 +804,7 @@ else:
                     if all_not:
                         cannot_count += 1
             
-                    day_has_can = False
-                    day_has_cannot = False
+                    
             
                     # מעבר על משמרות היום
                     for s_info in משמרות:

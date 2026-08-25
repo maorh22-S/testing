@@ -814,10 +814,9 @@ else:
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
             
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
-                            st.session_state[f"can_check_{column_name}"] = False
-                            st.session_state[f"m_can_check_{column_name}"] = False
-                            st.session_state[f"not_check_{column_name}"] = False
-                            st.session_state[f"m_not_check_{column_name}"] = False
+                            can_val = False
+                            pref_val = False
+                            not_val = False
                             continue
             
                         can_val = (

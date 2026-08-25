@@ -512,6 +512,7 @@ else:
         # פתיחת ה-form החוקי, ההרמטי והמלא שעוצר את ריענוני התיבות
         with st.form(key="shifts_form"):
             user_choices = {}
+            errors_list = []
             current_role = str(st.session_state.get("user_role", "")).strip()
             
             # סנכרון משתנה התצוגה מול הבחירה שלך בחלק 5 (view_style_opt)

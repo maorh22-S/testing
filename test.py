@@ -854,7 +854,7 @@ else:
                         is_weekend = day_key in ['Friday', 'Saturday']
             
                         if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
-                            is_shift_cannot = True
+                            continue
                         elif is_shift_cannot or "🔴" in day_status or "לא יכול היום" in day_status:
                             is_shift_cannot = True
                             day_has_cannot = True

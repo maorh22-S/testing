@@ -48,6 +48,24 @@ def render_disabled_box(label_text):
         unsafe_allow_html=True
     )
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_list):
+    """בודקת סתירות פנימיות בתוך משמרת ספציפית ומוסיפה לרשימת השגיאות ללא כפילויות"""
+    if is_can and is_cannot:
+        err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {shift_he}"
+        if err_msg not in errors_list:
+            errors_list.append(err_msg)
+
+    elif is_can and is_pref:
+        err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {shift_he}"
+        if err_msg not in errors_list:
+            errors_list.append(err_msg)
+
+    elif is_cannot and is_pref:
+        err_msg = f"לא ניתן לסמן גם 'לא יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {shift_he}"
+        if err_msg not in errors_list:
+            errors_list.append(err_msg)
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 # הגדרת הודעות טקסט בעברית 
 MSG_TITLE = "📋 מערכת סידור משמרות שבועי"
@@ -589,8 +607,15 @@ else:
                                 user_choices[column_name] = {
                                     "can": can_work, "cannot": cannot_work, "pref": prefer_not,"day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": all_vacation
                                 }
-                                user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
-        
+
+                            check_shift_conflicts(
+                                is_can=can_work, 
+                                is_cannot=cannot_work, 
+                                is_pref=prefer_not, 
+                                day_he=d_info['he'], 
+                                shift_he=s_info.get('he', ''), 
+                                errors_list=errors_list
+                            )
 
 #================ חלק 6.2 מוגמר ומיועל =======================
             # .2 מסלול נייד 
@@ -664,7 +689,15 @@ else:
                                 cannot_work = st.checkbox("לא יכול ❌", key=f"m_not_check_{column_name}", value=default_not)
                                 prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"m_pref_check_{column_name}", value=False)
                                 user_choices[column_name] = {"can": can_work, "cannot": cannot_work, "pref": prefer_not, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": False}
-    
+
+                            check_shift_conflicts(
+                                is_can=can_work, 
+                                is_cannot=cannot_work, 
+                                is_pref=prefer_not, 
+                                day_he=d_info['he'], 
+                                shift_he=s_info.get('he', ''), 
+                                errors_list=errors_list
+                            )
 
 
 #***********************************************************************************************************************
@@ -884,14 +917,21 @@ else:
             
                         # חסימת כפילות במשמרת ספציפית
                         if is_shift_can and is_shift_cannot:
-                            errors_list.append(f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ביום {day_he} במשמרת {s_info.get('he', '')}")
+                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {s_info.get('he', '')}"
+                            if err_msg not in errors_list:
+                                errors_list.append(err_msg)
+                        
+                        elif is_shift_can and is_shift_pref:
+                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {s_info.get('he', '')}"
+                            if err_msg not in errors_list:
+                                errors_list.append(err_msg)
+                        
+                        elif is_shift_cannot and is_shift_pref:
+                            err_msg = f"לא ניתן לסמן גם 'לא יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {s_info.get('he', '')}"
+                            if err_msg not in errors_list:
+                                errors_list.append(err_msg)
             #==================================================================================================================================
-                        # שורת הדיבוג שלך לבדיקת משמרת
-                        st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
-            
-                        if is_shift_can or is_shift_cannot:
-                            st.write(f"💙 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
-            
+                        
                         is_weekend = day_key in ['Friday', 'Saturday']
             
                         if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
@@ -909,29 +949,6 @@ else:
                             is_shift_can = True
                             day_has_can = True
             
-                        # חסימת כפילות במשמרת ספציפית
-                        if is_shift_can and is_shift_cannot:
-                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {s_info.get('he', '')}"
-                            if err_msg not in errors_list:
-                                errors_list.append(err_msg)
-            
-                    # =====================================================================
-                    # בדיקות סתירות ברמת היום (חייבות להיות כאן, בתוך לולאת הימים!)
-                    # =====================================================================
-                    if all_can and day_has_cannot:
-                        err_msg = f"ב{day_he}: בחרת 'יכול הכל היום' אך סימנת במקביל משמרת כ'לא יכול'"
-                        if err_msg not in errors_list:
-                            errors_list.append(err_msg)
-                    
-                    elif all_not and day_has_can:
-                        err_msg = f"ב{day_he}: בחרת 'לא יכול הכל היום' אך סימנת במקביל משמרת כ'יכול'"
-                        if err_msg not in errors_list:
-                            errors_list.append(err_msg)
-                    
-                    elif all_vacation and (day_has_can or day_has_cannot):
-                        err_msg = f"ב{day_he}: בחרת 'חופשה מאושרת' אך ישנם סימוני משמרות באותו יום"
-                        if err_msg not in errors_list:
-                            errors_list.append(err_msg)
 
                 if errors_list:
                     st.error("🚫 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")

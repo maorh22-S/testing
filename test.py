@@ -691,6 +691,9 @@ else:
                 
                 # [index] אם נבחר "חופשה מאושרת", דלג ליום הבא בלי לספור משמרות כזמינות
                 if all_vacation:
+                    count_morning += 1
+                    count_afternoon += 1
+                    count_night += 1
                     continue
             
                 # [index] לולאה רגילה לספירת משמרות בודדות

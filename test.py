@@ -656,7 +656,7 @@ else:
                                 # קריאה לפונקציה שיצרנו עם הטקסט המתאים
                                 render_disabled_box(final_reason)
                                 # 🛠️ וידוא שימוש במפתח ייחודי m_ לחסימות מובייל
-                                st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=False, disabled=True)
+                                # st.checkbox(final_reason, key=f"m_not_check_{column_name}", value=False, disabled=True)
                                 user_choices[column_name] = {"can": False, "cannot": False, "pref": False, "day_hebrew": d_info['he'], "shift_hebrew": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation}
                             else:
                                 # 🛠️ וידוא שימוש במפתח ייחודי m_ לתיבות הסימון הפתוחות במובייל למניעת Duplicate Key

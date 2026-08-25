@@ -606,8 +606,8 @@ else:
                                 user_choices[column_name] = {
                                     "can": can_work, "cannot": cannot_work, "pref": prefer_not,"day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": all_vacation
                                 }
-
-                                check_shift_conflicts(is_can=can_work, is_cannot=cannot_work, is_pref=prefer_not, day_he=d_info['he'], shift_he=s_info.get('he', ''), errors_list=errors_list)
+                                
+                            check_shift_conflicts(is_can=can_work, is_cannot=cannot_work, is_pref=prefer_not, day_he=d_info['he'], shift_he=s_info.get('he', ''), errors_list=errors_list)
 
 #================ חלק 6.2 מוגמר ומיועל =======================
             # .2 מסלול נייד 

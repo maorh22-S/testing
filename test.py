@@ -715,7 +715,7 @@ else:
             
                     if current_shift_can:
                         day_has_can = True
-                        if shift_key in ["open_T", "Morning"]:
+                        if shift_key in ["Morning"]:
                             count_morning += 1
                         elif shift_key == "Afternoon":
                             count_afternoon += 1

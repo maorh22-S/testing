@@ -767,31 +767,25 @@ else:
         
             # --- תחילת לוגיקת העיבוד לאחר לחיצה ---
             if submit_button and not is_submission_blocked:
-                errors = []
+                errors_list = []
                 # בדיקת עמידה במכסות המינימום הארגוניות
                 if count_morning < current_reqs.get("morning", 0):
-                    errors.append(f"בוקר סומנו {count_morning}/{current_reqs.get('morning', 0)}")
+                    errors_list.append(f"בוקר סומנו {count_morning}/{current_reqs.get('morning', 0)}")
                 if count_afternoon < current_reqs.get("afternoon", 0):
-                    errors.append(f"צהריים סומנו {count_afternoon}/{current_reqs.get('afternoon', 0)}")
+                    errors_list.append(f"צהריים סומנו {count_afternoon}/{current_reqs.get('afternoon', 0)}")
                 if count_night < current_reqs.get("night", 0):
-                    errors.append(f"לילה סומנו {count_night}/{current_reqs.get('night', 0)}")
+                    errors_list.append(f"לילה סומנו {count_night}/{current_reqs.get('night', 0)}")
                 if total_submitted < current_reqs.get("total", 0):
-                    errors.append(f"סך הכל משמרות לשבוע סומנו {total_submitted}/{current_reqs.get('total', 0)}")
+                    errors_list.append(f"סך הכל משמרות לשבוע סומנו {total_submitted}/{current_reqs.get('total', 0)}")
                     
-                if errors:
-                    st.error("🚨 לא ניתן לשלוח! חסר לך מכסת מינימום במשמרות הבאות:")
-                    for err in errors:
-                        st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
-                    st.stop()
+               
         
-                # --- # 2. מעבר לבדיקת סתירות לוגיות והגבלת משמרות "לא יכול" (שורות 654 ואילך) ---
+                #   מעבר לבדיקת סתירות לוגיות והגבלת משמרות "לא יכול"  ---
                 # -------------------------------------------------------------------------
-                # לולאת בדיקת ימים וסתירות (כולל שורות הדיבוג שלך)
+                # לולאת בדיקת ימים וסתירות 
                 # -------------------------------------------------------------------------
                 has_error = False
-                errors_list = []
                 cannot_count = 0
-            
                 max_cannot_allowed = current_reqs.get("max_cannot", 5)
             
                 for d_info in ימים:
@@ -808,7 +802,6 @@ else:
                     if all_not:
                         cannot_count += 1
             
-                    # איפוס משתני עזר ליום הנוכחי
                     day_has_can = False
                     day_has_cannot = False
             
@@ -818,7 +811,7 @@ else:
                         column_name = f"{day_key}_{shift_en}"
                         shift_data = user_choices.get(column_name, {})
                         
-                        # שורת הדיבוג שלך למפתחות
+                        # שורות דיבוג
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
             
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
@@ -846,7 +839,6 @@ else:
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
                         
-                        # שורת הדיבוג שלך למשמרת
                         st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
             
                         if can_val or pref_val or "🟢 יכול הכל היום" in day_status:
@@ -855,6 +847,32 @@ else:
                         if not_val or "לא יכול" in day_status:
                             day_has_cannot = True
             
+                        st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
+            
+                        if is_shift_can or is_shift_cannot:
+                            st.write(f"💙 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
+            
+                        is_weekend = day_key in ['Friday', 'Saturday']
+            
+                        if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
+                            is_shift_cannot = True
+                        elif is_shift_cannot or "🔴" in day_status or "לא יכול היום" in day_status:
+                            is_shift_cannot = True
+                            day_has_cannot = True
+                            is_night = s_info.get('en') == 'Night'
+                            is_support = s_info.get('en') == 'Support'
+            
+                            if not ((is_night and DISABLE_pilot) or is_support):
+                                cannot_count += 1
+            
+                        if is_shift_can or is_shift_pref:
+                            is_shift_can = True
+                            day_has_can = True
+            
+                        # חסימת כפילות במשמרת ספציפית
+                        if is_shift_can and is_shift_cannot:
+                            errors_list.append(f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ביום {day_he} במשמרת {s_info.get('he', '')}")
+            #==================================================================================================================================
                         # שורת הדיבוג שלך לבדיקת משמרת
                         st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
             
@@ -894,6 +912,11 @@ else:
                     if all_vacation and (day_has_can or day_has_cannot):
                         errors_list.append(f"ביום {day_he}: בחרת 'חופשה מאושרת' אך ישנם סימני משמרות באותו יום")
 
+                if errors_list:
+                    st.error("🚫 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")
+                    for err in errors_list:
+                        st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
+                    st.stop()  # עצירת הסקריפט מונעת מהשמירה לרוץ אם יש אפילו שגיאה אחת!
                 # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---
                 else:
                     with st.spinner(MSG_SPINNER_SAVE):

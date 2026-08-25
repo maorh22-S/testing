@@ -814,9 +814,6 @@ else:
                         st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
             
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
-                            can_val = False
-                            pref_val = False
-                            not_val = False
                             continue
             
                         can_val = (
@@ -916,7 +913,9 @@ else:
 
                 if errors_list:
                     st.error("🚫 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")
-                    for err in errors_list:
+                    # מסנן כפילויות ושומר על סדר ההופעה המקורי
+                    unique_errors = list(dict.fromkeys(errors_list))
+                    for err in unique_errors:
                         st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
                     st.stop()  # עצירת הסקריפט מונעת מהשמירה לרוץ אם יש אפילו שגיאה אחת!
                 # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---

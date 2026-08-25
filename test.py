@@ -49,7 +49,6 @@ def render_disabled_box(label_text):
     )
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_list):
-    """בודקת סתירות פנימיות בתוך משמרת ספציפית ומוסיפה לרשימת השגיאות ללא כפילויות"""
     if is_can and is_cannot:
         err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {shift_he}"
         if err_msg not in errors_list:

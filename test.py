@@ -681,37 +681,40 @@ else:
                 all_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
                 all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
             
-                # אם סומן "יכול הכל" או "חופשה מאושרת" ברמת היום, הוסף מיד 1 לכל סוגי המשמרות של אותו יום [index]
-                is_pilot_weekend = DISABLE_pilot and (day_key in ["Friday", "Saturday"])
-        
-    
-                # לולאה רגילה לספירת משמרות בודדות [index]
+                # [index] אם נבחר "יכול הכל היום", הוסף מיד 1 לכל המשמרות ודלג ליום הבא
+                if all_can:
+                    count_morning += 1
+                    count_afternoon += 1
+                    count_night += 1
+                    count_support += 1
+                    continue
+                
+                # [index] אם נבחר "חופשה מאושרת", דלג ליום הבא בלי לספור משמרות כזמינות
+                if all_vacation:
+                    continue
+            
+                # [index] לולאה רגילה לספירת משמרות בודדות
                 for s_info in משמרות:
-                    if DISABLE_pilot and (day_key in ["Friday", "Saturday"] or s_info.get('en', '') in ["open_T", "Night"]):
+                    shift_en = s_info.get('en', '')
+                    
+                    # חסימת משמרות "פתיחת בוקר" ו"לילה" לכל השבוע במידה ו-DISABLE_pilot = True
+                    if DISABLE_pilot and shift_en in ["open_T", "Night"]:
                         continue
             
-                    column_name = f"{day_key}_{s_info['en']}"
+                    column_name = f"{day_key}_{shift_en}"
                     shift_data = user_choices.get(column_name, {})
                     shift_key = s_info['en']
             
-                    # שליפה ישירה מותאמת למצב טבלה מול מובייל
+                    # שליפה ישירה מותאמת למצב טבלה מול נייד
                     if is_wide_view:
-                       current_shift_can = st.session_state.get(f"can_check_{column_name}", shift_data.get("can", False)) or st.session_state.get(f"pref_check_{column_name}", shift_data.get("pref", False))
-                       current_shift_cannot = st.session_state.get(f"not_check_{column_name}", shift_data.get("cannot", False))
+                        current_shift_can = st.session_state.get(f"can_check_{column_name}", shift_data.get("can", False)) or st.session_state.get(f"pref_check_{column_name}", shift_data.get("pref", False))
+                        current_shift_cannot = st.session_state.get(f"not_check_{column_name}", shift_data.get("cannot", False))
                     else:
                         current_shift_can = shift_data.get("can", False) or shift_data.get("pref", False)
                         current_shift_cannot = shift_data.get("cannot", False)
-
-                    
+            
                     if current_shift_can:
                         day_has_can = True
-                    if current_shift_cannot:
-                        day_has_cannot = True
-                    
-                    is_can_selected = (current_shift_can or all_can or all_vacation) and not all_not
-                    is_cannot_selected = current_shift_cannot or all_not or (day_status in ["🔴 לא יכול היום", "לא יכול היום"])
-            
-                    if is_can_selected:
                         if shift_key in ["open_T", "Morning"]:
                             count_morning += 1
                         elif shift_key == "Afternoon":
@@ -720,7 +723,8 @@ else:
                             count_night += 1
                         elif shift_key == "Support":
                             count_support += 1
-                    elif is_cannot_selected:
+                            
+                    if current_shift_cannot:
                         cannot_count += 1
             #                
             role_requirements = {

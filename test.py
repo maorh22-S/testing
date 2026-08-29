@@ -920,17 +920,6 @@ else:
                             is_shift_can = True
                             day_has_can = True
             
-                        # חסימת כפילות במשמרת ספציפית
-                        check_shift_conflicts(
-                            is_can=is_shift_can, 
-                            is_cannot=is_shift_cannot, 
-                            is_pref=is_shift_pref, 
-                            day_he=day_he, 
-                            shift_he=s_info.get('he', ''), 
-                            errors_list=errors_list,
-                            all_can=("יכול הכל היום" in day_status),
-                            all_not=("לא יכול היום" in day_status)
-                        )
             #==================================================================================================================================
                         
                         is_weekend = day_key in ['Friday', 'Saturday']

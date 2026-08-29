@@ -66,12 +66,12 @@ def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_l
 
     # בדיקות סתירה מול הסימון הכללי ברמת היום:
     if all_can and is_cannot:
-        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'יכול הכל היום' וגם 'לא יכול' במשמרת ספציפית."
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'יכול הכל היום' וגם 'לא יכול'  ."
         if err_msg not in errors_list:
             errors_list.append(err_msg)
 
     if all_not and (is_can or is_pref):
-        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'לא יכול היום' וגם 'יכול' במשמרת ספציפית."
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'לא יכול היום' וגם 'יכול'  ."
         if err_msg not in errors_list:
             errors_list.append(err_msg)
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -886,17 +886,12 @@ else:
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
                         
-                        #st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
             
                         if can_val or pref_val or "🟢 יכול הכל היום" in day_status:
                             day_has_can = True
             
                         if not_val or "לא יכול" in day_status:
                             day_has_cannot = True
-            
-            
-                        if is_shift_can or is_shift_cannot:
-                            st.write(f"💙 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")
             
                         is_weekend = day_key in ['Friday', 'Saturday']
             

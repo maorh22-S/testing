@@ -820,7 +820,6 @@ else:
         
             # --- תחילת לוגיקת העיבוד לאחר לחיצה ---
             if submit_button and not is_submission_blocked:
-                errors_list = []
                 # בדיקת עמידה במכסות המינימום הארגוניות
                 if count_morning < current_reqs.get("morning", 0):
                     errors_list.append(f"בוקר סומנו {count_morning}/{current_reqs.get('morning', 0)}")
@@ -922,20 +921,16 @@ else:
                             day_has_can = True
             
                         # חסימת כפילות במשמרת ספציפית
-                        if is_shift_can and is_shift_cannot:
-                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {s_info.get('he', '')}"
-                            if err_msg not in errors_list:
-                                errors_list.append(err_msg)
-                        
-                        elif is_shift_can and is_shift_pref:
-                            err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {s_info.get('he', '')}"
-                            if err_msg not in errors_list:
-                                errors_list.append(err_msg)
-                        
-                        elif is_shift_cannot and is_shift_pref:
-                            err_msg = f"לא ניתן לסמן גם 'לא יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {s_info.get('he', '')}"
-                            if err_msg not in errors_list:
-                                errors_list.append(err_msg)
+                        check_shift_conflicts(
+                            is_can=is_shift_can, 
+                            is_cannot=is_shift_cannot, 
+                            is_pref=is_shift_pref, 
+                            day_he=day_he, 
+                            shift_he=s_info.get('he', ''), 
+                            errors_list=errors_list,
+                            all_can=("יכול הכל היום" in day_status),
+                            all_not=("לא יכול היום" in day_status)
+                        )
             #==================================================================================================================================
                         
                         is_weekend = day_key in ['Friday', 'Saturday']

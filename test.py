@@ -674,7 +674,7 @@ else:
                                 d_info['en'], s_info['en'], current_role, DISABLE_pilot
                             )
     
-                            # הצגת כותרת המשמרת (שורה 557 המקורית שלך)
+                            # הצגת כותרת המשמרת 
                             st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
                             
                             default_can = False if is_blocked else all_can
@@ -886,7 +886,7 @@ else:
                         is_shift_cannot = not_val
                         is_shift_pref = pref_val
                         
-                        st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
+                        #st.write(f"משמרת {column_name} | can_val={can_val} | pref_val={pref_val} | session_can={st.session_state.get(f'can_check_{column_name}')}")
             
                         if can_val or pref_val or "🟢 יכול הכל היום" in day_status:
                             day_has_can = True
@@ -894,7 +894,6 @@ else:
                         if not_val or "לא יכול" in day_status:
                             day_has_cannot = True
             
-                        st.write(f"🔍 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can} | לא יכול: {is_shift_cannot} (can_val={can_val}, not_val={not_val})")
             
                         if is_shift_can or is_shift_cannot:
                             st.write(f"💙 בדיקת משמרת [{column_name}] -> יכול: {is_shift_can}, לא יכול: {is_shift_cannot}")

@@ -726,7 +726,6 @@ else:
                 # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
                 if is_wide_view:
                     day_status = st.session_state.get(f"day_mode_{day_key}", "בחר במשמרות")
-                    st.write(f"🛑 דיבוג מצב רחב ליום {day_key}: day_status = {repr(day_status)}")
                 else:
                     day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
         
@@ -862,9 +861,6 @@ else:
                         column_name = f"{day_key}_{shift_en}"
                         shift_data = user_choices.get(column_name, {})
                         
-                        # שורות דיבוג
-                        st.write(f"🔍 דיבוג מפתחות: column_name={column_name} | not_check_key={st.session_state.get(f'not_check_{column_name}', 'לא קיים')} | m_not_check_key={st.session_state.get(f'm_not_check_{column_name}', 'לא קיים')}")
-            
                         if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                             continue
             

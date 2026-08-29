@@ -48,19 +48,30 @@ def render_disabled_box(label_text):
         unsafe_allow_html=True
     )
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_list):
+def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_list, all_can=False, all_not=False):
     if is_can and is_cannot:
-        err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד ב{day_he} במשמרת {shift_he}"
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד."
         if err_msg not in errors_list:
             errors_list.append(err_msg)
 
     elif is_can and is_pref:
-        err_msg = f"לא ניתן לסמן גם 'יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {shift_he}"
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן גם 'יכול' וגם 'מ.ש' (מעדיף שלא) יחד."
         if err_msg not in errors_list:
             errors_list.append(err_msg)
 
     elif is_cannot and is_pref:
-        err_msg = f"לא ניתן לסמן גם 'לא יכול' וגם 'מ.ש' (מעדיף שלא) יחד ב{day_he} במשמרת {shift_he}"
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן גם 'לא יכול' וגם 'מ.ש' (מעדיף שלא) יחד."
+        if err_msg not in errors_list:
+            errors_list.append(err_msg)
+
+    # בדיקות סתירה מול הסימון הכללי ברמת היום:
+    if all_can and is_cannot:
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'יכול הכל היום' וגם 'לא יכול' במשמרת ספציפית."
+        if err_msg not in errors_list:
+            errors_list.append(err_msg)
+
+    if all_not and (is_can or is_pref):
+        err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן 'לא יכול היום' וגם 'יכול' במשמרת ספציפית."
         if err_msg not in errors_list:
             errors_list.append(err_msg)
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -608,7 +619,7 @@ else:
                                     "can": can_work, "cannot": cannot_work, "pref": prefer_not,"day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": all_not, "all_vacation_selected": all_vacation
                                 }
                                 
-                                check_shift_conflicts(is_can=can_work, is_cannot=cannot_work, is_pref=prefer_not, day_he=d_info['he'], shift_he=s_info.get('he', ''), errors_list=errors_list)
+                                check_shift_conflicts(is_can=can_work, is_cannot=cannot_work, is_pref=prefer_not, day_he=d_info['he'], shift_he=s_info.get('he', ''), errors_list=errors_list,all_can=all_can, all_not=all_not)
 
 #================ חלק 6.2 מוגמר ומיועל =======================
             # .2 מסלול נייד 
@@ -689,7 +700,9 @@ else:
                                     is_pref=prefer_not, 
                                     day_he=d_info['he'], 
                                     shift_he=s_info.get('he', ''), 
-                                    errors_list=errors_list
+                                    errors_list=errors_list,
+                                    all_can=all_can,    
+                                    all_not=all_not
                                 )
 
 

@@ -1204,22 +1204,21 @@ try:
                                 {''.join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])}
                             </div>
                         """
-                        st.markdown(summary_html, unsafe_allow_html=True)
-        # הצגת הערות מהעמודה האחרונה מתחת לכל הכרטיסיות
-        if user_row:
-            all_keys = list(user_row.keys())
-            if all_keys:
-                last_col_name = all_keys[-1]
-                last_col_value = user_row.get(last_col_name, "")
-                if last_col_value:
-                    st.info(f"**הערות / מידע נוסף:** {last_col_value}")
+                        st.markdown(summary_html, unsafe_allow_html=True)   
                     
         #----                
         else:
             st.error("⚠️ לא ניתן לקרוא נתונים משרת גוגל.")
             if st.button("🔄 נסה לטעון נתונים מחדש", key="refresh_requests_failed"):
                 st.rerun()
+                # הצגת הערות מהעמודה האחרונה מתחת לכל הכרטיסיות
+if user_row:
+    all_keys = list(user_row.keys())
+    if all_keys:
+        last_col_name = all_keys[-1]
+        last_col_value = user_row.get(last_col_name, "")
+        if last_col_value:
+            st.info(f"**הערות / מידע נוסף:** {last_col_value}")
     
 except Exception as e:
-    st.error(f"🔍 פירוט השגיאה הטכנית: {str(e)}")
     st.warning(f"⚠️ שגיאה בטעינת נתוני סיכום: {e}")

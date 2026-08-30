@@ -611,7 +611,7 @@ else:
                                     "can": False,  "cannot": False,"pref": False, "day_he": d_info['he'], "shift_he": s_info['he'], "all_can_selected": all_can, "all_not_selected": True, "all_vacation_selected": all_vacation
                                 }
                             else:
-                                can_work = st.checkbox("יכול 🤞", key=f"can_check_{column_name}", value=current_can_val)
+                                can_work = st.checkbox("יכול 👍", key=f"can_check_{column_name}", value=current_can_val)
                                 cannot_work = st.checkbox("לא יכול ❌", key=f"not_check_{column_name}", value=current_not_val)
                                 prefer_not = st.checkbox("מ.ש 🤷‍♂️", key=f"pref_check_{column_name}", value=current_pref_val)
                                 

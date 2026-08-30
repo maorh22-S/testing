@@ -1,5 +1,4 @@
 #================ חלק 1 =======================
-
 import streamlit as st
 import requests
 from datetime import datetime, timedelta, timezone
@@ -176,9 +175,7 @@ if "authenticated" not in st.session_state:
 #*************************************************************************************************************************
 #================ חלק 2 =======================
 
-#================ חלק 2 מוגמר ומיועל =======================
-
-# ייעול קריטי: שליפת תאריך דינמית ואנכית מתוך לשונית Settings (מותאם במדויק למבנה שלכם)
+#  שליפת תאריך דינמית ואנכית מתוך לשונית Settings 
 # 600 אומר שזה שומר את התאריך ל 10 דקות ולא צריך כל פעם לבדוק מה מוגדר בגוגל
 @st.cache_data(ttl=600)
 def get_week_settings():
@@ -213,7 +210,7 @@ def get_week_settings():
         
     return s_date_display, e_date_display, d_list
 
-# טעינת הנתונים מהפונקציה המתוקנת
+# טעינת הנתונים מהפונקציה 
 start_date_display, end_date_display, dates_list = get_week_settings()
 
 if "reg_mode" not in st.session_state:
@@ -300,8 +297,10 @@ if not st.session_state.authenticated:
                                     else:
                                         st.error("⚠️ שגיאת תקשורת, נא לנסות שוב.")
                 
-                st.write("") # רווח קל לעיניים
-                back_button = st.button("⬅️ חזור למסך התחברות", use_container_width=True)
+                st.write("")  # רווח קל לעיניים
+                col_btn, col_space = st.columns([1, 4])
+                with col_btn:
+                    back_button = st.button("⬅️ חזור", use_container_width=False)
                 if back_button:
                     st.session_state.reg_mode = False
                     st.rerun()

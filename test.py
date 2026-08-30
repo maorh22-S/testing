@@ -1205,13 +1205,13 @@ try:
                             </div>
                         """
                         st.markdown(summary_html, unsafe_allow_html=True)   
-             if user_row:
-                all_keys = list(user_row.keys())
-                if all_keys:
-                    last_col_name = all_keys[-1]
-                    last_col_value = user_row.get(last_col_name, "")
-                    if last_col_value:
-                        st.info(f"**הערות / מידע נוסף:** {last_col_value}")
+                if user_row:
+                    all_keys = list(user_row.keys())
+                    if all_keys:
+                        last_col_name = all_keys[-1]
+                        last_col_value = user_row.get(last_col_name, "")
+                        if last_col_value:
+                            st.info(f"**הערות / מידע נוסף:** {last_col_value}")
                     
         #----                
         else:

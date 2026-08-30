@@ -296,8 +296,8 @@ if not st.session_state.authenticated:
                                         st.rerun()
                                     else:
                                         st.error("⚠️ שגיאת תקשורת, נא לנסות שוב.")
-                
-                st.write("")  # רווח קל לעיניים
+                for _ in range(4):
+                    st.write("")  # רווח קל לעיניים
                 col_btn, col_space = st.columns([1, 4])
                 with col_btn:
                     back_button = st.button("⬅️ חזור", use_container_width=False)

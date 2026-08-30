@@ -750,12 +750,11 @@ else:
             
                 # [index] לולאה רגילה לספירת משמרות בודדות
                 for s_info in משמרות:
+                    # חסימת משמרות במידה ו-DISABLE_pilot
+                    if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
+                        continue
                     shift_en = s_info.get('en', '')
                     
-                    # חסימת משמרות "פתיחת בוקר" ו"לילה" לכל השבוע במידה ו-DISABLE_pilot = True
-                    if DISABLE_pilot and shift_en in ["open_T", "Night"]:
-                        continue
-            
                     column_name = f"{day_key}_{shift_en}"
                     shift_data = user_choices.get(column_name, {})
                     shift_key = s_info['en']

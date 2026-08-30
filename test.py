@@ -1132,6 +1132,10 @@ try:
                     for col_idx, (day_idx, d_info) in enumerate(list(enumerate(dates_list))):
                         en_day = days_order_en[day_idx] if day_idx < len(days_order_en) else "Sunday"
                         he_day_name = days_order_he[day_idx] if day_idx < len(days_order_he) else "שבוע"
+
+                        # בדיקת פיילוט - דילוג על שישי ושבת
+                        if DISABLE_pilot and en_day in ['Friday', 'Saturday']:
+                            continue
                         
                         date_str = d_info.get('date', d_info) if isinstance(d_info, dict) else str(d_info)
                         main_title = date_str[:10]
@@ -1168,6 +1172,10 @@ try:
                     for day_idx, d_info in enumerate(dates_list):
                         en_day = days_order_en[day_idx] if day_idx < len(days_order_en) else "Sunday"
                         he_day_name = days_order_he[day_idx] if day_idx < len(days_order_he) else "שבוע"
+
+                        # בדיקת פיילוט - דילוג על שישי ושבת
+                        if DISABLE_pilot and en_day in ['Friday', 'Saturday']:
+                            continue
                         
                         date_str = d_info.get('date', d_info) if isinstance(d_info, dict) else str(d_info)
                         main_title = date_str[:10]

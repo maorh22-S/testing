@@ -722,6 +722,8 @@ else:
                 day_key = d_info['en']
                 day_has_can = False
                 day_has_cannot = False
+                if DISABLE_pilot and day_key in ['Friday', 'Saturday']:
+                    continue
                 
                 # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
                 if is_wide_view:

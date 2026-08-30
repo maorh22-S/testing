@@ -1221,4 +1221,5 @@ try:
                 st.rerun()
     
 except Exception as e:
+    st.error(f"🔍 פירוט השגיאה הטכנית: {str(e)}")
     st.warning(f"⚠️ שגיאה בטעינת נתוני סיכום: {e}")

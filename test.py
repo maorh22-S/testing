@@ -1197,11 +1197,6 @@ try:
                             </div>
                         """
                         st.markdown(summary_html, unsafe_allow_html=True)
-        #----                
-        else:
-            st.error("⚠️ לא ניתן לקרוא נתונים משרת גוגל.")
-            if st.button("🔄 נסה לטעון נתונים מחדש", key="refresh_requests_failed"):
-                st.rerun()
         # הצגת הערות מהעמודה האחרונה מתחת לכל הכרטיסיות
         if user_row:
             all_keys = list(user_row.keys())
@@ -1210,6 +1205,12 @@ try:
                 last_col_value = user_row.get(last_col_name, "")
                 if last_col_value:
                     st.info(f"**הערות / מידע נוסף:** {last_col_value}")
-                
+                    
+        #----                
+        else:
+            st.error("⚠️ לא ניתן לקרוא נתונים משרת גוגל.")
+            if st.button("🔄 נסה לטעון נתונים מחדש", key="refresh_requests_failed"):
+                st.rerun()
+    
 except Exception as e:
     st.warning(f"⚠️ שגיאה בטעינת נתוני סיכום: {e}")

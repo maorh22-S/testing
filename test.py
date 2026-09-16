@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timedelta, timezone
 
 # ⚙️ מפסק פיילוט: True הופך את (לילה, פתיחת בוקר כל השבוע וכל שישי-שבת) לאפורות. False פותח כרגיל.
-DISABLE_pilot = Fulse
+DISABLE_pilot = False
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):

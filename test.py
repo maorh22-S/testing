@@ -554,7 +554,7 @@ else:
                 
                         # הגדרת המפתח של הרכיב מראש
                         radio_key = f"day_mode_{d_info['en']}"
-                      """                          
+"""                          
                         # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
                         if is_bodekt_saturday:
                             default_index = 3
@@ -566,7 +566,7 @@ else:
                             st.caption("🔒 חסום ")
                         else:
                             default_index = 0
-                        """
+"""
                         # 3. יצירת רכיב הרדיו במחשב
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],

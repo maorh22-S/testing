@@ -545,7 +545,10 @@ else:
                     with days_cols[day_idx].container(border=True):
                         st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
                         st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
-                     
+
+                        # הגדרת המפתח של הרכיב מראש
+                        radio_key = f"day_mode_{d_info['en']}"
+                        
                         #  יצירת רכיב הרדיו במחשב
                         if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
                             render_disabled_box(" אין משמרות לבודקת בסוף השבוע")

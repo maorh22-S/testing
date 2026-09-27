@@ -571,7 +571,7 @@ else:
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
                             key=radio_key,
-                            index=default_index,
+                            index= 0,
                             horizontal=False,
                             label_visibility="collapsed",
                             disabled=should_disable_day

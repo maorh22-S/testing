@@ -574,7 +574,7 @@ else:
                             index= 0,
                             horizontal=False,
                             label_visibility="collapsed",
-                            disabled=should_disable_day
+                           # disabled=should_disable_day
                         )
         
         
@@ -654,10 +654,10 @@ else:
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}", ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
                             key=mobile_radio_key,
-                            index=default_index,
+                            index= 0,
                             horizontal=False,
                             label_visibility="collapsed",
-                            disabled=should_disable_day
+                            #disabled=should_disable_day
                         )
     
     

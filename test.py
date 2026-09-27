@@ -17,11 +17,11 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
     # שלב 1: חסימות לבודקת ביטחונית   
     if  "בדק" in current_role:
       if day_en=="Saturday": 
-          return True, "אין משמרות בשבת"
+          is_blocked = True; block_reason = "אין משמרות בשבת"
       if shift_en in ["open_T","Night"]:
-          return True, "אין משמרת"
+          is_blocked = True; block_reason = "אין משמרת"
       if day_en == "Friday" and shift_en == "Afternoon":
-          return True, "אין משמרת צהריים"
+          is_blocked = True; block_reason = "אין משמרת צהריים"
     
     # שלב 2: חסימות קבועות של הארגון (תמיד קורות)
     if day_en == "Saturday" and shift_en == "open_T":

@@ -15,7 +15,7 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
     is_blocked = False
     block_reason = "חסום ❌"
     # שלב 1: חסימות לבודקת ביטחונית   
-    if  "בדק" in current_role:
+    if  "בודקת" in current_role:
       if day_en=="Saturday": 
           is_blocked = True; block_reason = "אין משמרות בשבת"
       if shift_en in ["open_T","Night"]:
@@ -548,9 +548,9 @@ else:
     
                     
                         # 1. הגדרת מצבי החסימה של סוף השבוע
-                        is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
-        #               is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
-        #               should_disable_day = is_pilot_weekend or is_bodekt_saturday
+                        # is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
+                        # is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
+                        # should_disable_day = is_pilot_weekend or is_bodekt_saturday
                 
                         # הגדרת המפתח של הרכיב מראש
                         radio_key = f"day_mode_{d_info['en']}"

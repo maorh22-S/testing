@@ -658,13 +658,13 @@ else:
                         should_disable_day = False
                         
                         if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            # render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
+                            render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:
                             day_choice = st.radio(
                                 f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
-                                key=radio_key,
+                                key=mobile_radio_key,
                                 index= 0,
                                 horizontal=False,
                                 label_visibility="collapsed",

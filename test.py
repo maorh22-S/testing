@@ -13,26 +13,31 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
     מחזירה: (האם חסום [True/False], סיבת החסימה)
     """
     is_blocked = False
-    block_reason = "לא יכול ❌"
-
-    # 1️⃣ שלב א': חסימות קבועות של הארגון (תמיד קורות)
+    block_reason = "חסום ❌"
+    # שלב 1: חסימות לבודקת ביטחונית   
+    if  "בדק" in current_role:
+      if day_en=="Saturday": 
+          return True, "אין משמרות בשבת"
+      if shift_en in ["open_T","Night"]:
+          return True, "אין משמרת"
+      if day_en == "Friday" and shift_en == "Afternoon":
+          return True, "אין משמרת צהריים"
+    
+    # שלב 2: חסימות קבועות של הארגון (תמיד קורות)
     if day_en == "Saturday" and shift_en == "open_T":
-        is_blocked = True; block_reason = "אין משמרת"
-    elif day_en in ["Friday", "Saturday"] and shift_en == "Support":
+        is_blocked = True; block_reason = "אין פתיחת בוקר בשבת"
+    if day_en in ["Friday", "Saturday"] and shift_en == "Support":
         is_blocked = True; block_reason = "אין משמרת תמך בסוף השבוע"
-    elif "בדק" in current_role and day_en == "Friday" and shift_en in ["Afternoon", "Night"]:
-        is_blocked = True; block_reason = "אין משמרת"
-    elif "בדק" in current_role and day_en == "Saturday":
-        is_blocked = True; block_reason = "אין משמרת"
+    
 
-    # 2️⃣ שלב ב': חסימות הפיילוט (רצות רק על משמרות שלא נחסמו קודם, וכשהדגל חיובי)
+    #  שלב 3: חסימות הפיילוט (רצות רק על משמרות שלא נחסמו קודם, וכשהדגל חיובי)
     if disable_pilot_flag and not is_blocked:
         if shift_en == "Night": 
-            is_blocked = True; block_reason = " (לילה)"
-        elif shift_en in ["open_T"]: 
-            is_blocked = True; block_reason = " (פתיחת בוקר)"
-        elif day_en in ["Friday", "Saturday"]: 
-            is_blocked = True; block_reason = " (סוף שבוע)"
+            is_blocked = True; block_reason = " (אין לילה)"
+        if shift_en in ["open_T"]: 
+            is_blocked = True; block_reason = " (אין פתיחת בוקר)"
+        if day_en in ["Friday", "Saturday"]: 
+            is_blocked = True; block_reason = " (אין סוף שבוע)"
 
     return is_blocked, block_reason
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -544,12 +549,12 @@ else:
                     
                         # 1. הגדרת מצבי החסימה של סוף השבוע
                         is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
-                        is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
-                        should_disable_day = is_pilot_weekend or is_bodekt_saturday
+        #               is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
+        #               should_disable_day = is_pilot_weekend or is_bodekt_saturday
                 
                         # הגדרת המפתח של הרכיב מראש
                         radio_key = f"day_mode_{d_info['en']}"
-                
+          """                          
                         # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
                         if is_bodekt_saturday:
                             default_index = 3
@@ -561,7 +566,7 @@ else:
                             st.caption("🔒 חסום ")
                         else:
                             default_index = 0
-                
+            """
                         # 3. יצירת רכיב הרדיו במחשב
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
@@ -630,7 +635,7 @@ else:
                     with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
                         # הגדרת המפתח של הרכיב מראש למובייל
                         mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
-    
+    """
                         # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
                         is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
                         is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
@@ -644,7 +649,7 @@ else:
                             st.caption("🔒 חסום (סוף שבוע פיילוט)")
                         else:
                             default_index = 0
-                            
+        """                    
                         should_disable_day = False
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}", ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],

@@ -545,29 +545,8 @@ else:
                     with days_cols[day_idx].container(border=True):
                         st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 15px; color: #1e293b;'>📅 יום {d_info['he']}</div>", unsafe_allow_html=True)
                         st.markdown(f"<div style='text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;'>{tarih}</div>", unsafe_allow_html=True)
-    
-                    
-                        # 1. הגדרת מצבי החסימה של סוף השבוע
-                        # is_pilot_weekend = DISABLE_pilot and (d_info['en'] in ["Friday", "Saturday"])
-                        # is_bodekt_saturday = (current_role == "בודקת ביטחונית" and d_info['en'] == "Saturday")
-                        # should_disable_day = is_pilot_weekend or is_bodekt_saturday
-                
-                        # הגדרת המפתח של הרכיב מראש
-                        radio_key = f"day_mode_{d_info['en']}"
-                                               
-                        # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
-                        # if is_bodekt_saturday:
-                        #     default_index = 3
-                        #     st.session_state[radio_key] = "🌴 חופשה מאושרת" 
-                        #     st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                        # elif is_pilot_weekend:
-                        #     default_index = 3
-                        #     st.session_state[radio_key] = "🌴 חופשה מאושרת"  
-                        #     st.caption("🔒 חסום ")
-                        # else:
-                        #     default_index = 0
                      
-                        # 3. יצירת רכיב הרדיו במחשב
+                        #  יצירת רכיב הרדיו במחשב
                         if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
                             render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
@@ -579,7 +558,6 @@ else:
                                 index= 0,
                                 horizontal=False,
                                 label_visibility="collapsed",
-                               # disabled=should_disable_day
                             )
         
         
@@ -641,19 +619,6 @@ else:
                         # הגדרת המפתח של הרכיב מראש למובייל
                         mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
                        
-                        # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
-                        # is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
-                        # is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
-                        # if is_bodekt_saturday:
-                        #     default_index = 3
-                        #     st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
-                        #     st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                        # elif is_pilot_weekend:
-                        #     default_index = 3
-                        #     st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"
-                        #     st.caption("🔒 חסום (סוף שבוע פיילוט)")
-                        # else:
-                        #     default_index = 0
                                           
                         should_disable_day = False
                         
@@ -668,7 +633,6 @@ else:
                                 index= 0,
                                 horizontal=False,
                                 label_visibility="collapsed",
-                               # disabled=should_disable_day
                             )
     
     

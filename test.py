@@ -658,7 +658,7 @@ else:
                         should_disable_day = False
                         
                         if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
+                            # render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:

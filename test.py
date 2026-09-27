@@ -554,19 +554,19 @@ else:
                 
                         # הגדרת המפתח של הרכיב מראש
                         radio_key = f"day_mode_{d_info['en']}"
-                        """                          
+                                               
                         # 2. קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit כדי למנוע את הבאג
-                        if is_bodekt_saturday:
-                            default_index = 3
-                            st.session_state[radio_key] = "🌴 חופשה מאושרת" 
-                            st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                        elif is_pilot_weekend:
-                            default_index = 3
-                            st.session_state[radio_key] = "🌴 חופשה מאושרת"  
-                            st.caption("🔒 חסום ")
-                        else:
-                            default_index = 0
-                        """
+                        # if is_bodekt_saturday:
+                        #     default_index = 3
+                        #     st.session_state[radio_key] = "🌴 חופשה מאושרת" 
+                        #     st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
+                        # elif is_pilot_weekend:
+                        #     default_index = 3
+                        #     st.session_state[radio_key] = "🌴 חופשה מאושרת"  
+                        #     st.caption("🔒 חסום ")
+                        # else:
+                        #     default_index = 0
+                     
                         # 3. יצירת רכיב הרדיו במחשב
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}",  ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
@@ -635,21 +635,21 @@ else:
                     with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
                         # הגדרת המפתח של הרכיב מראש למובייל
                         mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
-                        """
+                       
                         # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
-                        is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
-                        is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
-                        if is_bodekt_saturday:
-                            default_index = 3
-                            st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
-                            st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
-                        elif is_pilot_weekend:
-                            default_index = 3
-                            st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"
-                            st.caption("🔒 חסום (סוף שבוע פיילוט)")
-                        else:
-                            default_index = 0
-                        """                    
+                        # is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
+                        # is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
+                        # if is_bodekt_saturday:
+                        #     default_index = 3
+                        #     st.session_state[mobile_radio_key] = "🔴 לא יכול היום"
+                        #     st.caption("🔒 חסום (אין משמרות לבודקות בשבת)")
+                        # elif is_pilot_weekend:
+                        #     default_index = 3
+                        #     st.session_state[mobile_radio_key] = "🌴 חופשה מאושרת"
+                        #     st.caption("🔒 חסום (סוף שבוע פיילוט)")
+                        # else:
+                        #     default_index = 0
+                                          
                         should_disable_day = False
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}", ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],
@@ -657,7 +657,7 @@ else:
                             index= 0,
                             horizontal=False,
                             label_visibility="collapsed",
-                            #disabled=should_disable_day
+                            # disabled=should_disable_day
                         )
     
     

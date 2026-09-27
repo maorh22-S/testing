@@ -635,7 +635,7 @@ else:
                     with st.expander(f"📅 יום {d_info['he']} {tarih}", expanded=False):
                         # הגדרת המפתח של הרכיב מראש למובייל
                         mobile_radio_key = f"mobile_day_mode_{d_info['en']}"
-    """
+                        """
                         # קביעת סימון אוטומטי וכפיית הערך בזיכרון של Streamlit במובייל
                         is_bodekt_saturday = st.session_state.get("is_bodekt_saturday", False)
                         is_pilot_weekend = st.session_state.get("is_pilot_weekend", False)
@@ -649,7 +649,7 @@ else:
                             st.caption("🔒 חסום (סוף שבוע פיילוט)")
                         else:
                             default_index = 0
-        """                    
+                        """                    
                         should_disable_day = False
                         day_choice = st.radio(
                             f"בחר סטטוס ליום {d_info['he']}", ["בחר במשמרות", "🟢 יכול הכל היום", "🔴 לא יכול היום", "🌴 חופשה מאושרת"],

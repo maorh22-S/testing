@@ -515,7 +515,7 @@ else:
         
         # לוגיקת חסימה מדויקת: חוסם מרביעי (2) ב-11:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
         is_submission_blocked = (
-            (now_il.weekday() == 1 and now_il.hour >= 6) or 
+            (now_il.weekday() == 0 and now_il.hour >= 6) or 
            (2 < now_il.weekday() < 4)
         )
     

@@ -550,8 +550,8 @@ else:
                         radio_key = f"day_mode_{d_info['en']}"
                         
                         #  יצירת רכיב הרדיו במחשב
-                        if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
+                        if "ת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
+                            render_disabled_box(" אין משמרות לת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:
@@ -625,8 +625,8 @@ else:
                                           
                         should_disable_day = False
                         
-                        if "בודקת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            render_disabled_box(" אין משמרות לבודקת בסוף השבוע")
+                        if "ת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
+                            render_disabled_box(" אין משמרות לת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:
@@ -769,7 +769,7 @@ else:
             role_requirements = {
             "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
             "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-            "בודק ביטחוני": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
+            "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
             "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "total": 3, "max_cannot": 10},
             "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "total": 6, "max_cannot": 3},
             "כללי": {"morning": 0, "afternoon": 0, "night": 0, "total": 0, "max_cannot": 5}

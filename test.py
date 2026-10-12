@@ -18,7 +18,7 @@ def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
     if  "בודקת" in current_role:
       if day_en=="Saturday": 
           is_blocked = True; block_reason = "אין משמרות בשבת"
-      if shift_en in ["open_T","Night"]:
+      if shift_en in ["Night"]:
           is_blocked = True; block_reason = "אין משמרת"
       if day_en == "Friday" and shift_en == "Afternoon":
           is_blocked = True; block_reason = "אין משמרת צהריים"
@@ -513,10 +513,10 @@ else:
         st.markdown(f"<div style='text-align: left; font-size: 14px; color: #475569; direction: rtl; margin-bottom: 15px;'><b>שעון מערכת (ירושלים):</b> {current_time_str} | {current_date_str}</div>", unsafe_allow_html=True)
     
         
-        # לוגיקת חסימה מדויקת: חוסם מרביעי (2) ב-11:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
+        # לוגיקת חסימה מדויקת: חוסם משלישי (1) ב-10:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
         is_submission_blocked = (
-            (now_il.weekday() == 0 and now_il.hour >= 6) or 
-           (2 < now_il.weekday() < 4)
+            (now_il.weekday() == 1 and now_il.hour >= 10) or 
+           (2 < now_il.weekday() < 5)
         )
     
 
@@ -768,7 +768,7 @@ else:
             #                
             role_requirements = {
             "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-            "בודקת ביטחונית": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
+            "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
             "בודק ביטחוני": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
             "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "total": 3, "max_cannot": 10},
             "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "total": 6, "max_cannot": 3},

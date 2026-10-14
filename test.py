@@ -771,6 +771,7 @@ else:
             #                
             role_requirements = {
             "מאבטח": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 1, "total": 10, "max_cannot": 5},
+            "מאבטח סטודנט": {"morning": 1, "afternoon": 2, "night": 2,"weekend": 1, "total": 5, "max_cannot": 10},
             "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
             "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
             "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0,"weekend": 0, "total": 3, "max_cannot": 10},

@@ -515,8 +515,8 @@ else:
         
         # לוגיקת חסימה מדויקת: חוסם משלישי (1) ב-10:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
         is_submission_blocked = (
-            (now_il.weekday() == 1 and now_il.hour >= 10) or 
-           (2 < now_il.weekday() < 5)
+            (now_il.weekday() == 4and now_il.hour >= 10) or 
+           (4 < now_il.weekday() < 5)
         )
     
 
@@ -700,6 +700,7 @@ else:
             count_night = 0
             cannot_count = 0
             count_support= 0
+            count_weekend = 0
             
             for d_info in ימים:
                 day_key = d_info['en']
@@ -762,17 +763,19 @@ else:
                             count_night += 1
                         elif shift_key == "Support":
                             count_support += 1
-                            
+                     #  בדיקה אם המשמרת הנוכחית היא בסוף שבוע (שישי או שבת)
+                    if day_key in ["Friday", "Saturday"]:
+                        count_weekend += 1
                     if current_shift_cannot:
                         cannot_count += 1
             #                
             role_requirements = {
-            "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-            "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-            "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0, "total": 10, "max_cannot": 5},
-            "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "total": 3, "max_cannot": 10},
-            "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "total": 6, "max_cannot": 3},
-            "כללי": {"morning": 0, "afternoon": 0, "night": 0, "total": 0, "max_cannot": 5}
+            "מאבטח": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
+            "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
+            "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
+            "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0,"weekend": 0, "total": 3, "max_cannot": 10},
+            "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0,"weekend": 0, "total": 6, "max_cannot": 3},
+            "כללי": {"morning": 0, "afternoon": 0, "night": 0,"weekend": 0, "total": 0, "max_cannot": 5}
             }
     
                 
@@ -812,7 +815,9 @@ else:
                     errors_list.append(f"לילה סומנו {count_night}/{current_reqs.get('night', 0)}")
                 if total_submitted < current_reqs.get("total", 0):
                     errors_list.append(f"סך הכל משמרות לשבוע סומנו {total_submitted}/{current_reqs.get('total', 0)}")
-                    
+                if count_weekend < current_reqs.get("weekend", 0):
+                    errors_list.append(f"סופ''ש סומנו {count_weekend}/{current_reqs.get('weekend', 0)}")
+                   
                
         
                 #   מעבר לבדיקת סתירות לוגיות והגבלת משמרות "לא יכול"  ---

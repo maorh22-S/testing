@@ -763,9 +763,9 @@ else:
                             count_night += 1
                         elif shift_key == "Support":
                             count_support += 1
-                     #  בדיקה אם המשמרת הנוכחית היא בסוף שבוע (שישי או שבת)
-                    if day_key in ["Friday", "Saturday"]:
-                        count_weekend += 1
+                         #  בדיקה אם המשמרת הנוכחית היא בסוף שבוע (שישי או שבת)
+                        if day_key in ["Friday", "Saturday"]:
+                            count_weekend += 1
                     if current_shift_cannot:
                         cannot_count += 1
             #                

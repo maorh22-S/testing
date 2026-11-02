@@ -740,7 +740,6 @@ else:
                     if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
                         continue
                     shift_en = s_info.get('en', '')
-                    
                     column_name = f"{day_key}_{shift_en}"
                     shift_data = user_choices.get(column_name, {})
                     shift_key = s_info['en']
@@ -767,7 +766,15 @@ else:
                         if day_key in ["Friday", "Saturday"]:
                             count_weekend += 1
                     if current_shift_cannot:
-                        cannot_count += 1
+                        # כל שאר המשמרות מוסיפות 1 כל אחת בנפרד אם סומן "לא יכול"
+                        if shift_key not in ["Morning", "open_T"]:
+                            cannot_count += 1
+                # בדיקה האם בבוקר ו/או בפתיחת בוקר מסומן "לא יכול" - מוסיף 1 בסך הכל לפעם אחת ביום
+                is_morning_cannot = st.session_state.get(f"not_check_{day_key}_Morning", False) or user_choices.get(f"{day_key}_Morning", {}).get("cannot", False)
+                is_opent_cannot = st.session_state.get(f"not_check_{day_key}_open_T", False) or user_choices.get(f"{day_key}_open_T", {}).get("cannot", False)
+                
+                if is_morning_cannot or is_opent_cannot:
+                    cannot_count += 1
             #                
             role_requirements = {
             "מאבטח": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 1, "total": 10, "max_cannot": 5},
@@ -818,120 +825,23 @@ else:
                     errors_list.append(f"סך הכל משמרות לשבוע סומנו {total_submitted}/{current_reqs.get('total', 0)}")
                 if count_weekend < current_reqs.get("weekend", 0):
                     errors_list.append(f"סופ''ש סומנו {count_weekend}/{current_reqs.get('weekend', 0)}")
-                   
-               
-        
-                #   מעבר לבדיקת סתירות לוגיות והגבלת משמרות "לא יכול"  ---
-                # -------------------------------------------------------------------------
-                # לולאת בדיקת ימים וסתירות 
-                # -------------------------------------------------------------------------
-                has_error = False
-                cannot_count = 0
+                
+                # בדיקת מגבלת מקסימום פסילות (cannot) מול המכסה המותרת בתפקיד
                 max_cannot_allowed = current_reqs.get("max_cannot", 5)
-            
-                for d_info in ימים:
-                    day_key = d_info['en']
-                    day_he = d_info['he']
-                    day_has_can = False
-                    day_has_cannot = False
-                    
-                    status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
-                    day_status = st.session_state.get(status_key, "בחר במשמרות")
-            
-                    all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
-                    all_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
-                    all_not = "לא יכול היום" in str(day_status) or "🔴" in str(day_status)
-            
-                    if all_not:
-                        cannot_count += 1
-                    
-                    # מעבר על משמרות היום
-                    for s_info in משמרות:
-                        shift_en = s_info.get('en', '')
-                        column_name = f"{day_key}_{shift_en}"
-                        shift_data = user_choices.get(column_name, {})
-                        
-                        if DISABLE_pilot and (day_key in ['Friday', 'Saturday'] or s_info.get('en', '') in ['open_T', 'Night']):
-                            continue
-            
-                        can_val = (
-                            st.session_state.get(f"can_check_{column_name}", False) or
-                            st.session_state.get(f"m_can_check_{column_name}", False) or
-                            shift_data.get("can", False) or
-                            shift_data.get("pref", False)
-                        )
-            
-                        pref_val = (
-                            st.session_state.get(f"pref_check_{column_name}", False) or
-                            st.session_state.get(f"m_pref_check_{column_name}", False)
-                        )
-            
-                        not_val = (
-                            st.session_state.get(f"not_check_{column_name}", False) or
-                            st.session_state.get(f"m_not_check_{column_name}", False) or
-                            shift_data.get("cannot", False)
-                        )
-            
-                        is_shift_can = can_val or pref_val
-                        is_shift_cannot = not_val
-                        is_shift_pref = pref_val
-                        
-            
-                        if can_val or pref_val or "🟢 יכול הכל היום" in day_status:
-                            day_has_can = True
-            
-                        if not_val or "לא יכול" in day_status:
-                            day_has_cannot = True
-            
-                        is_weekend = day_key in ['Friday', 'Saturday']
-            
-                        if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
-                            continue
-                        elif is_shift_cannot or "🔴" in day_status or "לא יכול היום" in day_status:
-                            is_shift_cannot = True
-                            day_has_cannot = True
-                            is_night = s_info.get('en') == 'Night'
-                            is_support = s_info.get('en') == 'Support'
-            
-                            if not ((is_night and DISABLE_pilot) or is_support):
-                                cannot_count += 1
-            
-                        if is_shift_can or is_shift_pref:
-                            is_shift_can = True
-                            day_has_can = True
-            
-            #==================================================================================================================================
-                        
-                        is_weekend = day_key in ['Friday', 'Saturday']
-            
-                        if DISABLE_pilot and (is_weekend or s_info.get('en', '') in ['open_T', 'Night']):
-                            continue
-                        elif is_shift_cannot or "🔴" in day_status or "לא יכול היום" in day_status:
-                            is_shift_cannot = True
-                            day_has_cannot = True
-                            is_night = s_info.get('en') == 'Night'
-                            is_support = s_info.get('en') == 'Support'
-            
-                            if not ((is_night and DISABLE_pilot) or is_support): # בזמן פיילוט, אם אדם סימן "לא יכול" במשמרת לילה, או אם זו משמרת תמיכה (Support) — המשמרת הזו לא תיספר במכסת הפסילות - החרגה של משמרות מסוימות ממכסת הפסילות
-                                cannot_count += 1
-            
-                        if is_shift_can or is_shift_pref:
-                            is_shift_can = True
-                            day_has_can = True
-            
+                if cannot_count > max_cannot_allowed:
+                    errors_list.append(f"חריגה במקסימום סימוני 'לא יכול': סומנו {cannot_count} מתוך מקסימום מותר של {max_cannot_allowed}")
 
                 if errors_list:
                     st.error("🚫 לא ניתן לשלוח את הטופס! נמצאו סתירות או חריגות בסימונים הבאים:")
-                    # מסנן כפילויות ושומר על סדר ההופעה המקורי
                     unique_errors = list(dict.fromkeys(errors_list))
                     for err in unique_errors:
                         st.markdown(f"<div style='text-align: right; font-size: 13px; color: #b91c1c; padding-right: 15px;'>• {err}</div>", unsafe_allow_html=True)
-                    st.stop()  # עצירת הסקריפט מונעת מהשמירה לרוץ אם יש אפילו שגיאה אחת!
+                    st.stop()  # עצירת הסקריפט מונעת מהשמירה לרוץ אם יש שגיאה!
+                
                 # --- שליחה לגוגל סקריפט במידה והכל תקין לחלוטין ---
                 else:
                     with st.spinner(MSG_SPINNER_SAVE):
-                        save_success = False  # מששתנה דגל שבודק אם השמירה הצליחה באמת
-                        # שימוש ב-zoneinfo המובנה של פייתון ללא צורך ב-pytz
+                        save_success = False
                         from zoneinfo import ZoneInfo
                         local_tz = ZoneInfo('Asia/Jerusalem')
                         timestamp = datetime.now(local_tz).strftime("%Y-%m-%d %H:%M:%S")
@@ -943,7 +853,6 @@ else:
                             "role": current_role,
                             "Comments": user_comments
                         }
-        
                         
                         # בניית ה-payload עבור התיבות השונות של המשמרות
                         for column_name, info in user_choices.items():
@@ -953,10 +862,9 @@ else:
         
                             is_col_weekend = day_key_part in ['Friday', 'Saturday']
         
-                            # 🛠️ החרגה לפיילוט: אם הדגל פעיל ובסופ"ש - נאלץ אוטומטית "לא יכול" (X) בגיליון [index]
                             if DISABLE_pilot and is_col_weekend:
                                 payload[column_name] = "ח"
-                            elif "🟢" in day_status or "יכול הכל" in day_status: # בדיקה כפולה של טקטס או צבע נקודה  
+                            elif "🟢" in day_status or "יכול הכל" in day_status:  
                                 payload[column_name] = "V"
                             elif "🔴" in day_status or "לא יכול" in day_status:
                                 payload[column_name] = "X"
@@ -981,7 +889,6 @@ else:
                             res_submit = requests.post(SCRIPT_URL, json=payload, timeout=20)
                             if res_submit.status_code == 200:
                                 save_success = True
-                                # יצירת הודעה בולטת במרכז המסך
                                 with st.container():
                                     st.markdown("""
                                         <div style="background-color: #d4edda; padding: 20px; border-radius: 10px; border: 2px solid #28a745; text-align: center;">
@@ -989,25 +896,16 @@ else:
                                             <p style="color: #155724; font-size: 18px;">הסידור נקלט במערכת.</p>
                                         </div>
                                     """, unsafe_allow_html=True)
-                                    
-                                    # כפתור אישור שמופיע רק אחרי השליחה
                                     if st.button("אישור ", key="confirm_submission_done"):
                                         st.rerun()
-                                    
-                                    # עצירה כדי שהמשתמש לא ימשיך לעבוד על המסך מאחורה
                                     st.stop()
                             else:
                                 st.error(MSG_SAVE_ERR)
                                 if st.button("🔄 נסה לשלוח שוב", key="retry_submit_failed_btn"):
                                     st.rerun()
                         except Exception:
-                            # אם תפסה שגיאה, נבדוק האם בפועל השמירה נכשלה לגמרי
                             if not save_success:
                                 st.error("⚠️ שגיאת קטיעת זמן בשמירה מול גוגל, אך ייתכן שהנתונים נקלטו. נא לבדוק בגיליון הסיכום.")
-
-
-
-
 
 #*********************************************************************************************************************
 #================ חלק 8  (תצוגת כרטיסיות הבקשות) =======================

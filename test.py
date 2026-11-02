@@ -52,6 +52,12 @@ def render_disabled_box(label_text):
         unsafe_allow_html=True
     )
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def get_current_day_status(day_key, is_wide_view):
+    """פונקציית עזר לשליפת סטטוס היום הנוכחי במצב טבלה או נייד"""
+    status_key = f"day_mode_{day_key}" if is_wide_view else f"mobile_day_mode_{day_key}"
+    return st.session_state.get(status_key, "בחר במשמרות")
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 def check_shift_conflicts(is_can, is_cannot, is_pref, day_he, shift_he, errors_list, all_can=False, all_not=False, all_vacation=False):
     if is_can and is_cannot:
         err_msg = f"ביום {day_he} במשמרת {shift_he}: לא ניתן לסמן גם 'יכול' וגם 'לא יכול' יחד."
@@ -338,6 +344,16 @@ else:
         "Night": "22:30 - 07:00", 
         "Support": "07:30 - 19:30"
     }
+    # מילון דרישות ומכסות תפקידים שבועיות
+    role_requirements = {
+        "מאבטח": {"morning": 4, "afternoon": 3, "night": 0, "weekend": 1, "total": 10, "max_cannot": 5},
+        "מאבטח סטודנט": {"morning": 1, "afternoon": 2, "night": 2, "weekend": 1, "total": 5, "max_cannot": 10},
+        "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0, "weekend": 0, "total": 10, "max_cannot": 5},
+        "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0, "weekend": 0, "total": 10, "max_cannot": 5},
+        "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "weekend": 0, "total": 3, "max_cannot": 10},
+        "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "weekend": 0, "total": 6, "max_cannot": 3},
+        "כללי": {"morning": 0, "afternoon": 0, "night": 0, "weekend": 0, "total": 0, "max_cannot": 5}
+    }
     
     # שימוש בחלוקת העמודות הרחבה [2, 1, 1] של  לאיזון ויזואלי מושלם
     top_c1, top_c2, top_c3 = st.columns([2, 1, 1])
@@ -511,17 +527,17 @@ else:
         current_date_str = now_il.strftime("%d/%m/%Y")
         
         st.markdown(f"<div style='text-align: left; font-size: 14px; color: #475569; direction: rtl; margin-bottom: 15px;'><b>שעון מערכת (ירושלים):</b> {current_time_str} | {current_date_str}</div>", unsafe_allow_html=True)
-    
+        
+#***********************************************************************************************************************************************************************************
+
         
         # לוגיקת חסימה מדויקת: חוסם משלישי (1) ב-10:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
         is_submission_blocked = (
             (now_il.weekday() == 4and now_il.hour >= 10) or 
            (4 < now_il.weekday() < 5)
         )
-    
-
-        
-#**************************************************************************************************************************
+            
+#***********************************************************************************************************************************************************************************
 #================ חלק 6  =======================
 
 #================ חלק 6.1 מוגמר ומיועל =======================
@@ -578,10 +594,7 @@ else:
         
                             #  קריאה לפונקציה החסימות 
                             is_blocked, block_reason = check_shift_blocking(
-                                d_info['en'], s_info['en'], current_role, DISABLE_pilot
-                            )
-        
-                            
+                                d_info['en'], s_info['en'], current_role, DISABLE_pilot   )
         
                             st.write(f"**🔹 משמרת {s_info['he']}** {hours_display}")
                             
@@ -710,10 +723,7 @@ else:
                     continue
                 
                 # שליפת סטטוס היום הנוכחי (תומך גם בטבלה וגם בנייד בצורה מושלמת)
-                if is_wide_view:
-                    day_status = st.session_state.get(f"day_mode_{day_key}", "בחר במשמרות")
-                else:
-                    day_status = st.session_state.get(f"mobile_day_mode_{day_key}", "בחר במשמרות")
+                day_status = get_current_day_status(day_key, is_wide_view)
         
                 all_can = "🟢 יכול הכל היום" in day_status or "יכול הכל היום" in day_status
                 all_vacation = "🌴 חופשה מאושרת" in day_status or "חופשה מאושרת" in day_status
@@ -775,17 +785,6 @@ else:
                 
                 if is_morning_cannot or is_opent_cannot:
                     cannot_count += 1
-            #                
-            role_requirements = {
-            "מאבטח": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 1, "total": 10, "max_cannot": 5},
-            "מאבטח סטודנט": {"morning": 1, "afternoon": 2, "night": 2,"weekend": 1, "total": 5, "max_cannot": 10},
-            "בודקת ביטחונית": {"morning": 4, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
-            "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0,"weekend": 0, "total": 10, "max_cannot": 5},
-            "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0,"weekend": 0, "total": 3, "max_cannot": 10},
-            "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0,"weekend": 0, "total": 6, "max_cannot": 3},
-            "כללי": {"morning": 0, "afternoon": 0, "night": 0,"weekend": 0, "total": 0, "max_cannot": 5}
-            }
-    
                 
             # שליפת הדרישות וטיפול מונע קריסות (הגנה מפני תפקיד חסר) [index]
             user_role_clean = current_role.strip()
@@ -857,8 +856,7 @@ else:
                         # בניית ה-payload עבור התיבות השונות של המשמרות
                         for column_name, info in user_choices.items():
                             day_key_part = column_name.split('_')[0]
-                            status_key = f"day_mode_{day_key_part}" if is_wide_view else f"mobile_day_mode_{day_key_part}"
-                            day_status = st.session_state.get(status_key, "בחר במשמרות")
+                            day_status = get_current_day_status(day_key_part, is_wide_view)
         
                             is_col_weekend = day_key_part in ['Friday', 'Saturday']
         
@@ -908,9 +906,20 @@ else:
                                 st.error("⚠️ שגיאת קטיעת זמן בשמירה מול גוגל, אך ייתכן שהנתונים נקלטו. נא לבדוק בגיליון הסיכום.")
 
 #*********************************************************************************************************************
+def render_day_summary_card(date_str, he_day_name, day_lines):
+    """פונקציית עזר לייצור HTML של כרטיסיית סיכום יומית"""
+    lines_html = "".join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])
+    return f"""
+        <div dir='rtl' style='text-align: right; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);'>
+            <div style='font-size: 16px; font-weight: bold; color: #1e293b; text-align: center;'>{date_str} 📅</div>
+            <div style='font-size: 13px; color: #64748b; text-align: center; margin-bottom: 8px;'>{he_day_name}</div>
+            <hr style='margin: 5px 0 10px 0; border: none; border-top: 1px solid #edf2f7;'>
+            {lines_html}
+        </div>
+    """
 #================ חלק 8  (תצוגת כרטיסיות הבקשות) =======================
     st.write("---")
- # 🗓️ חלק תצוגת הבקשות שהוגשו 
+# 🗓️ חלק תצוגת הבקשות שהוגשו 
     st.write("###  📋 הבקשות המעודכנות במערכת")
 
 
@@ -956,7 +965,7 @@ try:
                                 row_week_clean = f"{p}/{p}/{p}"
                         else:
                             row_week_clean = row_week[:10]
-                   # st.write(f"Comparing -> Target: [{target_date_clean}] vs Row: [{row_week_clean}]")
+                    
                     if target_date_clean == row_week_clean.strip():
                         filtered_user_rows.append(row)
             
@@ -981,117 +990,70 @@ try:
             user_row = None
             
             if filtered_user_rows:
-                # נמצאה בקשה מדויקת לתאריך המבוקש - ניקח את המעודכנת ביותר מביניהן
                 user_row = filtered_user_rows[-1]
                 raw_ts = user_row.get("Timestamp", "")
                 try:
                     w_str = raw_ts.replace('Z', '+00:00')
                     dt = datetime.fromisoformat(w_str)
-                    dt_adjusted = dt + timedelta(hours=3) # או מספר השעות שתרצה להוסיף
+                    dt_adjusted = dt + timedelta(hours=3)
                     formatted_time = dt_adjusted.strftime('%d/%m/%Y %H:%M')
                 except Exception:
                     formatted_time = raw_ts
                 
                 st.success(f"הבקשות הוגשו ב- {formatted_time}")
             else:
-                # אין בקשה לתאריך המוגדר
                 st.warning("אין בקשות לשבוע הבא - נא להגיש")
                 user_row = None
             
-            # 4. רינדור כרטיסיות המשמרות (יוצג רק אם נמצאה שורה תואמת)
+            # 4. רינדור כרטיסיות המשמרות (מאוחד באמצעות פונקציית העזר)
             if user_row:
                 clean_user_row = {str(k).strip(): str(v).strip() for k, v in user_row.items()}
                 current_view = locals().get("view_option", st.session_state.get("view_option", ""))
                 is_mobile_device = st.session_state.get("is_mobile", False)
 
-               
-            
                 is_wide_view_summary = ("טבלה" in str(current_view) and not is_mobile_device)
                 days_order_en = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
                 days_order_he = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
-        
-                
-                # --- מצב א': תצוגה רחבה (מחשב) - שימוש ב-st.columns רשמי מימין לשמאל ---
-               
-                if is_wide_view_summary:
-                    summary_cols = st.columns(7)
-                    
-                    for col_idx, (day_idx, d_info) in enumerate(list(enumerate(dates_list))):
-                        en_day = days_order_en[day_idx] if day_idx < len(days_order_en) else "Sunday"
-                        he_day_name = days_order_he[day_idx] if day_idx < len(days_order_he) else "שבוע"
 
-                        # בדיקת פיילוט - דילוג על שישי ושבת
-                        if DISABLE_pilot and en_day in ['Friday', 'Saturday']:
-                            continue
+                # הכנת רשימת הנתונים המעובדת לכל יום
+                days_data_to_render = []
+                for day_idx, d_info in enumerate(dates_list):
+                    en_day = days_order_en[day_idx] if day_idx < len(days_order_en) else "Sunday"
+                    he_day_name = days_order_he[day_idx] if day_idx < len(days_order_he) else "שבוע"
+
+                    if DISABLE_pilot and en_day in ['Friday', 'Saturday']:
+                        continue
+                    
+                    date_str = d_info.get('date', d_info) if isinstance(d_info, dict) else str(d_info)
+                    
+                    day_lines = []
+                    for c_info in משמרות:
+                        s_en = c_info.get('en', c_info) if isinstance(c_info, dict) else str(c_info)
+                        s_he = c_info.get('he', c_info) if isinstance(c_info, dict) else str(c_info)
+                        exact_col = f"{en_day}_{s_en}"
+                        val = clean_user_row.get(exact_col, "")
                         
-                        date_str = d_info.get('date', d_info) if isinstance(d_info, dict) else str(d_info)
-                        main_title = date_str[:10]
-                        
-                        day_lines = []
-                        for c_info in משמרות:
-                            s_en = c_info.get('en', c_info) if isinstance(c_info, dict) else str(c_info)
-                            s_he = c_info.get('he', c_info) if isinstance(c_info, dict) else str(c_info)
-                            exact_col = f"{en_day}_{s_en}"
-                            val = clean_user_row.get(exact_col, "")
-                            
-                            if val in ["V", "v", "TRUE", "True", "1", "יכול"]: day_lines.append(f"<b>{s_he}</b>: יכול 👍")
-                            elif val in ["מ.ש", "ש.מ"]: day_lines.append(f"<b>{s_he}</b>: מ.ש 🙋‍♂️")
-                            elif val in ["ח", "חופשה", "🌴", "ח "]: day_lines.append(f"<b>{s_he}</b>: חופשה 🌴")
-                            elif val in ["X", "x", "FALSE", "False", "0", "לא יכול", "n", "N"]: day_lines.append(f"<b>{s_he}</b>: לא יכול ❌")
-                            elif val: day_lines.append(f"<b>{s_he}</b>: {val}")
-                            else: day_lines.append(f"<b>{s_he}</b>: (אין ערך)")
-                        
-                        lines_html = "".join([f"<div style='font-size: 13px; margin-bottom: 3px; color: #1e293b; text-align: right;'>• {line}</div>" for line in day_lines])
-                        
-                        summary_html = f"""
-                            <div dir='rtl' style='text-align: right; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);'>
-                                <div style='font-size: 16px; font-weight: bold; color: #1e293b; text-align: center;'>{date_str} 📅</div>
-                                <div style='font-size: 13px; color: #64748b; text-align: center; margin-bottom: 8px;'>{he_day_name}</div>
-                                <hr style='margin: 5px 0 10px 0; border: none; border-top: 1px solid #edf2f7;'>
-                                {''.join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])}
-                            </div>
-                        """
+                        if val in ["V", "v", "TRUE", "True", "1", "יכול"]: day_lines.append(f"<b>{s_he}</b>: יכול 👍")
+                        elif val in ["מ.ש", "ש.מ"]: day_lines.append(f"<b>{s_he}</b>: מ.ש 🙋‍♂️")
+                        elif val in ["ח", "חופשה", "🌴", "ח "]: day_lines.append(f"<b>{s_he}</b>: חופשה 🌴")
+                        elif val in ["X", "x", "FALSE", "False", "0", "לא יכול", "n", "N"]: day_lines.append(f"<b>{s_he}</b>: לא יכול ❌")
+                        elif val: day_lines.append(f"<b>{s_he}</b>: {val}")
+                        else: day_lines.append(f"<b>{s_he}</b>: (אין ערך)")
+
+                    days_data_to_render.append((date_str, he_day_name, day_lines))
+
+                # הצגה בהתאם למצב (מחשב מציג ב-Columns, מובייל מציג ברשימה אנכית)
+                if is_wide_view_summary:
+                    summary_cols = st.columns(len(days_data_to_render))
+                    for col_idx, (date_str, he_day_name, day_lines) in enumerate(days_data_to_render):
+                        summary_html = render_day_summary_card(date_str, he_day_name, day_lines)
                         with summary_cols[col_idx]:
                             st.markdown(summary_html, unsafe_allow_html=True)
-                            
-                # --- מצב ב': תצוגת מובייל / רשימה אנכית (אחד מתחת לשני) ---
                 else:
-                    for day_idx, d_info in enumerate(dates_list):
-                        en_day = days_order_en[day_idx] if day_idx < len(days_order_en) else "Sunday"
-                        he_day_name = days_order_he[day_idx] if day_idx < len(days_order_he) else "שבוע"
-
-                        # בדיקת פיילוט - דילוג על שישי ושבת
-                        if DISABLE_pilot and en_day in ['Friday', 'Saturday']:
-                            continue
-                        
-                        date_str = d_info.get('date', d_info) if isinstance(d_info, dict) else str(d_info)
-                        main_title = date_str[:10]
-                        
-                        day_lines = []
-                        for c_info in משמרות:
-                            s_en = c_info.get('en', c_info) if isinstance(c_info, dict) else str(c_info)
-                            s_he = c_info.get('he', c_info) if isinstance(c_info, dict) else str(c_info)
-                            exact_col = f"{en_day}_{s_en}"
-                            val = clean_user_row.get(exact_col, "")
-                            
-                            if val in ["V", "v", "TRUE", "True", "1", "יכול"]: day_lines.append(f"<b>{s_he}</b>: יכול 👍")
-                            elif val in ["מ.ש", "ש.מ"]: day_lines.append(f"<b>{s_he}</b>: מ.ש 🙋‍♂️")
-                            elif val in ["ח", "חופשה", "🌴", "ח "]: day_lines.append(f"<b>{s_he}</b>: חופשה 🌴")
-                            elif val in ["X", "x", "FALSE", "False", "0", "לא יכול", "n", "N"]: day_lines.append(f"<b>{s_he}</b>: לא יכול ❌")
-                            elif val: day_lines.append(f"<b>{s_he}</b>: {val}")
-                            else: day_lines.append(f"<b>{s_he}</b>: (אין ערך)")
-                        
-                        lines_html = "".join([f"<div style='font-size: 13px; margin-bottom: 3px; color: #1e293b; text-align: right;'>• {line}</div>" for line in day_lines])
-                        
-                        summary_html = f"""
-                            <div dir='rtl' style='text-align: right; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);'>
-                                <div style='font-size: 16px; font-weight: bold; color: #1e293b; text-align: center;'>{date_str} 📅</div>
-                                <div style='font-size: 13px; color: #64748b; text-align: center; margin-bottom: 8px;'>{he_day_name}</div>
-                                <hr style='margin: 5px 0 10px 0; border: none; border-top: 1px solid #edf2f7;'>
-                                {''.join([f"<div style='text-align: right; font-size: 13px; margin-bottom: 3px; color: #1e293b;'>• {line}</div>" for line in day_lines])}
-                            </div>
-                        """
+                    for date_str, he_day_name, day_lines in days_data_to_render:
+                        summary_html = render_day_summary_card(date_str, he_day_name, day_lines)
                         st.markdown(summary_html, unsafe_allow_html=True)   
+
                 if user_row:
                     all_keys = list(user_row.keys())
                     if all_keys:
@@ -1100,13 +1062,12 @@ try:
                         if last_col_value:
                             st.info(f"**הערות / מידע נוסף:** {last_col_value}")
                     
-        #----                
         else:
             st.error("⚠️ לא ניתן לקרוא נתונים משרת גוגל.")
             if st.button("🔄 נסה לטעון נתונים מחדש", key="refresh_requests_failed"):
                 st.rerun()
-                # הצגת הערות מהעמודה האחרונה מתחת לכל הכרטיסיות
    
-    
 except Exception as e:
     st.warning(f"⚠️ שגיאה בטעינת נתוני סיכום: {e}")
+                # הצגת הערות מהעמודה האחרונה מתחת לכל הכרטיסיות
+   

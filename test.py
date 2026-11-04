@@ -352,7 +352,7 @@ else:
         "בודקת סטודנטית": {"morning": 3, "afternoon": 3, "night": 0, "weekend": 0, "total": 10, "max_cannot": 5},
         "אחמ''ש": {"morning": 1, "afternoon": 1, "night": 0, "weekend": 0, "total": 3, "max_cannot": 10},
         "מוקדנית": {"morning": 0, "afternoon": 0, "night": 0, "weekend": 0, "total": 6, "max_cannot": 3},
-        "מוקדנית סטודנטית": {"morning": 0, "afternoon": 0, "night": 0, "weekend": 0, "total": 6, "max_cannot": 3},
+        "מוקדנית סטודנטית": {"morning": 1, "afternoon": 1, "night": 0, "weekend": 0, "total": 6, "max_cannot": 3},
         "כללי": {"morning": 0, "afternoon": 0, "night": 0, "weekend": 0, "total": 0, "max_cannot": 5}
     }
     

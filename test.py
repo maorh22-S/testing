@@ -568,7 +568,7 @@ else:
                         
                         #  יצירת רכיב הרדיו במחשב
                         if "בודק" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            render_disabled_box(" אין משמרות לת בסוף השבוע")
+                            render_disabled_box(" אין משמרות בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:
@@ -639,8 +639,8 @@ else:
                                           
                         should_disable_day = False
                         
-                        if "ת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
-                            render_disabled_box(" אין משמרות לת בסוף השבוע")
+                        if "בודק" in current_role and d_info['en'] in ["Friday", "Saturday"]:
+                            render_disabled_box(" אין משמרות בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 
                         else:

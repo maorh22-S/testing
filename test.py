@@ -534,7 +534,7 @@ else:
         
         # לוגיקת חסימה מדויקת: חוסם משלישי (1) ב-10:00 ועד מוצאי שבת (5). יום ראשון (6) נשאר פתוח לחלוטין!
         is_submission_blocked = (
-            (now_il.weekday() == 4and now_il.hour >= 10) or 
+            (now_il.weekday() == 4 and now_il.hour >= 10) or 
            (4 < now_il.weekday() < 5)
         )
             
@@ -567,7 +567,7 @@ else:
                         radio_key = f"day_mode_{d_info['en']}"
                         
                         #  יצירת רכיב הרדיו במחשב
-                        if "ת" in current_role and d_info['en'] in ["Friday", "Saturday"]:
+                        if "בודק" in current_role and d_info['en'] in ["Friday", "Saturday"]:
                             render_disabled_box(" אין משמרות לת בסוף השבוע")
                             # אפשר להגדיר ערך ברירת מחדל ריק או מנוטרל כדי שלא ייזרקו שגיאות בהמשך
                             day_choice = None 

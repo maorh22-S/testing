@@ -5,6 +5,8 @@ from datetime import datetime, timedelta, timezone
 
 # ⚙️ מפסק פיילוט: True הופך את (לילה, פתיחת בוקר כל השבוע וכל שישי-שבת) לאפורות. False פותח כרגיל.
 DISABLE_pilot = False
+# 🔗 מפסק איחוד בוקר: True מסתיר את 'פתיחת בוקר' מהעובד ומעתיק אליה אוטומטית את הבחירה של 'בוקר'. False מציג כרגיל.
+LINK_OPEN_T_TO_MORNING = True
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def check_shift_blocking(day_en, shift_en, current_role, disable_pilot_flag):
@@ -589,6 +591,9 @@ else:
                         st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
                         
                         for s_info in משמרות:
+                            if LINK_OPEN_T_TO_MORNING and s_info['en'] == "open_T":
+                                    continue
+
                             column_name = f"{d_info['en']}_{s_info['en']}"
                             hours_txt = שעות_משמרת.get(s_info['en'], "")
                             hours_display = f" ({hours_txt})" if hours_txt else ""
@@ -661,6 +666,9 @@ else:
                         st.markdown("<hr style='margin: 8px 0; border-top: 1px solid #e2e8f0;'>", unsafe_allow_html=True)
                         
                         for s_info in משמרות:
+                            if LINK_OPEN_T_TO_MORNING and s_info['en'] == "open_T":
+                                continue
+
                             column_name = f"{d_info['en']}_{s_info['en']}"
                             hours_txt = שעות_משמרת.get(s_info['en'], "")
                             hours_display = f" ({hours_txt})" if hours_txt else ""
@@ -780,12 +788,12 @@ else:
                         # כל שאר המשמרות מוסיפות 1 כל אחת בנפרד אם סומן "לא יכול"
                         if shift_key not in ["Morning", "open_T"]:
                             cannot_count += 1
-                # בדיקה האם בבוקר ו/או בפתיחת בוקר מסומן "לא יכול" - מוסיף 1 בסך הכל לפעם אחת ביום
-                is_morning_cannot = st.session_state.get(f"not_check_{day_key}_Morning", False) or user_choices.get(f"{day_key}_Morning", {}).get("cannot", False)
-                is_opent_cannot = st.session_state.get(f"not_check_{day_key}_open_T", False) or user_choices.get(f"{day_key}_open_T", {}).get("cannot", False)
-                
+                is_morning_cannot = (st.session_state.get(f"not_check_{day_key}_Morning", False) or  st.session_state.get(f"m_not_check_{day_key}_Morning", False) or user_choices.get(f"{day_key}_Morning", {}).get("cannot", False)      )
+                is_opent_cannot = (   st.session_state.get(f"not_check_{day_key}_open_T", False) or   st.session_state.get(f"m_not_check_{day_key}_open_T", False) or    user_choices.get(f"{day_key}_open_T", {}).get("cannot", False)   )
+                    
                 if is_morning_cannot or is_opent_cannot:
-                    cannot_count += 1
+                        cannot_count += 1
+
                 
             # שליפת הדרישות וטיפול מונע קריסות (הגנה מפני תפקיד חסר) [index]
             user_role_clean = current_role.strip()
@@ -799,11 +807,9 @@ else:
             st.info(f"📊 **מדד מכסת הגשות שבועית לתפקידך:** בוקר: {count_morning}/{current_reqs['morning']} | צהריים: {count_afternoon}/{current_reqs['afternoon']} | לילה: {count_night}/{current_reqs['night']} | **סך הכל סומן:** {total_submitted}/{current_reqs['total']}")
 
 #=======================================================================
-# חלק 7: מנגנון בדיקת סתירות ושליחת הנתונים לגיליון (Timeout=20) [index]
+# חלק 7: מנגנון בדיקת סתירות ושליחת הנתונים לגיליון 
 #=======================================================================
 
-            # תצוגת כפתור השליחה בהתאם למצב החסימה
-            # --- תצוגת כפתור השליחה בהתאם למצב החסימה (שורות 624-631) ---
             # --- תצוגת כפתור השליחה בהתאם למצב החסימה ---
             if is_submission_blocked:
                 st.error("הגשת האילוצים לשבוע זה נסגרה, לא ניתן לשלוח טפסים חדשים.")
@@ -858,7 +864,7 @@ else:
                         for column_name, info in user_choices.items():
                             day_key_part = column_name.split('_')[0]
                             day_status = get_current_day_status(day_key_part, is_wide_view)
-        
+                        
                             is_col_weekend = day_key_part in ['Friday', 'Saturday']
         
                             if DISABLE_pilot and is_col_weekend:
@@ -883,6 +889,20 @@ else:
                                         payload[column_name] = "מ.ש"
                                     else:
                                         payload[column_name] = "V"
+                        # 🔗 סנכרון אוטומטי: העתקת הערך של 'בוקר' אל 'פתיחת בוקר' במידה והמפסק פעיל
+                        if LINK_OPEN_T_TO_MORNING:
+                            for d_info in ימים:
+                                d_en = d_info['en']
+                                morning_col = f"{d_en}_Morning"
+                                open_t_col = f"{d_en}_open_T"
+                                
+                                # בדיקה אם פתיחת בוקר חסומה באותו יום (למשל בשבת)
+                                is_open_t_blocked, _ = check_shift_blocking(d_en, "open_T", current_role, DISABLE_pilot)
+                                
+                                if is_open_t_blocked:
+                                    payload[open_t_col] = ""  # משאיר ללא ערך בגיליון
+                                elif morning_col in payload:
+                                    payload[open_t_col] = payload[morning_col]
         
                         try:
                             res_submit = requests.post(SCRIPT_URL, json=payload, timeout=20)
